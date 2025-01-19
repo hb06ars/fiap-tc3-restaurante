@@ -1,2 +1,33 @@
-# fiap-tc3-restaurante
-Tech Challenge 3 - FIAP - Restaurante
+# RESTAURANTE
+
+### REGRAS
+- Definindo regras de negócio aqui
+
+### ARQUITETURA
+- Linguagem: Java 17
+- Framework: Spring Boot
+- Banco de dados: a definir.
+
+### FLUXO
+- Forma e como é feito o fluxo.
+
+### INSTALAÇÃO
+- Dicas de como subir e se necessário instalar algo.
+
+### DOCKER COMPOSE
+- Para subir a imagem basta executar o docker-compose.yaml
+
+### SWAGGER
+- Swagger: http://localhost:8080/swagger-ui.html
+
+# DICAS
+
+### SONAR: <br>
+    Crie um projeto local no sonar através da URL: http://localhost:9008/projects.<br>
+    Após a criação será gerado o comando para execução, utilize o comando maven, exemplo:<br>
+    mvn clean verify sonar:sonar -Dsonar.projectKey=Restaurante -Dsonar.projectName='Restaurante' -Dsonar.host.url=http://localhost:9008 -Dsonar.token=sqp_7aef4486d8f65650be7052f9b333342b6ede6686
+    <br>Exeutando o comando, será gerado a url para verificar a cobertura do Sonar.
+
+### JMETER: <br>
+    Na pasta: /src/test/jmeter há um arquivo padrão para realizar testes de stress em algumas requisições.
+    Baixe o jmeter no site: https://jmeter.apache.org/download_jmeter.cgi e siga as instruções no jMeter.txt

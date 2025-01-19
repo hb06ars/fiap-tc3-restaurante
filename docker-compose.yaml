@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    ports:
+      - "9008:9000"
+    volumes:
+      - ./data/sonarqube_data:/data/opt/sonarqube/data
+      - ./data/sonarqube_logs:/data/opt/sonarqube/logs
+      - ./data/sonarqube_extensions:/data/opt/sonarqube/extensions
+    networks:
+      - broker-restaurante
+
+networks:
+  broker-restaurante:
+    driver: bridge

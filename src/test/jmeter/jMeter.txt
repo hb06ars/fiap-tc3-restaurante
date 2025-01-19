@@ -1,0 +1,101 @@
+:::::: JMETER ::::::
+
+1. Instale o JMeter
+Baixe o JMeter: Acesse o site oficial do JMeter Apache JMeter e faça o download da versão mais recente.
+https://jmeter.apache.org/download_jmeter.cgi
+
+Inicie o JMeter: Navegue até a pasta do JMeter e execute o arquivo jmeter.bat (Windows) ou jmeter (Linux/macOS) na pasta bin. Isso abrirá a interface gráfica do JMeter.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+2. Crie um Plano de Teste
+
+- Abra o JMeter.
+Clique com o botão direito em "Test Plan" (Plano de Teste) e selecione Add > Threads (Users) > Thread Group.
+
+- No Thread Group:
+Number of Threads (users): Defina o número de usuários virtuais (ex: 50).
+
+Ramp-Up Period (in seconds): O tempo para todos os usuários virtuais serem iniciados (ex: 10 segundos).
+
+Loop Count: Quantas vezes cada usuário executará o teste. Pode ser um número específico ou Forever (infinito).
+
+------------------------------------------------------------------------------------------------------------------------------
+
+3. Adicione um Requisição HTTP
+
+Clique com o botão direito no Thread Group e selecione Add > Sampler > HTTP Request.
+
+Server Name or IP: Insira o domínio ou IP da API, por exemplo, api.example.com.
+Port Number: O número da porta, se necessário (80 para HTTP e 443 para HTTPS).
+HTTP Request:
+Method: Escolha o método HTTP (GET, POST, PUT, etc.).
+Path: Defina o caminho do endpoint, por exemplo, /api/endpoint.
+Parameters: Caso sua requisição use parâmetros de URL ou corpo, adicione-os na seção Parameters (ou na aba Body Data para JSON e XML).
+
+------------------------------------------------------------------------------------------------------------------------------
+
+4. Adicione um Listener para Ver os Resultados
+
+Clique com o botão direito no Thread Group e selecione Add > Listener.
+Escolha View Results Tree para visualizar cada resposta detalhadamente.
+Adicione também o Summary Report ou Aggregate Report para visualizar estatísticas agregadas como média de tempo de resposta, taxa de erro e número de requisições por segundo.
+
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+
+5. Execute o Teste
+Inicie o teste clicando no botão Play (ícone verde) na barra de ferramentas.
+O JMeter começará a enviar requisições de acordo com as configurações definidas.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+6. Análise dos Resultados
+Durante ou após o teste, você pode verificar os resultados nos Listeners adicionados:
+
+View Results Tree: Mostra cada requisição detalhadamente, com resposta e status.
+Summary Report: Fornece métricas como tempo de resposta médio, desvios e número de requisições com falha.
+Aggregate Report: Fornece dados agregados úteis para comparar resultados de várias execuções.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+7. Salvando e Exportando os Resultados
+Para salvar os resultados de um Listener:
+
+Clique no Listener (por exemplo, Summary Report).
+Clique com o botão direito e selecione Save Table Data.
+Escolha um local e salve o arquivo, geralmente em .csv para análises posteriores.
+Exemplos Adicionais para Configurações Avançadas
+Variáveis de Ambiente e Parâmetros: Você pode usar variáveis dinâmicas para testar diferentes valores.
+
+Clique em Test Plan > Add > Config Element > User Defined Variables.
+Defina variáveis para usar em seus testes, como URL e endpoints.
+Assertions: Use Assertions para verificar o conteúdo das respostas, como o código HTTP de sucesso (200 OK).
+
+Clique com o botão direito em um sampler (ex: HTTP Request) e selecione Add > Assertions > Response Assertion.
+Configure o Assertion para verificar o código de resposta ou texto esperado na resposta.
+Isso configura o JMeter para testes de carga básicos e oferece flexibilidade para cenários mais complexos à medida que você se aprofunda no uso.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+:::::::::::::::::::::::::::::: TESTES SIMPLES ::::::::::::::::::::::::::::::
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Carga Leve:
+Number of Threads: 20
+Ramp-Up Period: 10 segundos
+Loop Count: 5
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Carga Média:
+Number of Threads: 50
+Ramp-Up Period: 20 segundos
+Loop Count: 10
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Teste de Estresse:
+Number of Threads: 200-500
+Ramp-Up Period: 60 segundos
+Loop Count: Infinito (ou configurar uma Duração de 5 a 10 minutos)
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+

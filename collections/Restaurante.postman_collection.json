@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "e68d2689-2412-475d-b411-010d8b30127d",
+		"name": "Restaurante",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7970060"
+	},
+	"item": [
+		{
+			"name": "Controller Teste",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/restaurante",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restaurante"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
