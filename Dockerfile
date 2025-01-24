@@ -1,15 +1,16 @@
-# Use the Eclipse temurin alpine official image
-# https://hub.docker.com/_/eclipse-temurin
-FROM eclipse-temurin:21-jdk-alpine
+// Fazendo o build
+FROM maven:3.8.4-openjdk-17-slim AS build
 
-# Create and change to the app directory.
-WORKDIR /app
+// Cria um diretorio chamado app
+WORKDIR . /app
 
-# Copy local code to the container image.
-COPY . ./
+// Copia tudo que tem na estrutura para dentro do diretorio
+WORKDIR . /app
 
-# Build the app.
-RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
+// Para que ele esteja gerando pacote de nossa aplicação
+RUN mvn package
 
-# Run the app by dynamically finding the JAR file in the target directory
-CMD ["sh", "-c", "java -jar target/*.jar"]
+FROM openjdk:17-jdk-slim
+
+// Fazendo a cópia do build do target do java
+COPY --from=build /app/target/*.jar /app/app.jar
