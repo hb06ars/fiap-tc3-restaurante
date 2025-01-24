@@ -1,7 +1,6 @@
 package com.restaurante.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.restaurante.domain.enums.TipoCozinha;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -9,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Getter
@@ -18,10 +18,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RestauranteDTO implements Serializable {
+public class MesaDTO implements Serializable {
 
     private Long id;
-    private String nome;
-    private String localizacao;
-    private TipoCozinha tipoCozinha;
+    private String nomeMesa;
+    private Long restauranteId;
+
 }
