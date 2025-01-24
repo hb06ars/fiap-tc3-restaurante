@@ -1,2 +1,8 @@
 server:
   port: ${PORT:8080}
+spring:
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASS}
+    driver-class-name: org.postgresql.Driver

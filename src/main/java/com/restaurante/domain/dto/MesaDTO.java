@@ -1,6 +1,7 @@
 package com.restaurante.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.restaurante.domain.entity.MesaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -8,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Getter
@@ -24,4 +24,9 @@ public class MesaDTO implements Serializable {
     private String nomeMesa;
     private Long restauranteId;
 
+    public MesaDTO(MesaEntity entity) {
+        this.id = entity.getId();
+        this.nomeMesa = entity.getNomeMesa();
+        this.restauranteId = entity.getRestauranteId();
+    }
 }

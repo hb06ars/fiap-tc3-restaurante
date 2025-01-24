@@ -1,6 +1,7 @@
 
 package com.restaurante.domain.dto;
 
+import com.restaurante.domain.entity.UsuarioEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -20,5 +21,12 @@ public class UsuarioDTO {
     private String nome;
     private String email;
     private String celular;
+
+    public UsuarioDTO(UsuarioEntity usuarioEntity) {
+        this.id = usuarioEntity.getId();
+        this.nome = usuarioEntity.getNome();
+        this.email = usuarioEntity.getEmail();
+        this.celular = usuarioEntity.getCelular();
+    }
 
 }

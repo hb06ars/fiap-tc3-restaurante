@@ -1,6 +1,7 @@
 
 package com.restaurante.domain.dto;
 
+import com.restaurante.domain.entity.ReservaEntity;
 import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
 import lombok.AllArgsConstructor;
@@ -28,5 +29,16 @@ public class ReservaDTO implements Serializable {
     private BigDecimal valorReserva;
     private StatusPagamentoEnum statusPagamento;
     private StatusReservaEnum statusReserva;
+
+    public ReservaDTO(ReservaEntity entity) {
+        this.id = entity.getId();
+        this.usuarioId = entity.getUsuarioId();
+        this.mesaId = entity.getMesaId();
+        this.restauranteId = entity.getRestauranteId();
+        this.dataDaReserva = entity.getDataDaReserva();
+        this.valorReserva = entity.getValorReserva();
+        this.statusPagamento = entity.getStatusPagamento();
+        this.statusReserva = entity.getStatusReserva();
+    }
 
 }

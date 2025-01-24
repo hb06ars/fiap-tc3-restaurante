@@ -22,7 +22,7 @@ class ControllerTest {
 
     @Test
     void testTarifa() {
-        ResponseEntity<MessageSuccessDTO> result = tarifaController.tarifa();
+        ResponseEntity<RestauranteDTO> result = tarifaController.cadastro();
         RestauranteDTO restauranteDTO = new RestauranteDTO();
         restauranteDTO.setId(1L);
         restauranteDTO.setNome("La Brasa");

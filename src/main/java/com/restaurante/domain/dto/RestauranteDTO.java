@@ -1,6 +1,7 @@
 package com.restaurante.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.TipoCozinha;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,11 @@ public class RestauranteDTO implements Serializable {
     private String nome;
     private String localizacao;
     private TipoCozinha tipoCozinha;
+
+    public RestauranteDTO(RestauranteEntity restauranteEntity) {
+        this.id = restauranteEntity.getId();
+        this.nome = restauranteEntity.getNome();
+        this.localizacao = restauranteEntity.getLocalizacao();
+        this.tipoCozinha = restauranteEntity.getTipoCozinha();
+    }
 }
