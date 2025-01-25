@@ -3,6 +3,7 @@ package com.restaurante.app.rest;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.entity.RestauranteEntity;
+import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,12 +28,15 @@ public class RestauranteController {
     @Autowired
     RestauranteService service;
 
+    @Autowired
+    CadastrarRestauranteUseCase cadastrarRestauranteUseCase;
+
     @Operation(summary = "Cadastrar Restaurante",
             description = "Cadastro realizado do restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
     public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteEntity entity) {
-        return ResponseEntity.ok(service.save(entity));
+        return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(entity));
     }
 
     @Operation(summary = "Buscar Restaurante",

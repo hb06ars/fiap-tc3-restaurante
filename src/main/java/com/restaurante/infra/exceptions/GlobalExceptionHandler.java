@@ -54,5 +54,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ListErrorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RecordAlreadyExistsException.class)
+    public ResponseEntity<ListErrorResponse> handleRecordAlreadyExistsException(RecordAlreadyExistsException e) {
+        ListErrorResponse listErrorResponse = new ListErrorResponse(
+                List.of(MessageErrorDTO.builder()
+                        .detalhe(e.getMessage())
+                        .erro("O registro já existente.")
+                        .build()),
+                HttpStatus.CONFLICT.value()
+        );
+        return new ResponseEntity<>(listErrorResponse, HttpStatus.CONFLICT);
+    }
+
 
 }

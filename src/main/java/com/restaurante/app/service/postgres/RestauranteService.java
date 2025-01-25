@@ -89,5 +89,12 @@ public class RestauranteService {
                 localizacao.trim(),
                 tipoCozinha.trim()).stream().map(RestauranteDTO::new).toList();
     }
+
+    public boolean restauranteJaExiste(String nome, String localizacao) {
+        return repository.buscarRestaurantes(
+                nome.trim(),
+                localizacao.trim(),
+                null).stream().map(RestauranteDTO::new).findAny().isPresent();
+    }
 }
 
