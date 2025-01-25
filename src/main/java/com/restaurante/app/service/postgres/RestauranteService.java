@@ -83,5 +83,11 @@ public class RestauranteService {
         }
     }
 
+    public List<RestauranteDTO> buscarRestaurantes(String nome, String localizacao, String tipoCozinha) {
+        return repository.buscarRestaurantes(
+                nome.trim(),
+                localizacao.trim(),
+                tipoCozinha.trim()).stream().map(RestauranteDTO::new).toList();
+    }
 }
 

@@ -38,7 +38,7 @@ class ControllerTest {
                 .build();
 
         Mockito.when(restauranteService.save(any())).thenReturn(dto);
-        ResponseEntity<RestauranteDTO> result = tarifaController.cadastro(new RestauranteEntity(dto));
+        ResponseEntity<RestauranteDTO> result = tarifaController.cadastrar(new RestauranteEntity(dto));
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }
