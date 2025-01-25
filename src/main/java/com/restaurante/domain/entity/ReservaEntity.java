@@ -47,6 +47,9 @@ public class ReservaEntity implements Serializable {
     @Column(name = "data_da_reserva", nullable = false)
     private LocalDateTime dataDaReserva;
 
+    @Column(name = "data_fim_reserva", nullable = false)
+    private LocalDateTime dataFimReserva;
+
     @Column(name = "valor_reserva", nullable = false, precision = 10, scale = 2)
     private BigDecimal valorReserva;
 

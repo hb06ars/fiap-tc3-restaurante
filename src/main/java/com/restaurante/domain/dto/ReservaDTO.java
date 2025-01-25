@@ -26,6 +26,7 @@ public class ReservaDTO implements Serializable {
     private Long mesaId;
     private Long restauranteId;
     private LocalDateTime dataDaReserva;
+    private LocalDateTime dataFimReserva;
     private BigDecimal valorReserva;
     private StatusPagamentoEnum statusPagamento;
     private StatusReservaEnum statusReserva;
@@ -36,6 +37,7 @@ public class ReservaDTO implements Serializable {
         this.mesaId = entity.getMesaId();
         this.restauranteId = entity.getRestauranteId();
         this.dataDaReserva = entity.getDataDaReserva();
+        this.dataFimReserva = entity.getDataFimReserva();
         this.valorReserva = entity.getValorReserva();
         this.statusPagamento = entity.getStatusPagamento();
         this.statusReserva = entity.getStatusReserva();

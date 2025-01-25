@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS reserva (
                     usuario_id BIGINT NOT NULL,
                     mesa_id BIGINT NOT NULL,
                     data_da_reserva TIMESTAMP NOT NULL,
+                    data_fim_reserva TIMESTAMP NOT NULL,
                     valor_reserva DECIMAL(10, 2) NOT NULL,
                     restaurante_id BIGINT NOT NULL,
                     status_pagamento VARCHAR(255) NOT NULL,

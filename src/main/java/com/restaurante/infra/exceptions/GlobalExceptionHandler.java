@@ -66,5 +66,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(listErrorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(ReservaException.class)
+    public ResponseEntity<ListErrorResponse> handleRecordAlreadyExistsException(ReservaException e) {
+        ListErrorResponse listErrorResponse = new ListErrorResponse(
+                List.of(MessageErrorDTO.builder()
+                        .detalhe(e.getMessage())
+                        .erro("Erro ao efetuar reserva")
+                        .build()),
+                HttpStatus.CONFLICT.value()
+        );
+        return new ResponseEntity<>(listErrorResponse, HttpStatus.CONFLICT);
+    }
+
 
 }

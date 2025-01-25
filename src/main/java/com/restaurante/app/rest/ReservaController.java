@@ -3,6 +3,7 @@ package com.restaurante.app.rest;
 import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.entity.ReservaEntity;
+import com.restaurante.domain.useCase.ReservarMesaUseCase;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReservaController {
 
     @Autowired
-    ReservaService service;
+    ReservarMesaUseCase reservarMesaUseCase;
 
     @Operation(summary = "Cadastrar Reserva",
             description = "Salvar a Reserva.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<ReservaDTO> cadastro(ReservaEntity entity) {
-        return ResponseEntity.ok(service.save(entity));
+        return ResponseEntity.ok(reservarMesaUseCase.execute(entity));
     }
 
 }
