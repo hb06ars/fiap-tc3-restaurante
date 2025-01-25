@@ -1,8 +1,8 @@
 package com.restaurante.app.rest;
 
-import com.restaurante.app.service.postgres.RestauranteService;
-import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.entity.RestauranteEntity;
+import com.restaurante.app.service.postgres.ReservaService;
+import com.restaurante.domain.dto.ReservaDTO;
+import com.restaurante.domain.entity.ReservaEntity;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/restaurante")
+@RequestMapping("/reserva")
 @Slf4j
-public class Controller {
+public class ReservaController {
 
     @Autowired
-    RestauranteService restauranteService;
+    ReservaService service;
 
-    @Operation(summary = "Cadastrar Restaurante",
-            description = "Cadastro realizado pelo restaurante.")
+    @Operation(summary = "Cadastrar Reserva",
+            description = "Salvar a Reserva.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<RestauranteDTO> cadastro(RestauranteEntity entity) {
-        return ResponseEntity.ok(restauranteService.save(entity));
+    public ResponseEntity<ReservaDTO> cadastro(ReservaEntity entity) {
+        return ResponseEntity.ok(service.save(entity));
     }
 
 }

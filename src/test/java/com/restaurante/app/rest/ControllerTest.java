@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 class ControllerTest {
     @InjectMocks
-    Controller tarifaController;
+    RestauranteController tarifaController;
 
     @Mock
     RestauranteService restauranteService;
