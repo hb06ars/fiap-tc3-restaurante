@@ -1,7 +1,7 @@
 package com.restaurante.domain.entity;
 
-import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.enums.TipoCozinhaEnum;
+import com.restaurante.domain.dto.FuncionamentoDTO;
+import com.restaurante.domain.enums.DiaEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import java.io.Serializable;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -25,8 +25,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "restaurante")
-public class RestauranteEntity implements Serializable {
+@Table(name = "funcionamento")
+public class FuncionamentoEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,24 +34,24 @@ public class RestauranteEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
-    private String nome;
-
-    @Column(nullable = false, length = 255)
-    private String localizacao;
-
+    @Column(nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50, name = "tipocozinha")
-    private TipoCozinhaEnum tipoCozinha;
+    private DiaEnum diaEnum;
 
     @Column(nullable = false)
-    @Min(0)
-    private Integer capacidade = 0;
+    private LocalTime abertura;
 
-    public RestauranteEntity(RestauranteDTO dto) {
-        this.nome = dto.getNome();
-        this.localizacao = dto.getLocalizacao();
-        this.tipoCozinha = dto.getTipoCozinha();
-        this.capacidade = dto.getCapacidade();
+    @Column(nullable = false)
+    private LocalTime fechamento;
+
+    @Column(name = "restaurante_id", nullable = false)
+    private Long restauranteId;
+
+    public FuncionamentoEntity(FuncionamentoDTO dto) {
+        this.id = dto.getId();
+        this.diaEnum = dto.getDiaEnum();
+        this.abertura = dto.getAbertura();
+        this.fechamento = dto.getFechamento();
+        this.restauranteId = dto.getRestauranteId();
     }
 }

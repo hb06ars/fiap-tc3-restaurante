@@ -3,7 +3,8 @@ package com.restaurante.domain.enums;
 import lombok.Getter;
 
 @Getter
-public enum TipoCozinha {
+public enum TipoCozinhaEnum {
+    GERAL("Geral"),
     ITALIANA("Italiana"),
     JAPONESA("Japonesa"),
     BRASILEIRA("Brasileira"),
@@ -27,7 +28,7 @@ public enum TipoCozinha {
 
     private final String descricao;
 
-    TipoCozinha(String descricao) {
+    TipoCozinhaEnum(String descricao) {
         this.descricao = descricao;
     }
 

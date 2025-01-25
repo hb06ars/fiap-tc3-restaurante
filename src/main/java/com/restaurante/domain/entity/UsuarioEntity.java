@@ -29,13 +29,13 @@ public class UsuarioEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 255)
     private String nome;
 
-    @Column(nullable = false, unique = true, length = 150)
+    @Column(nullable = true, length = 255)
     private String email;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = true, length = 50)
     private String celular;
 
     public UsuarioEntity(String nome, String email, String celular) {

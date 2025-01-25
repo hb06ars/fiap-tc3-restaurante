@@ -51,11 +51,11 @@ public class ReservaEntity implements Serializable {
     private BigDecimal valorReserva;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_pagamento", nullable = false, length = 20)
+    @Column(name = "status_pagamento", nullable = false, length = 50)
     private StatusPagamentoEnum statusPagamento;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status_reserva", nullable = false, length = 20)
+    @Column(name = "status_reserva", nullable = false, length = 50)
     private StatusReservaEnum statusReserva;
 
 }

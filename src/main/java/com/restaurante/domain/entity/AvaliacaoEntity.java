@@ -31,8 +31,8 @@ public class AvaliacaoEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Min(1)
-    @Max(5)
+    @Min(0)
+    @Max(10)
     @Column(nullable = false)
     private Integer nota;
 
@@ -40,15 +40,8 @@ public class AvaliacaoEntity implements Serializable {
     private String comentario;
 
     @Column(nullable = false)
-    private String usuarioId;
+    private Long usuarioId;
 
     @Column(nullable = false)
     private Long restauranteId;
-
-    public AvaliacaoEntity(Integer nota, String comentario, String usuarioId, Long restauranteId) {
-        this.nota = nota;
-        this.comentario = comentario;
-        this.usuarioId = usuarioId;
-        this.restauranteId = restauranteId;
-    }
 }

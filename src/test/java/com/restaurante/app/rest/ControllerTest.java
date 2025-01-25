@@ -1,8 +1,7 @@
 package com.restaurante.app.rest;
 
-import com.restaurante.domain.dto.MessageSuccessDTO;
 import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.enums.TipoCozinha;
+import com.restaurante.domain.enums.TipoCozinhaEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ class ControllerTest {
         restauranteDTO.setId(1L);
         restauranteDTO.setNome("La Brasa");
         restauranteDTO.setLocalizacao("Av. Paulista, 1000");
-        restauranteDTO.setTipoCozinha(TipoCozinha.MEXICANA);
+        restauranteDTO.setTipoCozinha(TipoCozinhaEnum.MEXICANA);
         Assertions.assertEquals(new ResponseEntity<RestauranteDTO>(restauranteDTO, null, HttpStatus.OK).getStatusCode(), result.getStatusCode());
     }
 }

@@ -1,9 +1,10 @@
 -- TABLE RESTAURANTE
 CREATE TABLE IF NOT exists restaurante (
                     id SERIAL PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
+                    nome VARCHAR(100) NOT NULL,
                     localizacao VARCHAR(255) NOT NULL,
-                    tipocozinha VARCHAR(255)
+                    tipocozinha VARCHAR(255),
+                    capacidade INTEGER NOT NULL
                 );
 
 
@@ -22,15 +23,15 @@ CREATE TABLE IF NOT exists mesa (
 CREATE TABLE IF NOT EXISTS usuario (
                     id SERIAL PRIMARY KEY,
                     nome VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) NOT NULL UNIQUE,
-                    celular VARCHAR(15)
+                    email VARCHAR(255) NOT NULL,
+                    celular VARCHAR(50)
                 );
 
 -- TABLE AVALIACAO
 CREATE TABLE IF NOT EXISTS avaliacao (
                     id BIGSERIAL PRIMARY KEY,
                     nota INTEGER NOT NULL,
-                    comentario VARCHAR(255) NOT NULL,
+                    comentario VARCHAR(500) NOT NULL,
                     usuario_id BIGINT NOT NULL,
                     restaurante_id BIGINT NOT NULL,
                     CONSTRAINT fk_avaliacao_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id),
@@ -54,3 +55,12 @@ CREATE TABLE IF NOT EXISTS reserva (
                     CONSTRAINT fk_reserva_mesa FOREIGN KEY (mesa_id) REFERENCES mesa(id)
                 );
 
+-- TABLE FUNCIONAMENTO
+CREATE TABLE funcionamento (
+    id SERIAL PRIMARY KEY,
+    dia_enum VARCHAR(50) NOT NULL,
+    abertura TIME NOT NULL,
+    fechamento TIME NOT NULL,
+    restaurante_id BIGINT NOT NULL,
+    CONSTRAINT fk_funcionamento_restaurante FOREIGN KEY (restaurante_id) REFERENCES restaurante(id)
+);
