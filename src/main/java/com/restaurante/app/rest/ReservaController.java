@@ -11,8 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/reserva")
@@ -26,7 +29,7 @@ public class ReservaController {
             description = "Salvar a Reserva.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<ReservaDTO> cadastro(ReservaEntity entity) {
+    public ResponseEntity<ReservaDTO> cadastro(@Valid @RequestBody ReservaEntity entity) {
         return ResponseEntity.ok(reservarMesaUseCase.execute(entity));
     }
 

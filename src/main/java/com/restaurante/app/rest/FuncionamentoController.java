@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/funcionamento")
@@ -25,7 +28,7 @@ public class FuncionamentoController {
             description = "Salvar Funcionamento.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<FuncionamentoDTO> cadastro(FuncionamentoEntity entity) {
+    public ResponseEntity<FuncionamentoDTO> cadastro(@Valid @RequestBody FuncionamentoEntity entity) {
         return ResponseEntity.ok(service.save(entity));
     }
 
