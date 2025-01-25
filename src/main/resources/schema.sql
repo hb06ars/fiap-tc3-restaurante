@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS reserva (
                 );
 
 -- TABLE FUNCIONAMENTO
-CREATE TABLE funcionamento (
+CREATE TABLE IF NOT EXISTS funcionamento (
     id SERIAL PRIMARY KEY,
     dia_enum VARCHAR(50) NOT NULL,
     abertura TIME NOT NULL,
