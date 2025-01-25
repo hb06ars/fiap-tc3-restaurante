@@ -42,5 +42,4 @@ public class ReservaDTO implements Serializable {
         this.statusPagamento = entity.getStatusPagamento();
         this.statusReserva = entity.getStatusReserva();
     }
-
 }

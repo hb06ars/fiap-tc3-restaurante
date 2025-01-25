@@ -7,10 +7,19 @@
 	},
 	"item": [
 		{
-			"name": "Controller Teste",
+			"name": "Cadastrar Restaurante",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Tia Lelê\",\r\n    \"tipoCozinha\": \"BRASILEIRA\",\r\n    \"localizacao\": \"Av. dos Autonomistas, 1000\",\r\n    \"capacidade\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:8080/restaurante",
 					"protocol": "http",
@@ -20,6 +29,195 @@
 					"port": "8080",
 					"path": [
 						"restaurante"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Reserva",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 2,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2024-01-25T19:00:00\",\r\n    \"dataFimReserva\": \"2024-01-25T21:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/reserva",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reserva"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Usuário",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Henrique\",\r\n    \"email\": \"henrique@mail.com\",\r\n    \"celular\": \"11989376271\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/usuario/cadastrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"usuario",
+						"cadastrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Data Funcionamento",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"diaEnum\": \"FERIADOS\",\r\n    \"abertura\": \"14:00:00\",\r\n    \"fechamento\": \"20:00:00\",\r\n    \"restauranteId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/funcionamento/cadastrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"funcionamento",
+						"cadastrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar Mesa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nomeMesa\": \"MESA 5\",\r\n    \"restauranteId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/mesa/cadastrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mesa",
+						"cadastrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar Restaurante",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Comilões\",\r\n    \"tipoCozinha\": \"BRASILEIRA\",\r\n    \"localizacao\": \"Av. dos Gulosos, 2345\",\r\n    \"capacidade\": 150\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/restaurante/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restaurante",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Restaurante",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/restaurante?nome=Tia Lelê&localizacao=Av. dos Autonomistas, 1000&tipoCozinha=BRASILEIRA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"restaurante"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "Tia Lelê"
+						},
+						{
+							"key": "localizacao",
+							"value": "Av. dos Autonomistas, 1000"
+						},
+						{
+							"key": "tipoCozinha",
+							"value": "BRASILEIRA"
+						}
 					]
 				}
 			},

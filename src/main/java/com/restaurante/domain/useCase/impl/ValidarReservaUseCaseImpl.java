@@ -21,6 +21,6 @@ public class ValidarReservaUseCaseImpl implements ValidarReservaUseCase {
 
         }
 
-        return true;
+        return false;
     }
 }
