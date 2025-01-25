@@ -16,8 +16,8 @@ public class ValidarReservaUseCaseImpl implements ValidarReservaUseCase {
     ReservaRepository repository;
 
     @Override
-    public boolean execute(Long restauranteId, LocalDateTime dataReserva, Long mesaId) {
-        if(repository.validarDataReserva(restauranteId, dataReserva, mesaId)) {
+    public boolean execute(Long restauranteId, LocalDateTime dataReserva) {
+        if (repository.validarDataReserva(restauranteId, dataReserva).isEmpty()) {
 
         }
 
