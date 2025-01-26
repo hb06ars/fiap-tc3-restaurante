@@ -1,6 +1,5 @@
 package com.restaurante.app.rest;
 
-import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.entity.ReservaEntity;
 import com.restaurante.domain.useCase.ReservarMesaUseCase;
