@@ -20,6 +20,6 @@ public interface FuncionamentoRepository extends JpaRepository<FuncionamentoEnti
     List<FuncionamentoEntity> validarData(
             @Param("restauranteId") Long restauranteId,
             @Param("dataReserva") LocalDateTime dataReserva,
-            @Param("diaEnum") DiaEnum diaEnum
+            @Param("diaEnum") String diaEnum
     );
 }

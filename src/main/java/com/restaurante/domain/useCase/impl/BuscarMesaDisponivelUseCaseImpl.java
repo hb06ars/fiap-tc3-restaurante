@@ -20,9 +20,15 @@ public class BuscarMesaDisponivelUseCaseImpl implements BuscarMesaDisponivelUseC
 
     @Override
     public MesaDisponivelDTO execute(Long restauranteId, LocalDateTime dataReserva) {
-        List<MesaDisponivelDTO> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(restauranteId, dataReserva);
+        List<Object[]> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(restauranteId, dataReserva);
         if (mesasDisponiveis != null && !mesasDisponiveis.isEmpty()) {
-            return mesasDisponiveis.get(0);
+            return mesasDisponiveis.stream()
+                    .map(result -> new MesaDisponivelDTO(
+                            (Long) result[0],
+                            (String) result[1],
+                            (String) result[2]
+                    ))
+                    .findFirst().orElse(null);
         }
         throw new ReservaException("Não há mesas disponíveis no momento");
     }

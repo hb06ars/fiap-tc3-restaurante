@@ -23,7 +23,7 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Long> {
                 WHERE r.id = :restauranteId AND res.id IS NULL
                 GROUP BY m.id, m.nome_mesa
             """, nativeQuery = true)
-    List<MesaDisponivelDTO> buscarMesasDisponiveis(
+    List<Object[]> buscarMesasDisponiveis(
             @Param("restauranteId") Long restauranteId,
             @Param("dataReserva") LocalDateTime dataReserva
     );
