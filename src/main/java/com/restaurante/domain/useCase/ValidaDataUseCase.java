@@ -1,7 +1,5 @@
 package com.restaurante.domain.useCase;
 
-import com.restaurante.domain.enums.DiaEnum;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
