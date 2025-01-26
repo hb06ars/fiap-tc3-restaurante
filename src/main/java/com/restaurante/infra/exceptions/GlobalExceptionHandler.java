@@ -78,5 +78,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(listErrorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(FieldNotFoundException.class)
+    public ResponseEntity<ListErrorResponse> handleFieldNotFoundException(FieldNotFoundException e) {
+        ListErrorResponse listErrorResponse = new ListErrorResponse(
+                List.of(MessageErrorDTO.builder()
+                        .detalhe(e.getMessage())
+                        .erro("Campo faltando.")
+                        .build()),
+                HttpStatus.CONFLICT.value()
+        );
+        return new ResponseEntity<>(listErrorResponse, HttpStatus.CONFLICT);
+    }
+
 
 }

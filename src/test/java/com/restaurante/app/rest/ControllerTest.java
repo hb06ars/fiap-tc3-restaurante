@@ -4,6 +4,7 @@ import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.TipoCozinhaEnum;
+import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,9 @@ class ControllerTest {
     @Mock
     RestauranteService restauranteService;
 
+    @Mock
+    CadastrarRestauranteUseCase cadastrarRestauranteUseCase;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -37,6 +41,7 @@ class ControllerTest {
                 .capacidade(100)
                 .build();
 
+        Assertions.assertNotNull(cadastrarRestauranteUseCase);
         Mockito.when(restauranteService.save(any())).thenReturn(dto);
         ResponseEntity<RestauranteDTO> result = tarifaController.cadastrar(new RestauranteEntity(dto));
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());

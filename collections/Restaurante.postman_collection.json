@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 2,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2024-01-25T19:00:00\",\r\n    \"dataFimReserva\": \"2024-01-25T21:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
+					"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 2,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2024-01-25T12:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -57,6 +57,67 @@
 					"port": "8080",
 					"path": [
 						"reserva"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar Reserva",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 2,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2024-01-25T12:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/reserva/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reserva",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Reserva",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\",\r\n    \"dataDaReserva\": \"2025-01-25T22:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/reserva/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reserva",
+						"3"
 					]
 				}
 			},
@@ -144,6 +205,66 @@
 					"path": [
 						"mesa",
 						"cadastrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gerenciar Mesas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/mesa/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mesa",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Avaliar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nota\": 8,\r\n    \"comentario\": \"Adorei!\",\r\n    \"usuarioId\": 1,\r\n    \"restauranteId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/avaliacao",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"avaliacao"
 					]
 				}
 			},

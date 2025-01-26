@@ -14,16 +14,15 @@ public interface ReservaRepository extends JpaRepository<ReservaEntity, Long> {
 
     @Query(value = """
                 SELECT r FROM ReservaEntity r
-                WHERE r.restauranteId = :restauranteId
-                AND (:statusReserva IS NULL OR r.statusReserva = :statusReserva)
-                AND (:statusPagamento IS NULL OR r.statusPagamento = :statusPagamento)
-                AND (:dataDaReserva IS NULL OR r.dataDaReserva <= :dataDaReserva)
-                AND (:dataDaReserva IS NULL OR r.dataFimReserva >= :dataDaReserva)
+                WHERE r.id = :restauranteId
+                AND (:statusReserva = '' OR r.statusReserva = :statusReserva)
+                AND (:statusPagamento = '' OR r.statusPagamento = :statusPagamento)
+                AND (:dataReserva BETWEEN r.dataDaReserva AND r.dataFimReserva) 
             """)
     List<ReservaEntity> findAllByFilter(
             @Param("restauranteId") Long restauranteId,
-            @Param("statusReserva") StatusReservaEnum statusReserva,
-            @Param("statusPagamento") StatusPagamentoEnum statusPagamento,
-            @Param("dataDaReserva") LocalDateTime dataDaReserva
+            @Param("statusReserva") String statusReserva,
+            @Param("statusPagamento") String statusPagamento,
+            @Param("dataReserva") LocalDateTime dataReserva
     );
 }
