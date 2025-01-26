@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class MesaDisponivelDTO {
     private Long mesaId;
     private String mesaNome;
+    private String statusMesa;
 
 }

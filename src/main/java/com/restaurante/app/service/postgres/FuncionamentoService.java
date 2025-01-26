@@ -3,6 +3,7 @@ package com.restaurante.app.service.postgres;
 import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.enums.DiaEnum;
+import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -86,7 +87,7 @@ public class FuncionamentoService {
     }
 
     public List<FuncionamentoEntity> buscarMesasDisponiveis(Long restauranteId, LocalDateTime dataReserva, DiaEnum diaenum) {
-        return repository.validarData(restauranteId, dataReserva, diaenum.name());
+        return repository.validarData(restauranteId, DataFormat.formatar(dataReserva), diaenum.name());
     }
 }
 

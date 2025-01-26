@@ -14,17 +14,20 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Long> {
     @Query(value = """
                 SELECT 
                     m.id AS mesaId,
-                    m.nome_mesa AS mesaNome
+                    m.nome_mesa AS mesaNome,
+                    CASE
+                            WHEN res.id IS NOT NULL THEN 'Ocupada'
+                            ELSE 'Disponível'
+                        END AS statusMesa
                 FROM mesa m
                 LEFT JOIN restaurante r ON m.restaurante_id = r.id
                 LEFT JOIN reserva res 
                     ON res.mesa_id = m.id 
                     AND :dataReserva BETWEEN res.data_da_reserva AND res.data_fim_reserva
-                WHERE r.id = :restauranteId AND res.id IS NULL
-                GROUP BY m.id, m.nome_mesa
+                WHERE r.id = :restauranteId
             """, nativeQuery = true)
     List<Object[]> buscarMesasDisponiveis(
             @Param("restauranteId") Long restauranteId,
-            @Param("dataReserva") LocalDateTime dataReserva
+            @Param("dataReserva") String dataReserva
     );
 }

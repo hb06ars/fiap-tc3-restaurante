@@ -1,7 +1,9 @@
 package com.restaurante.domain.useCase.impl;
 
 import com.restaurante.domain.dto.MesaDisponivelDTO;
+import com.restaurante.domain.mapper.MesaDisponivelMapper;
 import com.restaurante.domain.useCase.BuscarMesaDisponivelUseCase;
+import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.exceptions.ReservaException;
 import com.restaurante.infra.repository.postgres.MesaRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +22,13 @@ public class BuscarMesaDisponivelUseCaseImpl implements BuscarMesaDisponivelUseC
 
     @Override
     public MesaDisponivelDTO execute(Long restauranteId, LocalDateTime dataReserva) {
-        List<Object[]> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(restauranteId, dataReserva);
-        if (mesasDisponiveis != null && !mesasDisponiveis.isEmpty()) {
-            return mesasDisponiveis.stream()
-                    .map(result -> new MesaDisponivelDTO(
-                            Long.parseLong(result[0].toString()),
-                            (String) result[1]
-                    ))
-                    .findFirst().orElse(null);
+        List<Object[]> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(restauranteId, DataFormat.formatar(dataReserva));
+        List<MesaDisponivelDTO> mesasDisponivelDTO = MesaDisponivelMapper.convert(mesasDisponiveis);
+        if (mesasDisponivelDTO != null && !mesasDisponivelDTO.isEmpty()) {
+            return mesasDisponivelDTO.get(0);
         }
         throw new ReservaException("Não há mesas disponíveis no momento");
     }
+
+
 }

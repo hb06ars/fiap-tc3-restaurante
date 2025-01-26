@@ -1,13 +1,17 @@
 package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.MesaDTO;
+import com.restaurante.domain.dto.MesaDisponivelDTO;
 import com.restaurante.domain.entity.MesaEntity;
+import com.restaurante.domain.mapper.MesaDisponivelMapper;
+import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.repository.postgres.MesaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,5 +87,8 @@ public class MesaService {
         }
     }
 
+    public List<MesaDisponivelDTO> buscarMesas(Long id) {
+        return MesaDisponivelMapper.convert(repository.buscarMesasDisponiveis(id, DataFormat.formatar(LocalDateTime.now())));
+    }
 }
 
