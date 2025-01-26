@@ -28,7 +28,7 @@ public class AvaliacaoController {
             description = "Salvar a avaliação.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<AvaliacaoDTO> cadastro(@Valid @RequestBody AvaliacaoEntity entity) {
+    public ResponseEntity<AvaliacaoDTO> avaliar(@Valid @RequestBody AvaliacaoEntity entity) {
         return ResponseEntity.ok(service.save(entity));
     }
 
