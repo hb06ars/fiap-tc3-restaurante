@@ -1,5 +1,6 @@
 package com.restaurante.app.rest;
 
+import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.entity.ReservaEntity;
 import com.restaurante.domain.useCase.ReservarMesaUseCase;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/reserva")
@@ -25,6 +28,8 @@ public class ReservaController {
 
     @Autowired
     ReservarMesaUseCase reservarMesaUseCase;
+    @Autowired
+    ReservaService reservaService;
 
     @Operation(summary = "Cadastrar Reserva",
             description = "Salvar a Reserva.")
@@ -41,5 +46,14 @@ public class ReservaController {
     public ResponseEntity<ReservaDTO> atualizacao(@PathVariable Long id, @Valid @RequestBody ReservaEntity entity) {
         return ResponseEntity.ok(reservarMesaUseCase.atualizar(id, entity));
     }
+
+    @Operation(summary = "Buscar Reservas",
+            description = "Buscar as Reservas.")
+    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
+    @GetMapping("/{idrestaurante}")
+    public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable Long idrestaurante, @Valid @RequestBody ReservaEntity entity) {
+        return ResponseEntity.ok(reservaService.buscar(idrestaurante, entity));
+    }
+
 
 }

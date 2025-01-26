@@ -2,6 +2,7 @@ package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.entity.ReservaEntity;
+import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.repository.postgres.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -83,5 +84,13 @@ public class ReservaService {
         }
     }
 
+    public List<ReservaDTO> buscar(Long idrestaurante, ReservaEntity entity) {
+        return repository.findAllByFilter(
+                idrestaurante,
+                entity.getStatusReserva(),
+                entity.getStatusPagamento(),
+                DataFormat.truncate(entity.getDataDaReserva())
+        ).stream().map(ReservaDTO::new).toList();
+    }
 }
 
