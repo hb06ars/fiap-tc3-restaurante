@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ReservaException.class)
-    public ResponseEntity<ListErrorResponse> handleRecordAlreadyExistsException(ReservaException e) {
+    public ResponseEntity<ListErrorResponse> handleReservaException(ReservaException e) {
         ListErrorResponse listErrorResponse = new ListErrorResponse(
                 List.of(MessageErrorDTO.builder()
                         .detalhe(e.getMessage())

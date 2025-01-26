@@ -2,12 +2,14 @@ package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
+import com.restaurante.domain.enums.DiaEnum;
 import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,5 +85,8 @@ public class FuncionamentoService {
         }
     }
 
+    public void buscarMesasDisponiveis(Long restauranteId, LocalDateTime dataReserva, DiaEnum diaenum) {
+        repository.validarData(restauranteId, dataReserva, diaenum);
+    }
 }
 
