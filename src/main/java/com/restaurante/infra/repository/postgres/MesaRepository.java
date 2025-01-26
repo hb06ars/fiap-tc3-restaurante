@@ -1,6 +1,5 @@
 package com.restaurante.infra.repository.postgres;
 
-import com.restaurante.domain.dto.MesaDisponivelDTO;
 import com.restaurante.domain.entity.MesaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,6 +27,6 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Long> {
             """, nativeQuery = true)
     List<Object[]> buscarMesasDisponiveis(
             @Param("restauranteId") Long restauranteId,
-            @Param("dataReserva") String dataReserva
+            @Param("dataReserva") LocalDateTime dataReserva
     );
 }

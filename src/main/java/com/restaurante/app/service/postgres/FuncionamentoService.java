@@ -87,7 +87,7 @@ public class FuncionamentoService {
     }
 
     public List<FuncionamentoEntity> buscarMesasDisponiveis(Long restauranteId, LocalDateTime dataReserva, DiaEnum diaenum) {
-        return repository.validarData(restauranteId, DataFormat.formatar(dataReserva), diaenum.name());
+        return repository.validarData(restauranteId, DataFormat.truncate(dataReserva), diaenum.name());
     }
 }
 

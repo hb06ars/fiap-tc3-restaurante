@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
@@ -22,7 +23,7 @@ public class BuscarMesaDisponivelUseCaseImpl implements BuscarMesaDisponivelUseC
 
     @Override
     public MesaDisponivelDTO execute(Long restauranteId, LocalDateTime dataReserva) {
-        List<Object[]> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(restauranteId, DataFormat.formatar(dataReserva));
+        List<Object[]> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(restauranteId, DataFormat.truncate(dataReserva));
         List<MesaDisponivelDTO> mesasDisponivelDTO = MesaDisponivelMapper.convert(mesasDisponiveis);
         if (mesasDisponivelDTO != null && !mesasDisponivelDTO.isEmpty()) {
             return mesasDisponivelDTO.get(0);

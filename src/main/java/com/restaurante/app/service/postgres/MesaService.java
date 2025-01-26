@@ -88,7 +88,7 @@ public class MesaService {
     }
 
     public List<MesaDisponivelDTO> buscarMesas(Long id) {
-        return MesaDisponivelMapper.convert(repository.buscarMesasDisponiveis(id, DataFormat.formatar(LocalDateTime.now())));
+        return MesaDisponivelMapper.convert(repository.buscarMesasDisponiveis(id, DataFormat.truncate(LocalDateTime.now())));
     }
 }
 
