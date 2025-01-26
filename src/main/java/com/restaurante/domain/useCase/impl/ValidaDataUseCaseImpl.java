@@ -22,8 +22,9 @@ public class ValidaDataUseCaseImpl implements ValidaDataUseCase {
 
     @Override
     public void execute(Long restauranteId, LocalDateTime dataReserva, LocalDate diaSelecionado) {
-        funcionamentoService.buscarMesasDisponiveis(restauranteId, dataReserva, buscaDiaDaSemana(diaSelecionado));
-        throw new ReservaException("A data e horário estão inválidos.");
+        var mesasDisponiveis = funcionamentoService.buscarMesasDisponiveis(restauranteId, dataReserva, buscaDiaDaSemana(diaSelecionado));
+        if (mesasDisponiveis == null || mesasDisponiveis.isEmpty())
+            throw new ReservaException("A data e horário estão inválidos.");
     }
 
 

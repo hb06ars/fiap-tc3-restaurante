@@ -3,15 +3,12 @@ package com.restaurante.domain.useCase.impl;
 import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.entity.ReservaEntity;
-import com.restaurante.domain.enums.DiaEnum;
 import com.restaurante.domain.useCase.ReservarMesaUseCase;
 import com.restaurante.domain.useCase.ValidaDataUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 @Slf4j
@@ -29,11 +26,13 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     public ReservaDTO execute(ReservaEntity entity) {
         validaDataUseCase.execute(entity.getRestauranteId(), entity.getDataDaReserva(), entity.getDataDaReserva().toLocalDate());
         validarReservaUseCase.execute(entity);
-
+        preencherHorarioDeSaida(entity);
         return service.save(entity);
     }
 
-
+    private void preencherHorarioDeSaida(ReservaEntity entity) {
+        entity.setDataFimReserva(entity.getDataDaReserva().plusHours(2));
+    }
 
 
 }
