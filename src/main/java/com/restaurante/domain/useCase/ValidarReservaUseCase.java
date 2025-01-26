@@ -1,7 +1,7 @@
 package com.restaurante.domain.useCase;
 
-import java.time.LocalDateTime;
+import com.restaurante.domain.entity.ReservaEntity;
 
 public interface ValidarReservaUseCase {
-    boolean execute(Long restauranteId, LocalDateTime dataReserva);
+    void execute(ReservaEntity reservaEntity);
 }
