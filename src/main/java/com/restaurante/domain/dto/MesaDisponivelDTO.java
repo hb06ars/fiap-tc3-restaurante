@@ -11,6 +11,4 @@ public class MesaDisponivelDTO {
     private Long mesaId;
     private String mesaNome;
 
-    public MesaDisponivelDTO(Long aLong, String s, String s1) {
-    }
 }

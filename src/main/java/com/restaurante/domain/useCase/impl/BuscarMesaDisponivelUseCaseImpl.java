@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,9 +25,8 @@ public class BuscarMesaDisponivelUseCaseImpl implements BuscarMesaDisponivelUseC
         if (mesasDisponiveis != null && !mesasDisponiveis.isEmpty()) {
             return mesasDisponiveis.stream()
                     .map(result -> new MesaDisponivelDTO(
-                            (Long) result[0],
-                            (String) result[1],
-                            (String) result[2]
+                            Long.parseLong(result[0].toString()),
+                            (String) result[1]
                     ))
                     .findFirst().orElse(null);
         }
