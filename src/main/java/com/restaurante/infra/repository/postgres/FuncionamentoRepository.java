@@ -14,12 +14,12 @@ public interface FuncionamentoRepository extends JpaRepository<FuncionamentoEnti
     @Query(value = """
                 SELECT * FROM funcionamento 
                 WHERE restaurante_id = :restauranteId 
-                AND dia_enum = :diaEnum\s 
+                AND dia_enum = :diaEnum 
                 AND :dataReserva BETWEEN abertura AND fechamento ;
             """, nativeQuery = true)
     List<FuncionamentoEntity> validarData(
             @Param("restauranteId") Long restauranteId,
             @Param("dataReserva") LocalDateTime dataReserva,
-            @Param("diaEnum ") DiaEnum diaEnum
+            @Param("diaEnum") DiaEnum diaEnum
     );
 }
