@@ -10,11 +10,15 @@ import lombok.Setter;
 public class AjustesString {
 
     public static String removerTracosCpf(String cpf) {
-        return cpf.replace("-", "").replace("/", "").replace(".", "").trim();
+        if (cpf != null)
+            return cpf.replace("-", "").replace("(", "").replace(")", "").trim();
+        return null;
     }
 
     public static String removerCaracteresCel(String cel) {
-        return cel.replace("-", "").replace("(", "").replace(")", "").trim();
+        if (cel != null)
+            return cel.replace("-", "").replace("(", "").replace(")", "").trim();
+        return null;
     }
 
 }

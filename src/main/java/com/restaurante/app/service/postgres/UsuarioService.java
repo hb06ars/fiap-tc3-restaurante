@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -43,9 +44,13 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTO update(Long id, UsuarioDTO usuarioSalvar) {
-        Optional<UsuarioEntity> usuarioExistente = repository.findById(id);
-        if (usuarioExistente.isPresent()) {
-            return new UsuarioDTO(repository.save(usuarioExistente.get()));
+        UsuarioEntity usuarioExistente = repository.findById(id).orElse(null);
+        var registroRepetido = repository.findByEmailOrCelular(usuarioSalvar.getEmail(), AjustesString.removerCaracteresCel(usuarioSalvar.getCelular()));
+        if (usuarioExistente != null && (registroRepetido == null || registroRepetido.getId().equals(Objects.requireNonNull(usuarioExistente).getId()))) {
+            usuarioExistente.setNome(usuarioSalvar.getNome());
+            usuarioExistente.setEmail(usuarioSalvar.getEmail());
+            usuarioExistente.setCelular(usuarioSalvar.getCelular());
+            return new UsuarioDTO(repository.save(usuarioExistente));
         } else {
             throw new RuntimeException("Usuário " + id + " não encontrado.");
         }
