@@ -40,7 +40,7 @@ public class ReservaController {
     }
 
     @Operation(summary = "Atualizar Reserva",
-            description = "Atualizar a Reserva do cliente.")
+            description = "Atualizar a Reserva do cliente, exemplo: Concluir, Cancelar, Alterar a reserva.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualizção realizada com sucesso.")
     @PutMapping("/{id}")
     public ResponseEntity<ReservaDTO> atualizacao(@PathVariable Long id, @Valid @RequestBody ReservaEntity entity) {
