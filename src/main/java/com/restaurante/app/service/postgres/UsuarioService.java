@@ -2,6 +2,8 @@ package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.UsuarioDTO;
 import com.restaurante.domain.entity.UsuarioEntity;
+import com.restaurante.domain.util.AjustesString;
+import com.restaurante.infra.exceptions.RecordAlreadyExistsException;
 import com.restaurante.infra.repository.postgres.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,10 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTO save(UsuarioDTO dto) {
-        return new UsuarioDTO(repository.save(new UsuarioEntity(dto)));
+        UsuarioEntity usuarioExiste = repository.findByEmailOrCelular(dto.getEmail(), AjustesString.removerCaracteresCel(dto.getCelular()));
+        if (usuarioExiste == null)
+            return new UsuarioDTO(repository.save(new UsuarioEntity(dto)));
+        throw new RecordAlreadyExistsException("O email ou celular já existem no sistema.");
     }
 
     @Transactional(readOnly = true)

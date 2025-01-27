@@ -13,4 +13,8 @@ public class AjustesString {
         return cpf.replace("-", "").replace("/", "").replace(".", "").trim();
     }
 
+    public static String removerCaracteresCel(String cel) {
+        return cel.replace("-", "").replace("(", "").replace(")", "").trim();
+    }
+
 }
