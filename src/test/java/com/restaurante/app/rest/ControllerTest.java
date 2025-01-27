@@ -2,7 +2,6 @@ package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.TipoCozinhaEnum;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
 import org.junit.jupiter.api.Assertions;
@@ -43,7 +42,7 @@ class ControllerTest {
 
         Assertions.assertNotNull(cadastrarRestauranteUseCase);
         Mockito.when(restauranteService.save(any())).thenReturn(dto);
-        ResponseEntity<RestauranteDTO> result = tarifaController.cadastrar(new RestauranteEntity(dto));
+        ResponseEntity<RestauranteDTO> result = tarifaController.cadastrar(dto);
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }

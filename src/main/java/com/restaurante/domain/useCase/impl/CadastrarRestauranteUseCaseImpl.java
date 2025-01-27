@@ -1,5 +1,6 @@
 package com.restaurante.domain.useCase.impl;
 
+import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
@@ -16,6 +17,9 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
     RestauranteService service;
 
     @Autowired
+    FuncionamentoService funcionamentoService;
+
+    @Autowired
     InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     @Override
@@ -24,6 +28,7 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
         if (!restauranteExistente) {
             var restauranteCadastrado = service.save(dto);
             insercaoRemocaoDasMesasUseCase.execute(restauranteCadastrado.getId(), 0, restauranteCadastrado.getCapacidade());
+            funcionamentoService.inserirDataFuncionamentoInicial(restauranteCadastrado.getId());
             return restauranteCadastrado;
         } else {
             throw new RuntimeException("O Restaurante já existe, tente atualizar o mesmo!");

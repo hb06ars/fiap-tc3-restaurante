@@ -39,7 +39,7 @@ public class RestauranteController {
     AtualizarRestauranteUseCase atualizarRestauranteUseCase;
 
     @Operation(summary = "Cadastrar Restaurante",
-            description = "Cadastrr Restaurante no sistema.")
+            description = "Cadastrar Restaurante no sistema.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
     public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteDTO dto) {

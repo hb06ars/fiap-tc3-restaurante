@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,12 +68,39 @@ public class FuncionamentoService {
         }
     }
 
-    public List<FuncionamentoDTO> buscarMesasDisponiveis(Long restauranteId, LocalDateTime dataReserva, DiaEnum diaenum) {
+    public List<FuncionamentoDTO> validarDataFuncionamento(Long restauranteId, LocalDateTime dataReserva, DiaEnum diaenum) {
         return repository.validarData(restauranteId, DataFormat.truncate(dataReserva), diaenum.name()).stream().map(FuncionamentoDTO::new).toList();
     }
 
     public List<FuncionamentoDTO> buscarPorRestaurante(Long idRestaurante) {
         return repository.findAllByRestauranteId(idRestaurante);
+    }
+
+    public void inserirDataFuncionamentoInicial(Long idRestaurante) {
+        List<DiaEnum> diaEnumList = getDiasUteisCorridos();
+        List<FuncionamentoDTO> funcionamentoDTOList = new ArrayList<>();
+        diaEnumList.forEach(diaEnumAtual -> {
+            funcionamentoDTOList.add(FuncionamentoDTO.builder()
+                    .abertura(LocalTime.parse("00:00:00"))
+                    .fechamento(LocalTime.parse("23:00:00"))
+                    .restauranteId(idRestaurante)
+                    .diaEnum(diaEnumAtual)
+                    .build());
+        });
+        repository.saveAll(funcionamentoDTOList.stream().map(FuncionamentoEntity::new).toList());
+    }
+
+    private static List<DiaEnum> getDiasUteisCorridos() {
+        return List.of(
+                DiaEnum.FERIADOS,
+                DiaEnum.DOMINGO,
+                DiaEnum.SEGUNDA,
+                DiaEnum.TERCA,
+                DiaEnum.QUARTA,
+                DiaEnum.QUINTA,
+                DiaEnum.SEXTA,
+                DiaEnum.SABADO
+        );
     }
 }
 
