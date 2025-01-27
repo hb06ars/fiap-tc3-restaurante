@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS usuario (
 CREATE TABLE IF NOT EXISTS avaliacao (
                     id BIGSERIAL PRIMARY KEY,
                     nota INTEGER NOT NULL,
+                    datapost TIMESTAMP NOT NULL,
                     comentario VARCHAR(500) NOT NULL,
                     usuario_id BIGINT NOT NULL,
                     restaurante_id BIGINT NOT NULL,

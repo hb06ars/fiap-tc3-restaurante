@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,6 +27,7 @@ public class AvaliacaoDTO implements Serializable {
     private String comentario;
     private Long usuarioId;
     private Long restauranteId;
+    private LocalDateTime datapost;
 
     public AvaliacaoDTO(AvaliacaoEntity entity) {
         this.id = entity.getId();
@@ -32,5 +35,6 @@ public class AvaliacaoDTO implements Serializable {
         this.comentario = entity.getComentario();
         this.usuarioId = entity.getUsuarioId();
         this.restauranteId = entity.getRestauranteId();
+        this.datapost = entity.getDatapost();
     }
 }

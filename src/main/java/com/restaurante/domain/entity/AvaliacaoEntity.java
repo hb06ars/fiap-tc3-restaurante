@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -44,4 +45,8 @@ public class AvaliacaoEntity implements Serializable {
 
     @Column(nullable = false)
     private Long restauranteId;
+
+    @Column(name = "datapost", nullable = false)
+    private LocalDateTime datapost = LocalDateTime.now();
+
 }
