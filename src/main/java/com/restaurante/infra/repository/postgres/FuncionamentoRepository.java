@@ -1,5 +1,6 @@
 package com.restaurante.infra.repository.postgres;
 
+import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,6 @@ public interface FuncionamentoRepository extends JpaRepository<FuncionamentoEnti
             @Param("dataReserva") LocalDateTime dataReserva,
             @Param("diaEnum") String diaEnum
     );
+
+    List<FuncionamentoDTO> findAllByRestauranteId(Long idRestaurante);
 }

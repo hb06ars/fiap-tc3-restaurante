@@ -73,5 +73,6 @@ public class MesaService {
     public List<MesaDTO> findAllByIdRestaurante(Long idRestaurante) {
         return repository.findAllByRestauranteId(idRestaurante).stream().map(MesaDTO::new).toList();
     }
+
 }
 

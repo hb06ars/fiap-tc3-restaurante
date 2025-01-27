@@ -69,5 +69,9 @@ public class FuncionamentoService {
     public List<FuncionamentoDTO> buscarMesasDisponiveis(Long restauranteId, LocalDateTime dataReserva, DiaEnum diaenum) {
         return repository.validarData(restauranteId, DataFormat.truncate(dataReserva), diaenum.name()).stream().map(FuncionamentoDTO::new).toList();
     }
+
+    public List<FuncionamentoDTO> buscarPorRestaurante(Long idRestaurante) {
+        return repository.findAllByRestauranteId(idRestaurante);
+    }
 }
 

@@ -8,12 +8,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/funcionamento")
@@ -29,6 +32,14 @@ public class FuncionamentoController {
     @PostMapping("/cadastrar")
     public ResponseEntity<FuncionamentoDTO> cadastro(@Valid @RequestBody FuncionamentoDTO dto) {
         return ResponseEntity.ok(service.save(dto));
+    }
+
+    @Operation(summary = "Buscar horários de funcionamento do restaurante",
+            description = "Buscar horários de funcionamento do restaurante.")
+    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
+    @GetMapping("/{idRestaurante}")
+    public ResponseEntity<List<FuncionamentoDTO>> buscarPorRestaurante(@PathVariable Long idRestaurante) {
+        return ResponseEntity.ok(service.buscarPorRestaurante(idRestaurante));
     }
 
 }

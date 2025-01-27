@@ -43,4 +43,12 @@ public class MesaController {
         return ResponseEntity.ok(service.buscarMesas(id));
     }
 
+    @Operation(summary = "Buscar Mesas por Restaurante",
+            description = "Buscar a Mesas por Restaurante.")
+    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
+    @GetMapping(("/listaporrestaurante/{idRestaurante}"))
+    public ResponseEntity<List<MesaDTO>> buscarMesasPorRestaurante(@PathVariable Long idRestaurante) {
+        return ResponseEntity.ok(service.findAllByIdRestaurante(idRestaurante));
+    }
+
 }

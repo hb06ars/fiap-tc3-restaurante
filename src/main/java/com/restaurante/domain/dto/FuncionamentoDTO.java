@@ -32,5 +32,4 @@ public class FuncionamentoDTO implements Serializable {
         this.fechamento = entity.getFechamento();
         this.restauranteId = entity.getRestauranteId();
     }
-
 }
