@@ -25,31 +25,33 @@ public class MesaService {
     }
 
     @Transactional
-    public MesaDTO save(MesaEntity mesaEntity) {
-        return new MesaDTO(repository.save(mesaEntity));
+    public MesaDTO save(MesaDTO dto) {
+        return new MesaDTO(repository.save(new MesaEntity(dto)));
     }
 
     @Transactional(readOnly = true)
-    public List<MesaEntity> findAll() {
-        return repository.findAll();
+    public List<MesaDTO> findAll() {
+        return repository.findAll().stream().map(MesaDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public List<MesaEntity> findAllByRestaurante(Long idRestaurante) {
-        return repository.findAllByRestauranteId(idRestaurante);
+    public List<MesaDTO> findAllByRestaurante(Long idRestaurante) {
+        return repository.findAllByRestauranteId(idRestaurante).stream().map(MesaDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public MesaEntity findById(Long id) {
+    public MesaDTO findById(Long id) {
         Optional<MesaEntity> obj = repository.findById(id);
-        return obj.orElse(null);
+        return obj.map(MesaDTO::new).orElse(null);
     }
 
     @Transactional
-    public MesaEntity update(Long id, MesaEntity mesaSalvar) {
+    public MesaDTO update(Long id, MesaDTO dto) {
         Optional<MesaEntity> mesaExistente = repository.findById(id);
         if (mesaExistente.isPresent()) {
-            return repository.save(mesaExistente.get());
+            mesaExistente.get().setNomeMesa(dto.getNomeMesa());
+            mesaExistente.get().setRestauranteId(dto.getRestauranteId());
+            return new MesaDTO(repository.save(mesaExistente.get()));
         } else {
             throw new RuntimeException("Mesa " + id + " não encontrada.");
         }
@@ -68,8 +70,8 @@ public class MesaService {
         return repository.saveAll(novasMesasAdicionadas).stream().map(MesaDTO::new).toList();
     }
 
-    public List<MesaEntity> findAllByIdRestaurante(Long idRestaurante) {
-        return repository.findAllByRestauranteId(idRestaurante);
+    public List<MesaDTO> findAllByIdRestaurante(Long idRestaurante) {
+        return repository.findAllByRestauranteId(idRestaurante).stream().map(MesaDTO::new).toList();
     }
 }
 

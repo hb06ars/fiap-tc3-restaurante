@@ -1,5 +1,6 @@
 package com.restaurante.domain.entity;
 
+import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
 import lombok.AllArgsConstructor;
@@ -52,7 +53,7 @@ public class ReservaEntity implements Serializable {
     @NotNull(message = "A data da reserva não pode ser nula. Por favor, forneça um valor para a data da reserva.")
     private LocalDateTime dataDaReserva = LocalDateTime.now();
 
-    @Column(name = "data_fim_reserva", nullable = false)
+    @Column(name = "data_fim_reserva")
     @NotNull(message = "A data fim reserva não pode ser nula. Por favor, forneça um valor para a data fim.")
     private LocalDateTime dataFimReserva;
 
@@ -69,5 +70,17 @@ public class ReservaEntity implements Serializable {
     @Column(name = "status_reserva", nullable = false, length = 50)
     @NotNull(message = "O status da reserva não pode ser nulo. Por favor, forneça um valor.")
     private StatusReservaEnum statusReserva = StatusReservaEnum.OCUPADO;
+
+    public ReservaEntity(ReservaDTO dto) {
+        this.id = dto.getId();
+        this.usuarioId = dto.getUsuarioId();
+        this.mesaId = dto.getMesaId();
+        this.restauranteId = dto.getRestauranteId();
+        this.dataDaReserva = dto.getDataDaReserva() != null ? dto.getDataDaReserva() : LocalDateTime.now();
+        this.dataFimReserva = dto.getDataFimReserva();
+        this.valorReserva = dto.getValorReserva() != null ? dto.getValorReserva() : BigDecimal.ZERO;
+        this.statusPagamento = dto.getStatusPagamento() != null ? dto.getStatusPagamento() : StatusPagamentoEnum.PENDENTE;
+        this.statusReserva = dto.getStatusReserva() != null ? dto.getStatusReserva() : StatusReservaEnum.OCUPADO;
+    }
 
 }

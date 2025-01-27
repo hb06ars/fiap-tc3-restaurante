@@ -2,7 +2,6 @@ package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.UsuarioService;
 import com.restaurante.domain.dto.UsuarioDTO;
-import com.restaurante.domain.entity.UsuarioEntity;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +27,8 @@ public class UsuarioController {
             description = "Criação do Usuário.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioDTO> cadastro(@Valid @RequestBody UsuarioEntity entity) {
-        return ResponseEntity.ok(service.save(entity));
+    public ResponseEntity<UsuarioDTO> cadastro(@Valid @RequestBody UsuarioDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
 }

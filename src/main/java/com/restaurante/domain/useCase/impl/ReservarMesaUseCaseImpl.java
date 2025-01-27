@@ -27,14 +27,14 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     ReservaService service;
 
     @Override
-    public ReservaDTO salvar(ReservaEntity entity) {
-        validacoes(entity);
-        return service.save(entity);
+    public ReservaDTO salvar(ReservaDTO dto) {
+        validacoes(dto);
+        return service.save(new ReservaEntity(dto));
     }
 
 
     @Override
-    public ReservaDTO atualizar(Long id, ReservaEntity reservaAtualizada) {
+    public ReservaDTO atualizar(Long id, ReservaDTO reservaAtualizada) {
         ReservaEntity reservaOriginal = service.findById(id);
         validacoes(reservaAtualizada);
         reservaOriginal.setMesaId(reservaAtualizada.getMesaId());
@@ -45,17 +45,17 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
         reservaOriginal.setValorReserva(reservaAtualizada.getValorReserva());
         reservaOriginal.setStatusPagamento(reservaAtualizada.getStatusPagamento());
         reservaOriginal.setStatusReserva(reservaAtualizada.getStatusReserva());
-        return service.save(reservaAtualizada);
+        return service.save(reservaOriginal);
     }
 
-    private void validacoes(ReservaEntity entity) {
-        validaDataUseCase.execute(entity.getRestauranteId(), entity.getDataDaReserva(), entity.getDataDaReserva().toLocalDate());
-        validarReservaUseCase.execute(entity);
-        preencherHorarioDeSaida(entity);
+    private void validacoes(ReservaDTO dto) {
+        validaDataUseCase.execute(dto.getRestauranteId(), dto.getDataDaReserva(), dto.getDataDaReserva().toLocalDate());
+        validarReservaUseCase.execute(dto);
+        preencherHorarioDeSaida(dto);
     }
 
-    private void preencherHorarioDeSaida(ReservaEntity entity) {
-        entity.setDataFimReserva(entity.getDataDaReserva().plusHours(toleranciaMesa));
+    private void preencherHorarioDeSaida(ReservaDTO dto) {
+        dto.setDataFimReserva(dto.getDataDaReserva().plusHours(toleranciaMesa));
     }
 
 

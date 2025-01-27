@@ -2,7 +2,6 @@ package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.useCase.AtualizarRestauranteUseCase;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
 import com.restaurante.domain.util.HttpStatusCodes;
@@ -41,8 +40,8 @@ public class RestauranteController {
             description = "Cadastrr Restaurante no sistema.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteEntity entity) {
-        return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(entity));
+    public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteDTO dto) {
+        return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(dto));
     }
 
     @Operation(summary = "Atualizar Restaurante",
@@ -50,8 +49,8 @@ public class RestauranteController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/{id}")
     public ResponseEntity<RestauranteDTO> atualizar(@PathVariable Long id,
-                                                    @Valid @RequestBody RestauranteEntity entity) {
-        return ResponseEntity.ok(atualizarRestauranteUseCase.execute(id, entity));
+                                                    @Valid @RequestBody RestauranteDTO dto) {
+        return ResponseEntity.ok(atualizarRestauranteUseCase.execute(id, dto));
     }
 
     @Operation(summary = "Buscar Restaurante",

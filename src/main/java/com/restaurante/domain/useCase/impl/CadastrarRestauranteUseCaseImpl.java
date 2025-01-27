@@ -20,10 +20,10 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
     InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     @Override
-    public RestauranteDTO execute(RestauranteEntity entity) {
-        var restauranteExistente = service.restauranteJaExiste(entity.getNome(), entity.getLocalizacao());
+    public RestauranteDTO execute(RestauranteDTO dto) {
+        var restauranteExistente = service.restauranteJaExiste(dto.getNome(), dto.getLocalizacao());
         if (!restauranteExistente) {
-            var restauranteCadastrado = service.save(entity);
+            var restauranteCadastrado = service.save(new RestauranteEntity(dto));
             insercaoRemocaoDasMesasUseCase.execute(restauranteCadastrado.getId(), 0, restauranteCadastrado.getCapacidade());
             return restauranteCadastrado;
         } else {

@@ -23,26 +23,35 @@ public class ReservaService {
     }
 
     @Transactional
-    public ReservaDTO save(ReservaEntity reservaEntity) {
-        return new ReservaDTO(repository.save(reservaEntity));
+    public ReservaDTO save(ReservaDTO dto) {
+        return new ReservaDTO(repository.save(new ReservaEntity(dto)));
     }
 
     @Transactional(readOnly = true)
-    public List<ReservaEntity> findAll() {
-        return repository.findAll();
+    public List<ReservaDTO> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(ReservaDTO::new)
+                .toList();
     }
 
     @Transactional(readOnly = true)
-    public ReservaEntity findById(Long id) {
+    public ReservaDTO findById(Long id) {
         Optional<ReservaEntity> obj = repository.findById(id);
-        return obj.orElse(null);
+        return obj.map(ReservaDTO::new).orElse(null);
     }
 
     @Transactional
-    public ReservaEntity update(Long id, ReservaEntity reservaSalvar) {
+    public ReservaDTO update(Long id, ReservaDTO reservaSalvar) {
         Optional<ReservaEntity> reservaExistente = repository.findById(id);
         if (reservaExistente.isPresent()) {
-            return repository.save(reservaExistente.get());
+            reservaExistente.get().setValorReserva(reservaSalvar.getValorReserva());
+            reservaExistente.get().setStatusReserva(reservaSalvar.getStatusReserva());
+            reservaExistente.get().setDataDaReserva(reservaSalvar.getDataDaReserva());
+            reservaExistente.get().setDataFimReserva(reservaSalvar.getDataFimReserva());
+            reservaExistente.get().setUsuarioId(reservaSalvar.getUsuarioId());
+            reservaExistente.get().setStatusPagamento(reservaSalvar.getStatusPagamento());
+            return new ReservaDTO(repository.save(reservaExistente.get()));
         } else {
             throw new RuntimeException("Reserva " + id + " não encontrada.");
         }
@@ -57,14 +66,14 @@ public class ReservaService {
         }
     }
 
-    public List<ReservaDTO> buscar(Long idrestaurante, ReservaEntity entity) {
-        if (entity.getDataDaReserva() == null)
+    public List<ReservaDTO> buscar(Long idrestaurante, ReservaDTO dto) {
+        if (dto.getDataDaReserva() == null)
             throw new FieldNotFoundException("Informe a data.");
         return repository.findAllByFilter(
                 idrestaurante,
-                entity.getStatusReserva() != null ? entity.getStatusReserva().toString() : "",
-                entity.getStatusPagamento() != null ? entity.getStatusPagamento().toString() : "",
-                DataFormat.truncate(entity.getDataDaReserva())
+                dto.getStatusReserva() != null ? dto.getStatusReserva().toString() : "",
+                dto.getStatusPagamento() != null ? dto.getStatusPagamento().toString() : "",
+                DataFormat.truncate(dto.getDataDaReserva())
         ).stream().map(ReservaDTO::new).toList();
     }
 }

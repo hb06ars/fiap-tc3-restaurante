@@ -2,7 +2,6 @@ package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.domain.dto.FuncionamentoDTO;
-import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +27,8 @@ public class FuncionamentoController {
             description = "Cadastrar o horário de Funcionamento do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<FuncionamentoDTO> cadastro(@Valid @RequestBody FuncionamentoEntity entity) {
-        return ResponseEntity.ok(service.save(entity));
+    public ResponseEntity<FuncionamentoDTO> cadastro(@Valid @RequestBody FuncionamentoDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
 }

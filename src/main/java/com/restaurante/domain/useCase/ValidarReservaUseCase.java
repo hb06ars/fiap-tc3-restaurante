@@ -1,7 +1,7 @@
 package com.restaurante.domain.useCase;
 
-import com.restaurante.domain.entity.ReservaEntity;
+import com.restaurante.domain.dto.ReservaDTO;
 
 public interface ValidarReservaUseCase {
-    void execute(ReservaEntity reservaEntity);
+    void execute(ReservaDTO dto);
 }

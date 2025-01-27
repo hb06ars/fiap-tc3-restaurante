@@ -2,7 +2,6 @@ package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
-import com.restaurante.domain.entity.ReservaEntity;
 import com.restaurante.domain.useCase.ReservarMesaUseCase;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,24 +34,24 @@ public class ReservaController {
             description = "Salvar a Reserva que o cliente fizer.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<ReservaDTO> cadastro(@Valid @RequestBody ReservaEntity entity) {
-        return ResponseEntity.ok(reservarMesaUseCase.salvar(entity));
+    public ResponseEntity<ReservaDTO> cadastro(@Valid @RequestBody ReservaDTO dto) {
+        return ResponseEntity.ok(reservarMesaUseCase.salvar(dto));
     }
 
     @Operation(summary = "Atualizar Reserva",
             description = "Atualizar a Reserva do cliente, exemplo: Concluir, Cancelar, Alterar a reserva.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualizção realizada com sucesso.")
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaDTO> atualizacao(@PathVariable Long id, @Valid @RequestBody ReservaEntity entity) {
-        return ResponseEntity.ok(reservarMesaUseCase.atualizar(id, entity));
+    public ResponseEntity<ReservaDTO> atualizacao(@PathVariable Long id, @Valid @RequestBody ReservaDTO dto) {
+        return ResponseEntity.ok(reservarMesaUseCase.atualizar(id, dto));
     }
 
     @Operation(summary = "Buscar Reservas",
             description = "Buscar as Reservas.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping("/{idrestaurante}")
-    public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable Long idrestaurante, @Valid @RequestBody ReservaEntity entity) {
-        return ResponseEntity.ok(reservaService.buscar(idrestaurante, entity));
+    public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable Long idrestaurante, @Valid @RequestBody ReservaDTO dto) {
+        return ResponseEntity.ok(reservaService.buscar(idrestaurante, dto));
     }
 
 

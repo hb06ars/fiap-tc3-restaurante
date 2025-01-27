@@ -21,26 +21,26 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioDTO save(UsuarioEntity usuarioEntity) {
-        return new UsuarioDTO(repository.save(usuarioEntity));
+    public UsuarioDTO save(UsuarioDTO dto) {
+        return new UsuarioDTO(repository.save(new UsuarioEntity(dto)));
     }
 
     @Transactional(readOnly = true)
-    public List<UsuarioEntity> findAll() {
-        return repository.findAll();
+    public List<UsuarioDTO> findAll() {
+        return repository.findAll().stream().map(UsuarioDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public UsuarioEntity findById(Long id) {
+    public UsuarioDTO findById(Long id) {
         Optional<UsuarioEntity> obj = repository.findById(id);
-        return obj.orElse(null);
+        return obj.map(UsuarioDTO::new).orElse(null);
     }
 
     @Transactional
-    public UsuarioEntity update(Long id, UsuarioEntity usuarioSalvar) {
+    public UsuarioDTO update(Long id, UsuarioDTO usuarioSalvar) {
         Optional<UsuarioEntity> usuarioExistente = repository.findById(id);
         if (usuarioExistente.isPresent()) {
-            return repository.save(usuarioExistente.get());
+            return new UsuarioDTO(repository.save(usuarioExistente.get()));
         } else {
             throw new RuntimeException("Usuário " + id + " não encontrado.");
         }

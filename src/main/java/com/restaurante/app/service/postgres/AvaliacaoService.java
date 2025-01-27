@@ -21,26 +21,26 @@ public class AvaliacaoService {
     }
 
     @Transactional
-    public AvaliacaoDTO save(AvaliacaoEntity avaliacaoEntity) {
-        return new AvaliacaoDTO(repository.save(avaliacaoEntity));
+    public AvaliacaoDTO save(AvaliacaoDTO avaliacaoDTO) {
+        return new AvaliacaoDTO(repository.save(new AvaliacaoEntity(avaliacaoDTO)));
     }
 
     @Transactional(readOnly = true)
-    public List<AvaliacaoEntity> findAll() {
-        return repository.findAll();
+    public List<AvaliacaoDTO> findAll() {
+        return repository.findAll().stream().map(AvaliacaoDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
-    public AvaliacaoEntity findById(Long id) {
+    public AvaliacaoDTO findById(Long id) {
         Optional<AvaliacaoEntity> obj = repository.findById(id);
-        return obj.orElse(null);
+        return obj.map(AvaliacaoDTO::new).orElse(null);
     }
 
     @Transactional
-    public AvaliacaoEntity update(Long id, AvaliacaoEntity avaliacaoSalvar) {
+    public AvaliacaoDTO update(Long id, AvaliacaoDTO avaliacaoSalvar) {
         Optional<AvaliacaoEntity> avaliacaoExistente = repository.findById(id);
         if (avaliacaoExistente.isPresent()) {
-            return repository.save(avaliacaoExistente.get());
+            return new AvaliacaoDTO(repository.save(avaliacaoExistente.get()));
         } else {
             throw new RuntimeException("Avaliação " + id + " não encontrada.");
         }

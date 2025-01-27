@@ -21,11 +21,11 @@ public class AtualizarRestauranteUseCaseImpl implements AtualizarRestauranteUseC
     InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     @Override
-    public RestauranteDTO execute(Long id, RestauranteEntity restauranteAtualizado) {
+    public RestauranteDTO execute(Long id, RestauranteDTO dto) {
         RestauranteEntity restauranteOriginal = service.findById(id);
         if (restauranteOriginal != null) {
-            insercaoRemocaoDasMesasUseCase.execute(restauranteOriginal.getId(), restauranteOriginal.getCapacidade(), restauranteAtualizado.getCapacidade());
-            return service.update(restauranteOriginal.getId(), restauranteAtualizado);
+            insercaoRemocaoDasMesasUseCase.execute(restauranteOriginal.getId(), restauranteOriginal.getCapacidade(), dto.getCapacidade());
+            return service.update(restauranteOriginal.getId(), dto);
         }
         throw new ObjectNotFoundException("Restaurante não encontrado no sistema!");
     }

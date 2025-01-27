@@ -3,7 +3,6 @@ package com.restaurante.app.rest;
 import com.restaurante.app.service.postgres.MesaService;
 import com.restaurante.domain.dto.MesaDTO;
 import com.restaurante.domain.dto.MesaDisponivelDTO;
-import com.restaurante.domain.entity.MesaEntity;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,8 +31,8 @@ public class MesaController {
             description = "Salvar a Mesa do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<MesaDTO> cadastro(@Valid @RequestBody MesaEntity entity) {
-        return ResponseEntity.ok(service.save(entity));
+    public ResponseEntity<MesaDTO> cadastro(@Valid @RequestBody MesaDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
     @Operation(summary = "Buscar Mesas",

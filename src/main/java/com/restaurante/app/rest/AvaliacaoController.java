@@ -2,7 +2,6 @@ package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.AvaliacaoService;
 import com.restaurante.domain.dto.AvaliacaoDTO;
-import com.restaurante.domain.entity.AvaliacaoEntity;
 import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +27,8 @@ public class AvaliacaoController {
             description = "Salvar a avaliação.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Registro salvo com sucesso.")
     @PostMapping
-    public ResponseEntity<AvaliacaoDTO> avaliar(@Valid @RequestBody AvaliacaoEntity entity) {
-        return ResponseEntity.ok(service.save(entity));
+    public ResponseEntity<AvaliacaoDTO> avaliar(@Valid @RequestBody AvaliacaoDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
     }
 
 }

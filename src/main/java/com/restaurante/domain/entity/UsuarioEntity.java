@@ -1,5 +1,6 @@
 package com.restaurante.domain.entity;
 
+import com.restaurante.domain.dto.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,5 +47,11 @@ public class UsuarioEntity implements Serializable {
         this.nome = nome;
         this.email = email;
         this.celular = celular;
+    }
+
+    public UsuarioEntity(UsuarioDTO dto) {
+        this.nome = dto.getNome();
+        this.email = dto.getEmail();
+        this.celular = dto.getCelular();
     }
 }

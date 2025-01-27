@@ -1,5 +1,6 @@
 package com.restaurante.domain.entity;
 
+import com.restaurante.domain.dto.MesaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,5 +42,11 @@ public class MesaEntity implements Serializable {
     public MesaEntity(String nomeMesa, Long restauranteId) {
         this.nomeMesa = nomeMesa;
         this.restauranteId = restauranteId;
+    }
+
+    public MesaEntity(MesaDTO dto) {
+        this.id = dto.getId();
+        this.nomeMesa = dto.getNomeMesa();
+        this.restauranteId = dto.getRestauranteId();
     }
 }

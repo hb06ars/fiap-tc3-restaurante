@@ -1,5 +1,6 @@
 package com.restaurante.domain.entity;
 
+import com.restaurante.domain.dto.AvaliacaoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,4 +55,12 @@ public class AvaliacaoEntity implements Serializable {
     @NotNull(message = "O data do post não pode ser nulo. Por favor, forneça uma data.")
     private LocalDateTime datapost = LocalDateTime.now();
 
+    public AvaliacaoEntity(AvaliacaoDTO dto) {
+        this.id = dto.getId();
+        this.nota = dto.getNota();
+        this.comentario = dto.getComentario();
+        this.usuarioId = dto.getUsuarioId();
+        this.restauranteId = dto.getRestauranteId();
+        this.datapost = dto.getDatapost();
+    }
 }
