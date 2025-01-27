@@ -35,11 +35,11 @@ public class UsuarioEntity implements Serializable {
     @NotNull(message = "O nome não pode ser nulo. Por favor, forneça um valor.")
     private String nome;
 
-    @Column(nullable = true, length = 255)
+    @Column(nullable = true, length = 255, unique = true)
     @NotNull(message = "O email não pode ser nulo. Por favor, forneça um valor.")
     private String email;
 
-    @Column(nullable = true, length = 50)
+    @Column(nullable = true, length = 50, unique = true)
     @NotNull(message = "O celular não pode ser nulo. Por favor, forneça um valor.")
     private String celular;
 

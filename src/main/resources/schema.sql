@@ -23,8 +23,8 @@ CREATE TABLE IF NOT exists mesa (
 CREATE TABLE IF NOT EXISTS usuario (
                     id SERIAL PRIMARY KEY,
                     nome VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) NOT NULL,
-                    celular VARCHAR(50)
+                    email VARCHAR(255) NOT NULL UNIQUE,
+                    celular VARCHAR(50) UNIQUE
                 );
 
 -- TABLE AVALIACAO
