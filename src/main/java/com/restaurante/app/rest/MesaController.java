@@ -35,6 +35,15 @@ public class MesaController {
         return ResponseEntity.ok(service.save(dto));
     }
 
+    @Operation(summary = "Atualizar Mesa",
+            description = "Atualizar a Mesa do Restaurante.")
+    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
+    @PostMapping("/atualizar/{id}")
+    public ResponseEntity<MesaDTO> atualizar(@PathVariable(name = "id") Long id,
+                                             @Valid @RequestBody MesaDTO dto) {
+        return ResponseEntity.ok(service.update(id, dto));
+    }
+
     @Operation(summary = "Buscar Mesas",
             description = "Buscar a Mesa.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")

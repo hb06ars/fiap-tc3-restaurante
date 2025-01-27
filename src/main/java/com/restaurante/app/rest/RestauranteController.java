@@ -1,6 +1,7 @@
 package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.RestauranteService;
+import com.restaurante.domain.dto.MessageSuccessDTO;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.AtualizarRestauranteUseCase;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,5 +65,15 @@ public class RestauranteController {
             @RequestParam(defaultValue = "") String tipoCozinha) {
         return ResponseEntity.ok(service.buscarRestaurantes(nome, localizacao, tipoCozinha));
     }
+
+    @Operation(summary = "Deletar Restaurante",
+            description = "Deleção do restaurante.")
+    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Deleção realizada com sucesso.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageSuccessDTO> deletar(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok(MessageSuccessDTO.builder().mensagem("Registro deletado com sucesso.").build());
+    }
+
 
 }
