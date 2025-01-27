@@ -5,7 +5,10 @@ import com.restaurante.domain.dto.MesaDisponivelDTO;
 import com.restaurante.domain.entity.MesaEntity;
 import com.restaurante.domain.mapper.MesaDisponivelMapper;
 import com.restaurante.domain.util.DataFormat;
+import com.restaurante.infra.exceptions.CapacidadeException;
+import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.MesaRepository;
+import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +21,27 @@ import java.util.Optional;
 public class MesaService {
 
     private final MesaRepository repository;
+    private final RestauranteRepository restauranteRepository;
+
 
     @Autowired
-    public MesaService(MesaRepository repository) {
+    public MesaService(MesaRepository repository, RestauranteRepository restauranteRepository) {
         this.repository = repository;
+        this.restauranteRepository = restauranteRepository;
     }
 
     @Transactional
     public MesaDTO save(MesaDTO dto) {
-        return new MesaDTO(repository.save(new MesaEntity(dto)));
+        var restaurante = restauranteRepository.findById(dto.getRestauranteId())
+                .orElseThrow(() -> new ObjectNotFoundException("Restaurante não encontrado."));
+
+        var mesasDoRestaurante = findAllByIdRestaurante(dto.getRestauranteId());
+        if (mesasDoRestaurante != null && !mesasDoRestaurante.isEmpty()) {
+            var capacidade = restaurante.getCapacidade();
+            if (capacidade > mesasDoRestaurante.size())
+                return new MesaDTO(repository.save(new MesaEntity(dto)));
+        }
+        throw new CapacidadeException("Capacidade acima do limite.");
     }
 
     @Transactional(readOnly = true)
