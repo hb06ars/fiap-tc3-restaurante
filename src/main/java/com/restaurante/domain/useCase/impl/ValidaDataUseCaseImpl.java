@@ -7,7 +7,6 @@ import com.restaurante.domain.util.BuscarDiaDaSemana;
 import com.restaurante.domain.util.BuscarFeriadoNacional;
 import com.restaurante.infra.exceptions.ReservaException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -17,8 +16,11 @@ import java.time.LocalDateTime;
 @Slf4j
 public class ValidaDataUseCaseImpl implements ValidaDataUseCase {
 
-    @Autowired
-    FuncionamentoService funcionamentoService;
+    private final FuncionamentoService funcionamentoService;
+
+    public ValidaDataUseCaseImpl(FuncionamentoService funcionamentoService) {
+        this.funcionamentoService = funcionamentoService;
+    }
 
     @Override
     public void execute(Long restauranteId, LocalDateTime dataReserva, LocalDate diaSelecionado) {

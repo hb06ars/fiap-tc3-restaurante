@@ -26,8 +26,6 @@
 		<sonar.exclusions>src/main/java/com/restaurante/domain/util/**</sonar.exclusions>
 		<sonar.exclusions>src/main/java/com/restaurante/domain/validator/**</sonar.exclusions>
 		<sonar.host.url>http://localhost:9008</sonar.host.url>
-		<sonar.login>admin</sonar.login>
-		<sonar.password>Restaurante@2024</sonar.password>
 	</properties>
 
 	<dependencies>

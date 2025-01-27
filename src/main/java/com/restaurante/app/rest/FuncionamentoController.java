@@ -7,7 +7,6 @@ import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +25,11 @@ import java.util.List;
 @Slf4j
 public class FuncionamentoController {
 
-    @Autowired
-    FuncionamentoService service;
+    private final FuncionamentoService service;
+
+    public FuncionamentoController(FuncionamentoService service) {
+        this.service = service;
+    }
 
     @Operation(summary = "Cadastrar Funcionamento",
             description = "Cadastrar o horário de Funcionamento do Restaurante.")

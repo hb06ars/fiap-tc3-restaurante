@@ -7,7 +7,6 @@ import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.exceptions.ReservaException;
 import com.restaurante.infra.repository.postgres.MesaRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -17,8 +16,11 @@ import java.util.List;
 @Slf4j
 public class BuscarMesaDisponivelUseCaseImpl implements BuscarMesaDisponivelUseCase {
 
-    @Autowired
-    MesaRepository mesaRepository;
+    private final MesaRepository mesaRepository;
+
+    public BuscarMesaDisponivelUseCaseImpl(MesaRepository mesaRepository) {
+        this.mesaRepository = mesaRepository;
+    }
 
     @Override
     public MesaDisponivelDTO execute(Long restauranteId, LocalDateTime dataReserva) {

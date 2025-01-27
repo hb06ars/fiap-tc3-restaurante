@@ -6,7 +6,6 @@ import com.restaurante.domain.useCase.ReservarMesaUseCase;
 import com.restaurante.domain.useCase.ValidaDataUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,16 +13,17 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
 
-    @Value("${tolerancia-mesa}")
-    private Integer toleranciaMesa;
+    private final Integer toleranciaMesa;
+    private final ValidarReservaUseCase validarReservaUseCase;
+    private final ValidaDataUseCase validaDataUseCase;
+    private final ReservaService service;
 
-    @Autowired
-    ValidarReservaUseCase validarReservaUseCase;
-    @Autowired
-    ValidaDataUseCase validaDataUseCase;
-
-    @Autowired
-    ReservaService service;
+    public ReservarMesaUseCaseImpl(@Value("${tolerancia-mesa}") Integer toleranciaMesa, ValidarReservaUseCase validarReservaUseCase, ValidaDataUseCase validaDataUseCase, ReservaService service) {
+        this.toleranciaMesa = toleranciaMesa;
+        this.validarReservaUseCase = validarReservaUseCase;
+        this.validaDataUseCase = validaDataUseCase;
+        this.service = service;
+    }
 
     @Override
     public ReservaDTO salvar(ReservaDTO dto) {

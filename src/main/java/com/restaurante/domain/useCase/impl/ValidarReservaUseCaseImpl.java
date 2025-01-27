@@ -5,15 +5,17 @@ import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.useCase.BuscarMesaDisponivelUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class ValidarReservaUseCaseImpl implements ValidarReservaUseCase {
 
-    @Autowired
-    BuscarMesaDisponivelUseCase buscarMesaDisponivelUseCase;
+    private final BuscarMesaDisponivelUseCase buscarMesaDisponivelUseCase;
+
+    public ValidarReservaUseCaseImpl(BuscarMesaDisponivelUseCase buscarMesaDisponivelUseCase) {
+        this.buscarMesaDisponivelUseCase = buscarMesaDisponivelUseCase;
+    }
 
     @Override
     public void execute(ReservaDTO dto) {

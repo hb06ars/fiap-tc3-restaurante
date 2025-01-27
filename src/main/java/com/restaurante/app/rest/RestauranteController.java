@@ -9,7 +9,6 @@ import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,14 +28,15 @@ import java.util.List;
 @Slf4j
 public class RestauranteController {
 
-    @Autowired
-    RestauranteService service;
+    private final RestauranteService service;
+    private final CadastrarRestauranteUseCase cadastrarRestauranteUseCase;
+    private final AtualizarRestauranteUseCase atualizarRestauranteUseCase;
 
-    @Autowired
-    CadastrarRestauranteUseCase cadastrarRestauranteUseCase;
-
-    @Autowired
-    AtualizarRestauranteUseCase atualizarRestauranteUseCase;
+    public RestauranteController(RestauranteService service, CadastrarRestauranteUseCase cadastrarRestauranteUseCase, AtualizarRestauranteUseCase atualizarRestauranteUseCase) {
+        this.service = service;
+        this.cadastrarRestauranteUseCase = cadastrarRestauranteUseCase;
+        this.atualizarRestauranteUseCase = atualizarRestauranteUseCase;
+    }
 
     @Operation(summary = "Cadastrar Restaurante",
             description = "Cadastrar Restaurante no sistema.")

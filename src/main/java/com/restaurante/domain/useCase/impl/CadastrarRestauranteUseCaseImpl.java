@@ -6,21 +6,21 @@ import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
 import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseCase {
 
-    @Autowired
-    RestauranteService service;
+    private final RestauranteService service;
+    private final FuncionamentoService funcionamentoService;
+    private final InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
 
-    @Autowired
-    FuncionamentoService funcionamentoService;
-
-    @Autowired
-    InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
+    public CadastrarRestauranteUseCaseImpl(RestauranteService service, FuncionamentoService funcionamentoService, InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase) {
+        this.service = service;
+        this.funcionamentoService = funcionamentoService;
+        this.insercaoRemocaoDasMesasUseCase = insercaoRemocaoDasMesasUseCase;
+    }
 
     @Override
     public RestauranteDTO execute(RestauranteDTO dto) {

@@ -7,7 +7,6 @@ import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +23,11 @@ import java.util.List;
 @Slf4j
 public class MesaController {
 
-    @Autowired
-    MesaService service;
+    private final MesaService service;
+
+    public MesaController(MesaService service) {
+        this.service = service;
+    }
 
     @Operation(summary = "Cadastrar Mesa",
             description = "Salvar a Mesa do Restaurante.")

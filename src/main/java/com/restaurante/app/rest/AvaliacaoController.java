@@ -6,7 +6,6 @@ import com.restaurante.domain.util.HttpStatusCodes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +22,11 @@ import java.util.List;
 @Slf4j
 public class AvaliacaoController {
 
-    @Autowired
-    AvaliacaoService service;
+    private final AvaliacaoService service;
+
+    public AvaliacaoController(AvaliacaoService service) {
+        this.service = service;
+    }
 
     @Operation(summary = "Registrar Avaliação",
             description = "Salvar a avaliação.")

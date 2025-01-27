@@ -6,18 +6,19 @@ import com.restaurante.domain.useCase.AtualizarRestauranteUseCase;
 import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class AtualizarRestauranteUseCaseImpl implements AtualizarRestauranteUseCase {
 
-    @Autowired
-    RestauranteService service;
+    private final RestauranteService service;
+    private final InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
 
-    @Autowired
-    InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
+    public AtualizarRestauranteUseCaseImpl(RestauranteService service, InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase) {
+        this.service = service;
+        this.insercaoRemocaoDasMesasUseCase = insercaoRemocaoDasMesasUseCase;
+    }
 
     @Override
     public RestauranteDTO execute(Long id, RestauranteDTO dto) {

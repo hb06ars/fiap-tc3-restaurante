@@ -6,7 +6,6 @@ import com.restaurante.domain.entity.MesaEntity;
 import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
 import com.restaurante.infra.exceptions.CapacidadeException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,8 +16,11 @@ import java.util.Objects;
 @Slf4j
 public class InsercaoRemocaoDasMesasUseCaseImpl implements InsercaoRemocaoDasMesasUseCase {
 
-    @Autowired
-    MesaService mesaService;
+    private final MesaService mesaService;
+
+    public InsercaoRemocaoDasMesasUseCaseImpl(MesaService mesaService) {
+        this.mesaService = mesaService;
+    }
 
     @Override
     public void execute(Long idRestaurante, Integer capacidadeOriginal, Integer capacidadeAtualizada) {
