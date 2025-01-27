@@ -7,342 +7,529 @@
 	},
 	"item": [
 		{
-			"name": "Cadastrar Usuário",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nome\": \"Fulano de Tal\",\r\n    \"email\": \"fulano@mail.com\",\r\n    \"celular\": \"11988887777\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/usuario/cadastrar",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"usuario",
-						"cadastrar"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Restaurante",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nome\": \"La Bonna Pizza\",\r\n    \"tipoCozinha\": \"ITALIANA\",\r\n    \"localizacao\": \"Av. Paulista, 1000\",\r\n    \"capacidade\": 100\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/restaurante",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"restaurante"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Reserva",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 1,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2024-01-25T12:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/reserva",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"reserva"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Atualizar Reserva",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 1,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2024-01-25T12:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/reserva/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"reserva",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Reserva",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\",\r\n    \"dataDaReserva\": \"2025-01-25T22:00:00\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/reserva/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"reserva",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Data Funcionamento",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"diaEnum\": \"FERIADOS\",\r\n    \"abertura\": \"14:00:00\",\r\n    \"fechamento\": \"20:00:00\",\r\n    \"restauranteId\": 1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/funcionamento/cadastrar",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"funcionamento",
-						"cadastrar"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Cadastrar Mesa",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nomeMesa\": \"MESA 1\",\r\n    \"restauranteId\": 1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/mesa/cadastrar",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"mesa",
-						"cadastrar"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Gerenciar Mesas",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/mesa/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"mesa",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Avaliar",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nota\": 8,\r\n    \"comentario\": \"Adorei!\",\r\n    \"usuarioId\": 1,\r\n    \"restauranteId\": 1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/avaliacao",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"avaliacao"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Atualizar Restaurante",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nome\": \"Fogo de Chão\",\r\n    \"tipoCozinha\": \"BRASILEIRA\",\r\n    \"localizacao\": \"Av. Pacaembú, 123\",\r\n    \"capacidade\": 150\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/restaurante/7",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"restaurante",
-						"7"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Buscar Restaurante",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/restaurante?nome=La Bonna Pizza&localizacao=Av. Paulista, 1000&tipoCozinha=ITALIANA",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"restaurante"
-					],
-					"query": [
-						{
-							"key": "nome",
-							"value": "La Bonna Pizza"
+			"name": "Usuário",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Fulano de Tal\",\r\n    \"email\": \"fulano@mail.com\",\r\n    \"celular\": \"11988887777\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "localizacao",
-							"value": "Av. Paulista, 1000"
-						},
-						{
-							"key": "tipoCozinha",
-							"value": "ITALIANA"
+						"url": {
+							"raw": "http://localhost:8080/usuario/cadastrar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"cadastrar"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Fulano de Tal Novo\",\r\n    \"email\": \"fulano@mail.com\",\r\n    \"celular\": \"11988887771\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuario/atualizar/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"atualizar",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Restaurante",
+			"item": [
+				{
+					"name": "Cadastrar Restaurante",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"La Bonna Pizza\",\r\n    \"tipoCozinha\": \"ITALIANA\",\r\n    \"localizacao\": \"Av. Paulista, 1000\",\r\n    \"capacidade\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/restaurante",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"restaurante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Restaurante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Fogo de Chão\",\r\n    \"tipoCozinha\": \"BRASILEIRA\",\r\n    \"localizacao\": \"Av. Pacaembú, 123\",\r\n    \"capacidade\": 150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/restaurante/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"restaurante",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Restaurante",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/restaurante?nome=La Bonna Pizza&localizacao=Av. Paulista, 1000&tipoCozinha=ITALIANA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"restaurante"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "La Bonna Pizza"
+								},
+								{
+									"key": "localizacao",
+									"value": "Av. Paulista, 1000"
+								},
+								{
+									"key": "tipoCozinha",
+									"value": "ITALIANA"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reserva",
+			"item": [
+				{
+					"name": "Cadastrar Reserva",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 1,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2025-01-25T05:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/reserva",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reserva"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Reserva",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"usuarioId\": 1,\r\n    \"mesaId\": 1,\r\n    \"restauranteId\": 1,\r\n    \"dataDaReserva\": \"2025-01-25T05:00:00\",\r\n    \"dataFimReserva\": \"2025-01-25T07:00:00\",\r\n    \"valorReserva\": 100.00,\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/reserva/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reserva",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Reserva",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"statusPagamento\": \"PENDENTE\",\r\n    \"statusReserva\": \"RESERVADO\",\r\n    \"dataDaReserva\": \"2025-01-25T05:30:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/reserva/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reserva",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Funcionamento",
+			"item": [
+				{
+					"name": "Cadastrar Data Funcionamento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"diaEnum\": \"SABADO\",\r\n    \"abertura\": \"14:00:00\",\r\n    \"fechamento\": \"20:00:00\",\r\n    \"restauranteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/funcionamento/cadastrar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionamento",
+								"cadastrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualização da Data Funcionamento",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"diaEnum\": \"SABADO\",\r\n    \"abertura\": \"14:00:00\",\r\n    \"fechamento\": \"20:00:00\",\r\n    \"restauranteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/funcionamento/atualizar/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionamento",
+								"atualizar",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca Data Funcionamento",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/funcionamento/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"funcionamento",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mesa",
+			"item": [
+				{
+					"name": "Cadastrar Mesa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeMesa\": \"MESA 1\",\r\n    \"restauranteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/mesa/cadastrar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mesa",
+								"cadastrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gerenciar Mesas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/mesa/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mesa",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar mesas por Restaurante",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/mesa/listaporrestaurante/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"mesa",
+								"listaporrestaurante",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Avaliação",
+			"item": [
+				{
+					"name": "Cadastrar Avaliação",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nota\": 8,\r\n    \"comentario\": \"Adorei! Atendimento excelente!\",\r\n    \"usuarioId\": 1,\r\n    \"restauranteId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/avaliacao",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"avaliacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Avaliações do Restaurante",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/avaliacao/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"avaliacao",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
