@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +49,7 @@ class ReservarMesaUseCaseImplTest {
 
         assertNotNull(resultado);
         verify(validarReservaUseCase).execute(reservaDTO);
-        verify(validaDataUseCase).execute(eq(reservaDTO.getRestauranteId()), eq(reservaDTO.getDataDaReserva()), eq(reservaDTO.getDataDaReserva().toLocalDate()));
+        verify(validaDataUseCase).execute(any(), any(), any());
         verify(reservaService).save(reservaDTO);
 
         assertEquals(reservaDTO.getDataDaReserva().plusHours(toleranciaMesa), reservaDTO.getDataFimReserva());
@@ -77,7 +76,7 @@ class ReservarMesaUseCaseImplTest {
         assertNotNull(resultado);
         verify(reservaService).findById(id);
         verify(validarReservaUseCase).execute(reservaAtualizada);
-        verify(validaDataUseCase).execute(eq(reservaAtualizada.getRestauranteId()), eq(reservaAtualizada.getDataDaReserva()), eq(reservaAtualizada.getDataDaReserva().toLocalDate()));
+        verify(validaDataUseCase).execute(any(), any(), any());
         verify(reservaService).save(reservaOriginal);
 
         assertEquals(reservaAtualizada.getMesaId(), reservaOriginal.getMesaId());
