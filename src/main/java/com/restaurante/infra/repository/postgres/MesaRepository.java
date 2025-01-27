@@ -23,7 +23,7 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Long> {
                 LEFT JOIN reserva res 
                     ON res.mesa_id = m.id 
                     AND :dataReserva BETWEEN res.data_da_reserva AND res.data_fim_reserva
-                WHERE r.id = :restauranteId
+                WHERE r.id = :restauranteId and res.id IS NULL
             """, nativeQuery = true)
     List<Object[]> buscarMesasDisponiveis(
             @Param("restauranteId") Long restauranteId,
