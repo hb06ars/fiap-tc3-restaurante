@@ -39,8 +39,6 @@ public class InsercaoRemocaoDasMesasUseCaseImpl implements InsercaoRemocaoDasMes
         for (int i = 0; i < quantidadeDeMesas; i++) {
             mesaService.delete(todasMesas.get(i).getId());
         }
-        List<MesaEntity> result = mesaService.findAll();
-        System.out.println(result);
     }
 
     private void adicionarMesas(int quantidadeDeMesas, Long idRestaurante) {
