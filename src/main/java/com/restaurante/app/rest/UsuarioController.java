@@ -10,11 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/usuario")
@@ -31,7 +28,7 @@ public class UsuarioController {
             description = "Criação do Usuário.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioDTO> cadastro(@Valid @RequestBody UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> cadastro(UsuarioDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
@@ -40,7 +37,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable(name = "id") Long id,
-                                                @Valid @RequestBody UsuarioDTO dto) {
+                                                UsuarioDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 

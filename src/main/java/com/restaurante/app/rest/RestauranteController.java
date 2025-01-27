@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,7 +40,7 @@ public class RestauranteController {
             description = "Cadastrar Restaurante no sistema.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteDTO dto) {
+    public ResponseEntity<RestauranteDTO> cadastrar(RestauranteDTO dto) {
         return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(dto));
     }
 
@@ -51,7 +49,7 @@ public class RestauranteController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/{id}")
     public ResponseEntity<RestauranteDTO> atualizar(@PathVariable Long id,
-                                                    @Valid @RequestBody RestauranteDTO dto) {
+                                                    RestauranteDTO dto) {
         return ResponseEntity.ok(atualizarRestauranteUseCase.execute(id, dto));
     }
 

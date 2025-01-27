@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +33,7 @@ public class FuncionamentoController {
             description = "Cadastrar o horário de Funcionamento do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<FuncionamentoDTO> cadastro(@Valid @RequestBody FuncionamentoDTO dto) {
+    public ResponseEntity<FuncionamentoDTO> cadastro(FuncionamentoDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
@@ -44,7 +42,7 @@ public class FuncionamentoController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/atualizar/{idFuncionamento}")
     public ResponseEntity<FuncionamentoDTO> atualizar(@PathVariable Long idFuncionamento,
-                                                      @Valid @RequestBody FuncionamentoDTO dto) {
+                                                      FuncionamentoDTO dto) {
         return ResponseEntity.ok(service.update(idFuncionamento, dto));
     }
 

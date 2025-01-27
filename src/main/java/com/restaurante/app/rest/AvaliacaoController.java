@@ -32,7 +32,7 @@ public class AvaliacaoController {
             description = "Salvar a avaliação.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Registro salvo com sucesso.")
     @PostMapping
-    public ResponseEntity<AvaliacaoDTO> avaliar(@Valid @RequestBody AvaliacaoDTO dto) {
+    public ResponseEntity<AvaliacaoDTO> avaliar(AvaliacaoDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 

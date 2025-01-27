@@ -11,11 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +31,7 @@ public class MesaController {
             description = "Salvar a Mesa do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<MesaDTO> cadastro(@Valid @RequestBody MesaDTO dto) {
+    public ResponseEntity<MesaDTO> cadastro(MesaDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
@@ -42,7 +40,7 @@ public class MesaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/atualizar/{id}")
     public ResponseEntity<MesaDTO> atualizar(@PathVariable(name = "id") Long id,
-                                             @Valid @RequestBody MesaDTO dto) {
+                                             MesaDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
