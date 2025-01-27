@@ -55,5 +55,8 @@ public class AvaliacaoService {
         }
     }
 
+    public List<AvaliacaoDTO> listarPorRestaurante(Long idRestaurante) {
+        return repository.findAllByRestauranteId(idRestaurante).stream().map(AvaliacaoDTO::new).toList();
+    }
 }
 

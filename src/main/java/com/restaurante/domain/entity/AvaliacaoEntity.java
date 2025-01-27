@@ -61,6 +61,6 @@ public class AvaliacaoEntity implements Serializable {
         this.comentario = dto.getComentario();
         this.usuarioId = dto.getUsuarioId();
         this.restauranteId = dto.getRestauranteId();
-        this.datapost = dto.getDatapost();
+        this.datapost = dto.getDatapost() != null ? dto.getDatapost() : LocalDateTime.now();
     }
 }

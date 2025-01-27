@@ -1,6 +1,7 @@
 package com.restaurante.domain.useCase.impl;
 
 import com.restaurante.app.service.postgres.MesaService;
+import com.restaurante.domain.dto.MesaDTO;
 import com.restaurante.domain.entity.MesaEntity;
 import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
 import com.restaurante.infra.exceptions.CapacidadeException;
@@ -35,7 +36,7 @@ public class InsercaoRemocaoDasMesasUseCaseImpl implements InsercaoRemocaoDasMes
     }
 
     private void removerMesas(int quantidadeDeMesas, Long idRestaurante) {
-        List<MesaEntity> todasMesas = mesaService.findAllByIdRestaurante(idRestaurante);
+        List<MesaDTO> todasMesas = mesaService.findAllByIdRestaurante(idRestaurante);
         for (int i = 0; i < quantidadeDeMesas; i++) {
             mesaService.delete(todasMesas.get(i).getId());
         }

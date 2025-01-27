@@ -2,7 +2,6 @@ package com.restaurante.domain.useCase.impl;
 
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
 import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,7 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
     public RestauranteDTO execute(RestauranteDTO dto) {
         var restauranteExistente = service.restauranteJaExiste(dto.getNome(), dto.getLocalizacao());
         if (!restauranteExistente) {
-            var restauranteCadastrado = service.save(new RestauranteEntity(dto));
+            var restauranteCadastrado = service.save(dto);
             insercaoRemocaoDasMesasUseCase.execute(restauranteCadastrado.getId(), 0, restauranteCadastrado.getCapacidade());
             return restauranteCadastrado;
         } else {
