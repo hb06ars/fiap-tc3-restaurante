@@ -6,7 +6,6 @@ import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,19 +56,10 @@ public class RestauranteService {
 
     @Transactional
     public void delete(Long id) {
-        try {
-            if (repository.findById(id).isPresent()) {
-                repository.findById(id);
-            } else {
-                throw new RuntimeException("Restaurante com ID: " + id + ", não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var restauranteExistente = repository.findById(id).orElse(null);
-            if (restauranteExistente != null) {
-                repository.deleteById(id);
-            } else {
-                throw new RuntimeException("O restaurante já foi removido!");
-            }
+        if (repository.findById(id).isPresent()) {
+            repository.findById(id);
+        } else {
+            throw new RuntimeException("Restaurante com ID: " + id + ", não encontrado.");
         }
     }
 

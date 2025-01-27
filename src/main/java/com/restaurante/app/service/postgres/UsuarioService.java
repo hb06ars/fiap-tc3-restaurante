@@ -4,7 +4,6 @@ import com.restaurante.domain.dto.UsuarioDTO;
 import com.restaurante.domain.entity.UsuarioEntity;
 import com.restaurante.infra.repository.postgres.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +22,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTO save(UsuarioEntity usuarioEntity) {
-        try {
-            return new UsuarioDTO(repository.save(usuarioEntity));
-        } catch (OptimisticLockingFailureException e) {
-            var usuarioExistente = repository.findById(usuarioEntity.getId()).orElse(null);
-            if (usuarioExistente != null) {
-                return new UsuarioDTO(repository.save(usuarioExistente));
-            } else {
-                throw new RuntimeException("Houve um problema para a usuario, tente novamente!");
-            }
-        }
+        return new UsuarioDTO(repository.save(usuarioEntity));
     }
 
     @Transactional(readOnly = true)
@@ -48,38 +38,20 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioEntity update(Long id, UsuarioEntity usuarioSalvar) {
-        try {
-            Optional<UsuarioEntity> usuarioExistente = repository.findById(id);
-            if (usuarioExistente.isPresent()) {
-                return repository.save(usuarioExistente.get());
-            } else {
-                throw new RuntimeException("Usuario " + id + " não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var usuarioExistente = repository.findById(usuarioSalvar.getId()).orElse(null);
-            if (usuarioExistente != null) {
-                return repository.save(usuarioExistente);
-            } else {
-                throw new RuntimeException("Houve um problema para atualizar o veículo, tente novamente!");
-            }
+        Optional<UsuarioEntity> usuarioExistente = repository.findById(id);
+        if (usuarioExistente.isPresent()) {
+            return repository.save(usuarioExistente.get());
+        } else {
+            throw new RuntimeException("Usuario " + id + " não encontrado.");
         }
     }
 
     @Transactional
     public void delete(Long id) {
-        try {
-            if (repository.findById(id).isPresent()) {
-                repository.findById(id);
-            } else {
-                throw new RuntimeException("Usuario com ID: " + id + ", não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var usuarioExistente = repository.findById(id).orElse(null);
-            if (usuarioExistente != null) {
-                repository.deleteById(id);
-            } else {
-                throw new RuntimeException("O usuário já foi removido!");
-            }
+        if (repository.findById(id).isPresent()) {
+            repository.findById(id);
+        } else {
+            throw new RuntimeException("Usuario com ID: " + id + ", não encontrado.");
         }
     }
 

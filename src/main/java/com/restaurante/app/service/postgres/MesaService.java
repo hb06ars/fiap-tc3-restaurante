@@ -7,7 +7,6 @@ import com.restaurante.domain.mapper.MesaDisponivelMapper;
 import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.repository.postgres.MesaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +26,7 @@ public class MesaService {
 
     @Transactional
     public MesaDTO save(MesaEntity mesaEntity) {
-        try {
-            return new MesaDTO(repository.save(mesaEntity));
-        } catch (OptimisticLockingFailureException e) {
-            var mesaExistente = repository.findById(mesaEntity.getId()).orElse(null);
-            if (mesaExistente != null) {
-                return new MesaDTO(repository.save(mesaExistente));
-            } else {
-                throw new RuntimeException("Houve um problema para a mesa, tente novamente!");
-            }
-        }
+        return new MesaDTO(repository.save(mesaEntity));
     }
 
     @Transactional(readOnly = true)
@@ -57,20 +47,11 @@ public class MesaService {
 
     @Transactional
     public MesaEntity update(Long id, MesaEntity mesaSalvar) {
-        try {
-            Optional<MesaEntity> mesaExistente = repository.findById(id);
-            if (mesaExistente.isPresent()) {
-                return repository.save(mesaExistente.get());
-            } else {
-                throw new RuntimeException("Mesa " + id + " não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var mesaExistente = repository.findById(mesaSalvar.getId()).orElse(null);
-            if (mesaExistente != null) {
-                return repository.save(mesaExistente);
-            } else {
-                throw new RuntimeException("Houve um problema para atualizar a mesa, tente novamente!");
-            }
+        Optional<MesaEntity> mesaExistente = repository.findById(id);
+        if (mesaExistente.isPresent()) {
+            return repository.save(mesaExistente.get());
+        } else {
+            throw new RuntimeException("Mesa " + id + " não encontrado.");
         }
     }
 

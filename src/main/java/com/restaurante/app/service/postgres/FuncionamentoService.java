@@ -26,16 +26,7 @@ public class FuncionamentoService {
 
     @Transactional
     public FuncionamentoDTO save(FuncionamentoEntity funcionamentoEntity) {
-        try {
-            return new FuncionamentoDTO(repository.save(funcionamentoEntity));
-        } catch (OptimisticLockingFailureException e) {
-            var funcionamentoExistente = repository.findById(funcionamentoEntity.getId()).orElse(null);
-            if (funcionamentoExistente != null) {
-                return new FuncionamentoDTO(repository.save(funcionamentoExistente));
-            } else {
-                throw new RuntimeException("Houve um problema para a funcionamento, tente novamente!");
-            }
-        }
+        return new FuncionamentoDTO(repository.save(funcionamentoEntity));
     }
 
     @Transactional(readOnly = true)
@@ -51,38 +42,20 @@ public class FuncionamentoService {
 
     @Transactional
     public FuncionamentoEntity update(Long id, FuncionamentoEntity funcionamentoSalvar) {
-        try {
-            Optional<FuncionamentoEntity> funcionamentoExistente = repository.findById(id);
-            if (funcionamentoExistente.isPresent()) {
-                return repository.save(funcionamentoExistente.get());
-            } else {
-                throw new RuntimeException("Funcionamento " + id + " não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var funcionamentoExistente = repository.findById(funcionamentoSalvar.getId()).orElse(null);
-            if (funcionamentoExistente != null) {
-                return repository.save(funcionamentoExistente);
-            } else {
-                throw new RuntimeException("Houve um problema para atualizar o veículo, tente novamente!");
-            }
+        Optional<FuncionamentoEntity> funcionamentoExistente = repository.findById(id);
+        if (funcionamentoExistente.isPresent()) {
+            return repository.save(funcionamentoExistente.get());
+        } else {
+            throw new RuntimeException("Funcionamento " + id + " não encontrado.");
         }
     }
 
     @Transactional
     public void delete(Long id) {
-        try {
-            if (repository.findById(id).isPresent()) {
-                repository.findById(id);
-            } else {
-                throw new RuntimeException("Funcionamento com ID: " + id + ", não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var funcionamentoExistente = repository.findById(id).orElse(null);
-            if (funcionamentoExistente != null) {
-                repository.deleteById(id);
-            } else {
-                throw new RuntimeException("O funcionamento já foi removido!");
-            }
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
+        } else {
+            throw new RuntimeException("Funcionamento com ID: " + id + ", não encontrado.");
         }
     }
 

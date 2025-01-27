@@ -6,7 +6,6 @@ import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.exceptions.FieldNotFoundException;
 import com.restaurante.infra.repository.postgres.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,16 +24,7 @@ public class ReservaService {
 
     @Transactional
     public ReservaDTO save(ReservaEntity reservaEntity) {
-        try {
-            return new ReservaDTO(repository.save(reservaEntity));
-        } catch (OptimisticLockingFailureException e) {
-            var reservaExistente = repository.findById(reservaEntity.getId()).orElse(null);
-            if (reservaExistente != null) {
-                return new ReservaDTO(repository.save(reservaExistente));
-            } else {
-                throw new RuntimeException("Houve um problema para a reserva, tente novamente!");
-            }
-        }
+        return new ReservaDTO(repository.save(reservaEntity));
     }
 
     @Transactional(readOnly = true)
@@ -50,38 +40,20 @@ public class ReservaService {
 
     @Transactional
     public ReservaEntity update(Long id, ReservaEntity reservaSalvar) {
-        try {
-            Optional<ReservaEntity> reservaExistente = repository.findById(id);
-            if (reservaExistente.isPresent()) {
-                return repository.save(reservaExistente.get());
-            } else {
-                throw new RuntimeException("Reserva " + id + " não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var reservaExistente = repository.findById(reservaSalvar.getId()).orElse(null);
-            if (reservaExistente != null) {
-                return repository.save(reservaExistente);
-            } else {
-                throw new RuntimeException("Houve um problema para atualizar o registro, tente novamente!");
-            }
+        Optional<ReservaEntity> reservaExistente = repository.findById(id);
+        if (reservaExistente.isPresent()) {
+            return repository.save(reservaExistente.get());
+        } else {
+            throw new RuntimeException("Reserva " + id + " não encontrado.");
         }
     }
 
     @Transactional
     public void delete(Long id) {
-        try {
-            if (repository.findById(id).isPresent()) {
-                repository.findById(id);
-            } else {
-                throw new RuntimeException("Reserva com ID: " + id + ", não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var reservaExistente = repository.findById(id).orElse(null);
-            if (reservaExistente != null) {
-                repository.deleteById(id);
-            } else {
-                throw new RuntimeException("A reserva já foi removida!");
-            }
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
+        } else {
+            throw new RuntimeException("Reserva com ID: " + id + ", não encontrado.");
         }
     }
 
