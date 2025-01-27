@@ -8,11 +8,15 @@ import com.restaurante.domain.useCase.ValidaDataUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
+
+    @Value("${tolerancia-mesa}")
+    private Integer toleranciaMesa;
 
     @Autowired
     ValidarReservaUseCase validarReservaUseCase;
@@ -51,7 +55,7 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     }
 
     private void preencherHorarioDeSaida(ReservaEntity entity) {
-        entity.setDataFimReserva(entity.getDataDaReserva().plusHours(2));
+        entity.setDataFimReserva(entity.getDataDaReserva().plusHours(toleranciaMesa));
     }
 
 

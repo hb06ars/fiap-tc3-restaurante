@@ -54,7 +54,7 @@ public class ReservaEntity implements Serializable {
 
     @Column(name = "data_fim_reserva", nullable = false)
     @NotNull(message = "A data fim reserva não pode ser nula. Por favor, forneça um valor para a data fim.")
-    private LocalDateTime dataFimReserva = LocalDateTime.now().plusHours(2);
+    private LocalDateTime dataFimReserva;
 
     @Column(name = "valor_reserva", nullable = false, precision = 10, scale = 2)
     @NotNull(message = "O valor da reserva não pode ser nulo. Por favor, forneça um valor.")

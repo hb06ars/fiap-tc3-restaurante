@@ -10,13 +10,13 @@ import javax.sql.DataSource;
 @Configuration
 public class PostgresConfig {
 
-    @Value("${POSTGRES_URL}")
+    @Value("${spring.datasource.url}")
     private String url;
 
-    @Value("${POSTGRES_USER}")
+    @Value("${spring.datasource.username}")
     private String username;
 
-    @Value("${POSTGRES_PASS}")
+    @Value("${spring.datasource.password}")
     private String password;
 
     @Value("${spring.datasource.driver-class-name}")

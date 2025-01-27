@@ -7,3 +7,4 @@ spring:
     password: ${POSTGRES_PASS}
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
+tolerancia-mesa: ${TOLERANCIA_MESA:2}
