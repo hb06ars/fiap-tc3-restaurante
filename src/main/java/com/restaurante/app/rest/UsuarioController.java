@@ -25,7 +25,7 @@ public class UsuarioController {
     UsuarioService service;
 
     @Operation(summary = "Cadastrar Usuário",
-            description = "Salvar o Usuário.")
+            description = "Criação do Usuário.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
     public ResponseEntity<UsuarioDTO> cadastro(@Valid @RequestBody UsuarioEntity entity) {

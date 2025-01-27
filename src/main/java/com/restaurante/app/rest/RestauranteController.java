@@ -38,7 +38,7 @@ public class RestauranteController {
     AtualizarRestauranteUseCase atualizarRestauranteUseCase;
 
     @Operation(summary = "Cadastrar Restaurante",
-            description = "Cadastro realizado do restaurante.")
+            description = "Cadastrr Restaurante no sistema.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
     public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteEntity entity) {
@@ -46,7 +46,7 @@ public class RestauranteController {
     }
 
     @Operation(summary = "Atualizar Restaurante",
-            description = "Atualização realizada do restaurante.")
+            description = "Atualização do restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/{id}")
     public ResponseEntity<RestauranteDTO> atualizar(@PathVariable Long id,

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -35,18 +36,22 @@ public class AvaliacaoEntity implements Serializable {
     @Min(0)
     @Max(10)
     @Column(nullable = false)
+    @NotNull(message = "A nota não pode ser nula. Por favor, forneça um valor para a nota.")
     private Integer nota;
 
     @Column(length = 500)
     private String comentario;
 
     @Column(nullable = false)
+    @NotNull(message = "O usuário não pode ser nulo. Por favor, forneça um valor para o usuário.")
     private Long usuarioId;
 
     @Column(nullable = false)
+    @NotNull(message = "O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante.")
     private Long restauranteId;
 
     @Column(name = "datapost", nullable = false)
+    @NotNull(message = "O data do post não pode ser nulo. Por favor, forneça uma data.")
     private LocalDateTime datapost = LocalDateTime.now();
 
 }

@@ -29,7 +29,7 @@ public class MesaController {
     MesaService service;
 
     @Operation(summary = "Cadastrar Mesa",
-            description = "Salvar a Mesa.")
+            description = "Salvar a Mesa do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
     public ResponseEntity<MesaDTO> cadastro(@Valid @RequestBody MesaEntity entity) {

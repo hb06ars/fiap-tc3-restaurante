@@ -25,7 +25,7 @@ public class FuncionamentoController {
     FuncionamentoService service;
 
     @Operation(summary = "Cadastrar Funcionamento",
-            description = "Salvar Funcionamento.")
+            description = "Cadastrar o horário de Funcionamento do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
     public ResponseEntity<FuncionamentoDTO> cadastro(@Valid @RequestBody FuncionamentoEntity entity) {

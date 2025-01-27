@@ -23,7 +23,7 @@ public class GerarNumeroProcesso {
 
     public static String gerarNumerosAleatorios() {
         String caracteresAleatorios = UUID.randomUUID().toString().replaceAll("[^A-Za-z]", "");
-        if(caracteresAleatorios.length() >= 6)
+        if (caracteresAleatorios.length() >= 6)
             return caracteresAleatorios.substring(0, 6).toUpperCase();
         return "";
     }

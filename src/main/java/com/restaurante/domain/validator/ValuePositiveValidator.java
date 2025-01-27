@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 public class ValuePositiveValidator implements ConstraintValidator<ValuePositive, BigDecimal> {
 
     @Override
-    public void initialize(ValuePositive constraintAnnotation) {}
+    public void initialize(ValuePositive constraintAnnotation) {
+    }
 
     @Override
     public boolean isValid(BigDecimal valor, ConstraintValidatorContext context) {

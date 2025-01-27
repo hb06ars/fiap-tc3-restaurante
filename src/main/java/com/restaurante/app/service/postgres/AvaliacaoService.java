@@ -42,7 +42,7 @@ public class AvaliacaoService {
         if (avaliacaoExistente.isPresent()) {
             return repository.save(avaliacaoExistente.get());
         } else {
-            throw new RuntimeException("Avaliacao " + id + " não encontrado.");
+            throw new RuntimeException("Avaliação " + id + " não encontrada.");
         }
     }
 
@@ -51,7 +51,7 @@ public class AvaliacaoService {
         if (repository.findById(id).isPresent()) {
             repository.findById(id);
         } else {
-            throw new RuntimeException("Avaliacao com ID: " + id + ", não encontrado.");
+            throw new RuntimeException("Avaliacao com ID: " + id + ", não encontrada.");
         }
     }
 

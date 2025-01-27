@@ -10,7 +10,7 @@ import lombok.Setter;
 public class AjustesString {
 
     public static String removerTracosCpf(String cpf) {
-        return cpf.replace("-","").replace("/","").replace(".","").trim();
+        return cpf.replace("-", "").replace("/", "").replace(".", "").trim();
     }
 
 }

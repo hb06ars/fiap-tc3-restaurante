@@ -51,7 +51,7 @@ public class MesaService {
         if (mesaExistente.isPresent()) {
             return repository.save(mesaExistente.get());
         } else {
-            throw new RuntimeException("Mesa " + id + " não encontrado.");
+            throw new RuntimeException("Mesa " + id + " não encontrada.");
         }
     }
 

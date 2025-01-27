@@ -32,7 +32,7 @@ public class ReservaController {
     ReservaService reservaService;
 
     @Operation(summary = "Cadastrar Reserva",
-            description = "Salvar a Reserva.")
+            description = "Salvar a Reserva que o cliente fizer.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
     public ResponseEntity<ReservaDTO> cadastro(@Valid @RequestBody ReservaEntity entity) {
@@ -40,7 +40,7 @@ public class ReservaController {
     }
 
     @Operation(summary = "Atualizar Reserva",
-            description = "Atualizar a Reserva.")
+            description = "Atualizar a Reserva do cliente.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualizção realizada com sucesso.")
     @PutMapping("/{id}")
     public ResponseEntity<ReservaDTO> atualizacao(@PathVariable Long id, @Valid @RequestBody ReservaEntity entity) {

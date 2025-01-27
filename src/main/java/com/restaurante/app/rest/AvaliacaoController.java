@@ -24,9 +24,9 @@ public class AvaliacaoController {
     @Autowired
     AvaliacaoService service;
 
-    @Operation(summary = "Cadastrar Avaliação",
+    @Operation(summary = "Registrar Avaliação",
             description = "Salvar a avaliação.")
-    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
+    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Registro salvo com sucesso.")
     @PostMapping
     public ResponseEntity<AvaliacaoDTO> avaliar(@Valid @RequestBody AvaliacaoEntity entity) {
         return ResponseEntity.ok(service.save(entity));

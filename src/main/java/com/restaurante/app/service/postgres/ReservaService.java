@@ -44,7 +44,7 @@ public class ReservaService {
         if (reservaExistente.isPresent()) {
             return repository.save(reservaExistente.get());
         } else {
-            throw new RuntimeException("Reserva " + id + " não encontrado.");
+            throw new RuntimeException("Reserva " + id + " não encontrada.");
         }
     }
 
@@ -53,7 +53,7 @@ public class ReservaService {
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
         } else {
-            throw new RuntimeException("Reserva com ID: " + id + ", não encontrado.");
+            throw new RuntimeException("Reserva com ID: " + id + ", não encontrada.");
         }
     }
 

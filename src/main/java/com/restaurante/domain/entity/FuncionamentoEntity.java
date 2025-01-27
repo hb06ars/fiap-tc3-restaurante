@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalTime;
 
@@ -36,15 +37,19 @@ public class FuncionamentoEntity implements Serializable {
 
     @Column(nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "O dia da semana não pode ser nulo. Por favor, forneça um valor o dia da semana.")
     private DiaEnum diaEnum;
 
     @Column(nullable = false)
+    @NotNull(message = "A abertura não pode ser nula. Por favor, forneça um valor para a abertura.")
     private LocalTime abertura;
 
     @Column(nullable = false)
+    @NotNull(message = "O fechamento não pode ser nulo. Por favor, forneça um valor para o fechamento.")
     private LocalTime fechamento;
 
     @Column(name = "restaurante_id", nullable = false)
+    @NotNull(message = "O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante.")
     private Long restauranteId;
 
     public FuncionamentoEntity(FuncionamentoDTO dto) {

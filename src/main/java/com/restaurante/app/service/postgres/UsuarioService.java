@@ -42,7 +42,7 @@ public class UsuarioService {
         if (usuarioExistente.isPresent()) {
             return repository.save(usuarioExistente.get());
         } else {
-            throw new RuntimeException("Usuario " + id + " não encontrado.");
+            throw new RuntimeException("Usuário " + id + " não encontrado.");
         }
     }
 
@@ -51,7 +51,7 @@ public class UsuarioService {
         if (repository.findById(id).isPresent()) {
             repository.findById(id);
         } else {
-            throw new RuntimeException("Usuario com ID: " + id + ", não encontrado.");
+            throw new RuntimeException("Usuário com ID: " + id + ", não encontrado.");
         }
     }
 
