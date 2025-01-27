@@ -29,4 +29,6 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Long> {
             @Param("restauranteId") Long restauranteId,
             @Param("dataReserva") LocalDateTime dataReserva
     );
+
+    List<MesaEntity> findAllByRestauranteId(Long idRestaurante);
 }

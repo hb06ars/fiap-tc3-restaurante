@@ -45,6 +45,11 @@ public class MesaService {
     }
 
     @Transactional(readOnly = true)
+    public List<MesaEntity> findAllByRestaurante(Long idRestaurante) {
+        return repository.findAllByRestauranteId(idRestaurante);
+    }
+
+    @Transactional(readOnly = true)
     public MesaEntity findById(Long id) {
         Optional<MesaEntity> obj = repository.findById(id);
         return obj.orElse(null);
@@ -71,24 +76,19 @@ public class MesaService {
 
     @Transactional
     public void delete(Long id) {
-        try {
-            if (repository.findById(id).isPresent()) {
-                repository.findById(id);
-            } else {
-                throw new RuntimeException("Mesa com ID: " + id + ", não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var mesaExistente = repository.findById(id).orElse(null);
-            if (mesaExistente != null) {
-                repository.deleteById(id);
-            } else {
-                throw new RuntimeException("O mesa já foi removido!");
-            }
-        }
+        repository.deleteById(id);
     }
 
     public List<MesaDisponivelDTO> buscarMesas(Long id) {
         return MesaDisponivelMapper.convert(repository.buscarMesasDisponiveis(id, DataFormat.truncate(LocalDateTime.now())));
+    }
+
+    public List<MesaDTO> salvarTodasMesas(List<MesaEntity> novasMesasAdicionadas) {
+        return repository.saveAll(novasMesasAdicionadas).stream().map(MesaDTO::new).toList();
+    }
+
+    public List<MesaEntity> findAllByIdRestaurante(Long idRestaurante) {
+        return repository.findAllByRestauranteId(idRestaurante);
     }
 }
 

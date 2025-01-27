@@ -90,5 +90,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(listErrorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(CapacidadeException.class)
+    public ResponseEntity<ListErrorResponse> handleFieldNotFoundException(CapacidadeException e) {
+        ListErrorResponse listErrorResponse = new ListErrorResponse(
+                List.of(MessageErrorDTO.builder()
+                        .detalhe(e.getMessage())
+                        .erro("Capacidade Inválida.")
+                        .build()),
+                HttpStatus.CONFLICT.value()
+        );
+        return new ResponseEntity<>(listErrorResponse, HttpStatus.CONFLICT);
+    }
+
 
 }

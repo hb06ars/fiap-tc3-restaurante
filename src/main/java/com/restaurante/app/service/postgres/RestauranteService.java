@@ -2,6 +2,8 @@ package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.entity.RestauranteEntity;
+import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
+import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -15,24 +17,17 @@ import java.util.Optional;
 public class RestauranteService {
 
     private final RestauranteRepository repository;
+    private final InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     @Autowired
-    public RestauranteService(RestauranteRepository repository) {
+    public RestauranteService(RestauranteRepository repository, InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase) {
         this.repository = repository;
+        this.insercaoRemocaoDasMesasUseCase = insercaoRemocaoDasMesasUseCase;
     }
 
     @Transactional
     public RestauranteDTO save(RestauranteEntity restauranteEntity) {
-        try {
-            return new RestauranteDTO(repository.save(restauranteEntity));
-        } catch (OptimisticLockingFailureException e) {
-            var restauranteExistente = repository.findById(restauranteEntity.getId()).orElse(null);
-            if (restauranteExistente != null) {
-                return new RestauranteDTO(repository.save(restauranteExistente));
-            } else {
-                throw new RuntimeException("Houve um problema para a restaurante, tente novamente!");
-            }
-        }
+        return new RestauranteDTO(repository.save(restauranteEntity));
     }
 
     @Transactional(readOnly = true)
@@ -47,21 +42,16 @@ public class RestauranteService {
     }
 
     @Transactional
-    public RestauranteEntity update(Long id, RestauranteEntity restauranteSalvar) {
-        try {
-            Optional<RestauranteEntity> restauranteExistente = repository.findById(id);
-            if (restauranteExistente.isPresent()) {
-                return repository.save(restauranteExistente.get());
-            } else {
-                throw new RuntimeException("Restaurante " + id + " não encontrado.");
-            }
-        } catch (OptimisticLockingFailureException e) {
-            var restauranteExistente = repository.findById(restauranteSalvar.getId()).orElse(null);
-            if (restauranteExistente != null) {
-                return repository.save(restauranteExistente);
-            } else {
-                throw new RuntimeException("Houve um problema para atualizar o veículo, tente novamente!");
-            }
+    public RestauranteDTO update(Long id, RestauranteEntity restauranteSalvar) {
+        var restauranteExistente = findById(id);
+        if (restauranteExistente != null) {
+            restauranteExistente.setNome(restauranteSalvar.getNome());
+            restauranteExistente.setLocalizacao(restauranteSalvar.getLocalizacao());
+            restauranteExistente.setTipoCozinha(restauranteSalvar.getTipoCozinha());
+            restauranteExistente.setCapacidade(restauranteSalvar.getCapacidade());
+            return new RestauranteDTO(repository.save(restauranteExistente));
+        } else {
+            throw new ObjectNotFoundException("Restaurante não encontrado no sistema!");
         }
     }
 
