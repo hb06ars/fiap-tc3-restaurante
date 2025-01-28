@@ -9,7 +9,8 @@ import lombok.Setter;
 @Builder
 public class AjustesString {
 
-    public AjustesString() {
+    private AjustesString() {
+        throw new UnsupportedOperationException("Construtor AjustesString() não deve ser chamado.");
     }
 
     public static String removerTracosCpf(String cpf) {

@@ -7,4 +7,15 @@ spring:
     password: ${POSTGRES_PASS}
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
+sonar:
+  host:
+    url: http://localhost:9000
+  projectKey: restaurante
+  projectName: restaurante
+  projectVersion: 1.0
+  sources: src/main/java
+  tests: src/test/java
+  jacoco:
+    reportPath: target/jacoco.exec
+
 tolerancia-mesa: ${TOLERANCIA_MESA:2}
