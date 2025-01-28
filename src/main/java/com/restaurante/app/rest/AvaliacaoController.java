@@ -38,7 +38,7 @@ public class AvaliacaoController {
             description = "Lista todas as avaliações pelo Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Registros encontrados com sucesso.")
     @GetMapping("/{idRestaurante}")
-    public ResponseEntity<List<AvaliacaoDTO>> buscar(@PathVariable Long idRestaurante) {
+    public ResponseEntity<List<AvaliacaoDTO>> buscar(@PathVariable(name = "idRestaurante") Long idRestaurante) {
         return ResponseEntity.ok(service.listarPorRestaurante(idRestaurante));
     }
 

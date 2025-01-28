@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +35,7 @@ public class ReservaController {
             description = "Salvar a Reserva que o cliente fizer.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<ReservaDTO> cadastro(ReservaDTO dto) {
+    public ResponseEntity<ReservaDTO> cadastro(@RequestBody ReservaDTO dto) {
         return ResponseEntity.ok(reservarMesaUseCase.salvar(dto));
     }
 
@@ -42,7 +43,7 @@ public class ReservaController {
             description = "Atualizar a Reserva do cliente, exemplo: Concluir, Cancelar, Alterar a reserva.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualizção realizada com sucesso.")
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaDTO> atualizacao(@PathVariable Long id, ReservaDTO dto) {
+    public ResponseEntity<ReservaDTO> atualizacao(@PathVariable(name = "id") Long id, @RequestBody ReservaDTO dto) {
         return ResponseEntity.ok(reservarMesaUseCase.atualizar(id, dto));
     }
 
@@ -50,7 +51,7 @@ public class ReservaController {
             description = "Buscar as Reservas.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping("/{idrestaurante}")
-    public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable Long idrestaurante, ReservaDTO dto) {
+    public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable(name = "idrestaurante") Long idrestaurante, ReservaDTO dto) {
         return ResponseEntity.ok(reservaService.buscar(idrestaurante, dto));
     }
 

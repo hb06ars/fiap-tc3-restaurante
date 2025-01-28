@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,7 @@ public class FuncionamentoController {
             description = "Cadastrar o horário de Funcionamento do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<FuncionamentoDTO> cadastro(FuncionamentoDTO dto) {
+    public ResponseEntity<FuncionamentoDTO> cadastro(@RequestBody FuncionamentoDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
@@ -41,8 +42,8 @@ public class FuncionamentoController {
             description = "Atualizar o horário de Funcionamento do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/atualizar/{idFuncionamento}")
-    public ResponseEntity<FuncionamentoDTO> atualizar(@PathVariable Long idFuncionamento,
-                                                      FuncionamentoDTO dto) {
+    public ResponseEntity<FuncionamentoDTO> atualizar(@PathVariable(name = "idFuncionamento") Long idFuncionamento,
+                                                      @RequestBody FuncionamentoDTO dto) {
         return ResponseEntity.ok(service.update(idFuncionamento, dto));
     }
 
@@ -50,7 +51,7 @@ public class FuncionamentoController {
             description = "Deletar registro de horário de Funcionamento do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @DeleteMapping("/deletar/{idFuncionamento}")
-    public ResponseEntity<MessageSuccessDTO> deletar(@PathVariable Long idFuncionamento) {
+    public ResponseEntity<MessageSuccessDTO> deletar(@PathVariable(name = "idFuncionamento") Long idFuncionamento) {
         service.delete(idFuncionamento);
         return ResponseEntity.ok(MessageSuccessDTO.builder().mensagem("Registro removido com sucesso").build());
     }
@@ -59,7 +60,7 @@ public class FuncionamentoController {
             description = "Buscar horários de funcionamento do restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping("/{idRestaurante}")
-    public ResponseEntity<List<FuncionamentoDTO>> buscarPorRestaurante(@PathVariable Long idRestaurante) {
+    public ResponseEntity<List<FuncionamentoDTO>> buscarPorRestaurante(@PathVariable(name = "idRestaurante") Long idRestaurante) {
         return ResponseEntity.ok(service.buscarPorRestaurante(idRestaurante));
     }
 

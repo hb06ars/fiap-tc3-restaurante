@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class MesaController {
             description = "Salvar a Mesa do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<MesaDTO> cadastro(MesaDTO dto) {
+    public ResponseEntity<MesaDTO> cadastro(@RequestBody MesaDTO dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
@@ -40,7 +41,7 @@ public class MesaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/atualizar/{id}")
     public ResponseEntity<MesaDTO> atualizar(@PathVariable(name = "id") Long id,
-                                             MesaDTO dto) {
+                                             @RequestBody MesaDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
@@ -48,7 +49,7 @@ public class MesaController {
             description = "Buscar a Mesa.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping(("/{id}"))
-    public ResponseEntity<List<MesaDisponivelDTO>> buscarMesas(@PathVariable Long id) {
+    public ResponseEntity<List<MesaDisponivelDTO>> buscarMesas(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(service.buscarMesas(id));
     }
 
@@ -56,7 +57,7 @@ public class MesaController {
             description = "Buscar a Mesas por Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping(("/listaporrestaurante/{idRestaurante}"))
-    public ResponseEntity<List<MesaDTO>> buscarMesasPorRestaurante(@PathVariable Long idRestaurante) {
+    public ResponseEntity<List<MesaDTO>> buscarMesasPorRestaurante(@PathVariable(name = "idRestaurante") Long idRestaurante) {
         return ResponseEntity.ok(service.findAllByIdRestaurante(idRestaurante));
     }
 

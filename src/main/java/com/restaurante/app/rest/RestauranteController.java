@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,8 +49,8 @@ public class RestauranteController {
             description = "Atualização do restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/{id}")
-    public ResponseEntity<RestauranteDTO> atualizar(@PathVariable Long id,
-                                                    RestauranteDTO dto) {
+    public ResponseEntity<RestauranteDTO> atualizar(@PathVariable(name = "id") Long id,
+                                                    @RequestBody RestauranteDTO dto) {
         return ResponseEntity.ok(atualizarRestauranteUseCase.execute(id, dto));
     }
 
@@ -68,7 +69,7 @@ public class RestauranteController {
             description = "Deleção do restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Deleção realizada com sucesso.")
     @DeleteMapping("/{id}")
-    public ResponseEntity<MessageSuccessDTO> deletar(@PathVariable Long id) {
+    public ResponseEntity<MessageSuccessDTO> deletar(@PathVariable(name = "id") Long id) {
         service.delete(id);
         return ResponseEntity.ok(MessageSuccessDTO.builder().mensagem("Registro deletado com sucesso.").build());
     }
