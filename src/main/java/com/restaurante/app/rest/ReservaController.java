@@ -51,7 +51,8 @@ public class ReservaController {
             description = "Buscar as Reservas.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping("/{idrestaurante}")
-    public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable(name = "idrestaurante") Long idrestaurante, ReservaDTO dto) {
+    public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable(name = "idrestaurante") Long idrestaurante,
+                                                   @RequestBody ReservaDTO dto) {
         return ResponseEntity.ok(reservaService.buscar(idrestaurante, dto));
     }
 

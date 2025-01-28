@@ -41,7 +41,7 @@ public class RestauranteController {
             description = "Cadastrar Restaurante no sistema.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<RestauranteDTO> cadastrar(RestauranteDTO dto) {
+    public ResponseEntity<RestauranteDTO> cadastrar(@RequestBody RestauranteDTO dto) {
         return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(dto));
     }
 

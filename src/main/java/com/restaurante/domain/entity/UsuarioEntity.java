@@ -1,7 +1,6 @@
 package com.restaurante.domain.entity;
 
 import com.restaurante.domain.dto.UsuarioDTO;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "usuario")
@@ -43,13 +41,15 @@ public class UsuarioEntity implements Serializable {
     @NotNull(message = "O celular não pode ser nulo. Por favor, forneça um valor.")
     private String celular;
 
-    public UsuarioEntity(String nome, String email, String celular) {
+    public UsuarioEntity(Long id, String nome, String email, String celular) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.celular = celular;
     }
 
     public UsuarioEntity(UsuarioDTO dto) {
+        this.id = dto.getId();
         this.nome = dto.getNome();
         this.email = dto.getEmail();
         this.celular = dto.getCelular();

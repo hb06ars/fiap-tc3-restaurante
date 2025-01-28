@@ -54,6 +54,7 @@ public class RestauranteEntity implements Serializable {
     private Integer capacidade = 0;
 
     public RestauranteEntity(RestauranteDTO dto) {
+        this.id = dto.getId();
         this.nome = dto.getNome();
         this.localizacao = dto.getLocalizacao();
         this.tipoCozinha = dto.getTipoCozinha();

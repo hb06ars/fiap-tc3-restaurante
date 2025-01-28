@@ -1,7 +1,6 @@
 package com.restaurante.domain.entity;
 
 import com.restaurante.domain.dto.MesaDTO;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "mesa")
@@ -39,7 +37,8 @@ public class MesaEntity implements Serializable {
     @NotNull(message = "O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante.")
     private Long restauranteId;
 
-    public MesaEntity(String nomeMesa, Long restauranteId) {
+    public MesaEntity(Long id, String nomeMesa, Long restauranteId) {
+        this.id = id;
         this.nomeMesa = nomeMesa;
         this.restauranteId = restauranteId;
     }
