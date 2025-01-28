@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.times;
@@ -186,5 +188,30 @@ class MesaServiceTest {
         assertNotNull(mesas);
         assertEquals(1, mesas.size());
         assertEquals("Mesa 1", mesas.get(0).getNomeMesa());
+    }
+
+    @Test
+    void findAllByRestaurante_ReturnsListOfMesas_WhenRestauranteHasMesas() {
+        List<MesaEntity> mesas = List.of(
+                new MesaEntity(1L, "Mesa 1", 1L),
+                new MesaEntity(2L, "Mesa 2", 1L)
+        );
+
+        Mockito.when(mesaRepository.findAllByRestauranteId(any())).thenReturn(mesas);
+
+        List<MesaDTO> mesasDTO = mesaService.findAllByRestaurante(1L);
+        assertNotNull(mesasDTO);
+        assertEquals(2, mesasDTO.size());
+        assertEquals("Mesa 1", mesasDTO.get(0).getNomeMesa());
+        assertEquals("Mesa 2", mesasDTO.get(1).getNomeMesa());
+    }
+
+    @Test
+    void findAllByRestaurante_ReturnsEmptyList_WhenRestauranteHasNoMesas() {
+        Mockito.when(mesaRepository.findAllByRestauranteId(any())).thenReturn(List.of());
+        List<MesaDTO> mesasDTO = mesaService.findAllByRestaurante(1L);
+
+        assertNotNull(mesasDTO);
+        assertTrue(mesasDTO.isEmpty());
     }
 }

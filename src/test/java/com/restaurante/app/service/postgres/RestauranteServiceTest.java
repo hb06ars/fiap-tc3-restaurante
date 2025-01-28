@@ -10,15 +10,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.times;
@@ -134,6 +137,24 @@ class RestauranteServiceTest {
 
         assertNotNull(result);
         assertEquals(1, result.size());
+    }
+
+    @Test
+    void restauranteJaExiste_ReturnsTrue_WhenRestaurantExists() {
+        Mockito.when(restauranteRepository.buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
+                .thenReturn(List.of(restauranteEntity));
+
+        boolean resultado = restauranteService.restauranteJaExiste("Restaurante Teste", "Localização Teste");
+        assertTrue(resultado);
+    }
+
+    @Test
+    void restauranteJaExiste_ReturnsFalse_WhenRestaurantDoesNotExist() {
+        Mockito.when(restauranteRepository.buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
+                .thenReturn(List.of());
+
+        boolean resultado = restauranteService.restauranteJaExiste("Restaurante Teste", "Localização Teste");
+        assertFalse(resultado);
     }
 
 }
