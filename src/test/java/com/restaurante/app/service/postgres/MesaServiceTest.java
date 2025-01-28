@@ -214,4 +214,11 @@ class MesaServiceTest {
         assertNotNull(mesasDTO);
         assertTrue(mesasDTO.isEmpty());
     }
+
+    @Test
+    void save_MesasIsEmpty_ThrowsCapacidadeException() {
+        when(restauranteRepository.findById(1L)).thenReturn(Optional.of(new RestauranteEntity()));
+        when(mesaRepository.findAllByRestauranteId(1L)).thenReturn(List.of());
+        assertThrows(CapacidadeException.class, () -> mesaService.save(mesaDTO));
+    }
 }
