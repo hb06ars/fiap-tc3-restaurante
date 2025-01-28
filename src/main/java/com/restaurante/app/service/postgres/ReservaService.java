@@ -4,6 +4,7 @@ import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.entity.ReservaEntity;
 import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.exceptions.FieldNotFoundException;
+import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class ReservaService {
             reservaExistente.get().setStatusPagamento(reservaSalvar.getStatusPagamento());
             return new ReservaDTO(repository.save(reservaExistente.get()));
         } else {
-            throw new RuntimeException("Reserva " + id + " não encontrada.");
+            throw new ObjectNotFoundException("Reserva " + id + " não encontrada.");
         }
     }
 
@@ -62,7 +63,7 @@ public class ReservaService {
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
         } else {
-            throw new RuntimeException("Reserva com ID: " + id + ", não encontrada.");
+            throw new ObjectNotFoundException("Reserva com ID: " + id + ", não encontrada.");
         }
     }
 

@@ -2,6 +2,7 @@ package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.AvaliacaoDTO;
 import com.restaurante.domain.entity.AvaliacaoEntity;
+import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.AvaliacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class AvaliacaoService {
         if (repository.findById(id).isPresent()) {
             repository.findById(id);
         } else {
-            throw new RuntimeException("Avaliacao com ID: " + id + ", não encontrada.");
+            throw new ObjectNotFoundException("Avaliacao com ID: " + id + ", não encontrada.");
         }
     }
 

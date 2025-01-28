@@ -3,6 +3,7 @@ package com.restaurante.app.service.postgres;
 import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.enums.DiaEnum;
+import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,7 +55,7 @@ public class FuncionamentoService {
             funcionamentoExistente.get().setRestauranteId(dto.getRestauranteId());
             return new FuncionamentoDTO(repository.save(funcionamentoExistente.get()));
         } else {
-            throw new RuntimeException("Funcionamento " + id + " não encontrado.");
+            throw new ObjectNotFoundException("Funcionamento " + id + " não encontrado.");
         }
     }
 
@@ -63,7 +64,7 @@ public class FuncionamentoService {
         if (repository.findById(id).isPresent()) {
             repository.deleteById(id);
         } else {
-            throw new RuntimeException("Funcionamento com ID: " + id + ", não encontrado.");
+            throw new ObjectNotFoundException("Funcionamento com ID: " + id + ", não encontrado.");
         }
     }
 

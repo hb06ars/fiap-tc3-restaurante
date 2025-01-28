@@ -9,6 +9,9 @@ import lombok.Setter;
 @Builder
 public class AjustesString {
 
+    public AjustesString() {
+    }
+
     public static String removerTracosCpf(String cpf) {
         if (cpf != null)
             return cpf.replace("-", "").replace("(", "").replace(")", "").trim();

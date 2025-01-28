@@ -43,7 +43,7 @@ public class RestauranteService {
 
     @Transactional
     public RestauranteDTO update(Long id, RestauranteDTO restauranteDtoSalvar) {
-        var restauranteExistente = findById(id);
+        var restauranteExistente = this.findById(id);
         if (restauranteExistente != null) {
             restauranteExistente.setNome(restauranteDtoSalvar.getNome());
             restauranteExistente.setLocalizacao(restauranteDtoSalvar.getLocalizacao());

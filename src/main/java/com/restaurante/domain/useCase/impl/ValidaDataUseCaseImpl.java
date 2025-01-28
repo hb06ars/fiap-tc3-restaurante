@@ -30,7 +30,7 @@ public class ValidaDataUseCaseImpl implements ValidaDataUseCase {
     }
 
 
-    private DiaEnum buscaDiaDaSemana(LocalDate diaSelecionado) {
+    public DiaEnum buscaDiaDaSemana(LocalDate diaSelecionado) {
         if (BuscarFeriadoNacional.consultar(diaSelecionado))
             return DiaEnum.FERIADOS;
         return BuscarDiaDaSemana.consultar(diaSelecionado);
