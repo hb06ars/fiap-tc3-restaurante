@@ -38,7 +38,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable(name = "id") Long id,
-                                                UsuarioDTO dto) {
+                                                @RequestBody UsuarioDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
