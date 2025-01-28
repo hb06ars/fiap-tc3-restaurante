@@ -8,8 +8,9 @@ spring:
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
 sonar:
+  token: sqp_e6b0eaa38d92c4c69bb9e554ef98feceba932e9c
   host:
-    url: http://localhost:9000
+    url: http://localhost:9008
   projectKey: restaurante
   projectName: restaurante
   projectVersion: 1.0
