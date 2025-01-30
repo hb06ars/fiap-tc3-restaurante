@@ -2,7 +2,7 @@ package com.restaurante.domain.useCase.impl;
 
 import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
-import com.restaurante.domain.useCase.ValidaDataUseCase;
+import com.restaurante.domain.useCase.ValidarDataUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class ReservarMesaUseCaseImplTest {
     private ValidarReservaUseCase validarReservaUseCase;
 
     @Mock
-    private ValidaDataUseCase validaDataUseCase;
+    private ValidarDataUseCase validaDataUseCase;
 
     @Mock
     private ReservaService reservaService;

@@ -2,7 +2,7 @@ package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.entity.RestauranteEntity;
-import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
+import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class RestauranteService {
     private final RestauranteRepository repository;
 
     @Autowired
-    public RestauranteService(RestauranteRepository repository, InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase) {
+    public RestauranteService(RestauranteRepository repository, InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
         this.repository = repository;
     }
 

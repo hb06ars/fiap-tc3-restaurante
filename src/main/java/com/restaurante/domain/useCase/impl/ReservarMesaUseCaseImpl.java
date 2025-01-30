@@ -3,7 +3,7 @@ package com.restaurante.domain.useCase.impl;
 import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.useCase.ReservarMesaUseCase;
-import com.restaurante.domain.useCase.ValidaDataUseCase;
+import com.restaurante.domain.useCase.ValidarDataUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +15,10 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
 
     private final Integer toleranciaMesa;
     private final ValidarReservaUseCase validarReservaUseCase;
-    private final ValidaDataUseCase validaDataUseCase;
+    private final ValidarDataUseCase validaDataUseCase;
     private final ReservaService service;
 
-    public ReservarMesaUseCaseImpl(@Value("${tolerancia-mesa}") Integer toleranciaMesa, ValidarReservaUseCase validarReservaUseCase, ValidaDataUseCase validaDataUseCase, ReservaService service) {
+    public ReservarMesaUseCaseImpl(@Value("${tolerancia-mesa}") Integer toleranciaMesa, ValidarReservaUseCase validarReservaUseCase, ValidarDataUseCase validaDataUseCase, ReservaService service) {
         this.toleranciaMesa = toleranciaMesa;
         this.validarReservaUseCase = validarReservaUseCase;
         this.validaDataUseCase = validaDataUseCase;

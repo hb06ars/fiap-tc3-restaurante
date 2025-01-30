@@ -27,7 +27,7 @@ class InsercaoRemocaoDasMesasUseCaseImplTest {
     private MesaService mesaService;
 
     @InjectMocks
-    private InsercaoRemocaoDasMesasUseCaseImpl useCase;
+    private InserirRemoverMesasUseCaseImpl useCase;
 
     @BeforeEach
     void setUp() {

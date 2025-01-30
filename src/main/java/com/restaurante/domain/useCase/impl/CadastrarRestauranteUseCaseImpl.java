@@ -4,7 +4,7 @@ import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
-import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
+import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +14,9 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
 
     private final RestauranteService service;
     private final FuncionamentoService funcionamentoService;
-    private final InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
+    private final InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
 
-    public CadastrarRestauranteUseCaseImpl(RestauranteService service, FuncionamentoService funcionamentoService, InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase) {
+    public CadastrarRestauranteUseCaseImpl(RestauranteService service, FuncionamentoService funcionamentoService, InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
         this.service = service;
         this.funcionamentoService = funcionamentoService;
         this.insercaoRemocaoDasMesasUseCase = insercaoRemocaoDasMesasUseCase;

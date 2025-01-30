@@ -3,7 +3,7 @@ package com.restaurante.domain.useCase.impl;
 import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
+import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,7 +29,7 @@ class CadastrarRestauranteUseCaseImplTest {
     private FuncionamentoService funcionamentoService;
 
     @Mock
-    private InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
+    private InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     @InjectMocks
     private CadastrarRestauranteUseCaseImpl cadastrarRestauranteUseCase;

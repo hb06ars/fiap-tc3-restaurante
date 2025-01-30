@@ -3,7 +3,7 @@ package com.restaurante.domain.useCase.impl;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.AtualizarRestauranteUseCase;
-import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
+import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 public class AtualizarRestauranteUseCaseImpl implements AtualizarRestauranteUseCase {
 
     private final RestauranteService service;
-    private final InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
+    private final InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
 
-    public AtualizarRestauranteUseCaseImpl(RestauranteService service, InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase) {
+    public AtualizarRestauranteUseCaseImpl(RestauranteService service, InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
         this.service = service;
         this.insercaoRemocaoDasMesasUseCase = insercaoRemocaoDasMesasUseCase;
     }

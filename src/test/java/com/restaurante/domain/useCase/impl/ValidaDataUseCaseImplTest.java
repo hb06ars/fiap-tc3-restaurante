@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 class ValidaDataUseCaseImplTest {
 
     @InjectMocks
-    private ValidaDataUseCaseImpl validaDataUseCase;
+    private ValidarDataUseCaseImpl validaDataUseCase;
 
     @Mock
     private FuncionamentoService funcionamentoService;

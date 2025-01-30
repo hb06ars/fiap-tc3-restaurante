@@ -2,7 +2,7 @@ package com.restaurante.domain.useCase.impl;
 
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.useCase.InsercaoRemocaoDasMesasUseCase;
+import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class AtualizarRestauranteUseCaseImplTest {
     private RestauranteService restauranteService;
 
     @Mock
-    private InsercaoRemocaoDasMesasUseCase insercaoRemocaoDasMesasUseCase;
+    private InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     private RestauranteDTO restauranteDTO;
     private RestauranteDTO restauranteOriginal;

@@ -2,7 +2,7 @@ package com.restaurante.domain.useCase.impl;
 
 import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.domain.enums.DiaEnum;
-import com.restaurante.domain.useCase.ValidaDataUseCase;
+import com.restaurante.domain.useCase.ValidarDataUseCase;
 import com.restaurante.domain.util.BuscarDiaDaSemana;
 import com.restaurante.domain.util.BuscarFeriadoNacional;
 import com.restaurante.infra.exceptions.ReservaException;
@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 
 @Component
 @Slf4j
-public class ValidaDataUseCaseImpl implements ValidaDataUseCase {
+public class ValidarDataUseCaseImpl implements ValidarDataUseCase {
 
     private final FuncionamentoService funcionamentoService;
 
-    public ValidaDataUseCaseImpl(FuncionamentoService funcionamentoService) {
+    public ValidarDataUseCaseImpl(FuncionamentoService funcionamentoService) {
         this.funcionamentoService = funcionamentoService;
     }
 
