@@ -3,15 +3,34 @@ package com.restaurante.infra.exceptions;
 import com.restaurante.domain.dto.MessageErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.support.WebExchangeBindException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, Object> response = new HashMap<>();
+        BindingResult result = ex.getBindingResult();
+
+        for (FieldError error : result.getFieldErrors()) {
+            response.put("erro", "Erro na validação de dados");
+            response.put("detalhe", error.getDefaultMessage());
+            response.put("campo", error.getField());
+            response.put("statusCode", 400);
+        }
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ListErrorResponse> handleErrorSaveObjectException(Exception e) {

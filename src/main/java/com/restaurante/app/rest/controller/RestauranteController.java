@@ -1,5 +1,6 @@
 package com.restaurante.app.rest.controller;
 
+import com.restaurante.app.rest.request.RestauranteRequest;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.MessageSuccessDTO;
 import com.restaurante.domain.dto.RestauranteDTO;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,8 +43,8 @@ public class RestauranteController {
             description = "Cadastrar Restaurante no sistema.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
-    public ResponseEntity<RestauranteDTO> cadastrar(@RequestBody RestauranteDTO dto) {
-        return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(dto));
+    public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteRequest request) {
+        return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(new RestauranteDTO(request)));
     }
 
     @Operation(summary = "Atualizar Restaurante",
