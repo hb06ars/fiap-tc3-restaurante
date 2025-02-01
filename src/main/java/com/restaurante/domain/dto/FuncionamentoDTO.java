@@ -1,6 +1,7 @@
 
 package com.restaurante.domain.dto;
 
+import com.restaurante.app.rest.request.FuncionamentoRequest;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.enums.DiaEnum;
 import lombok.AllArgsConstructor;
@@ -31,5 +32,13 @@ public class FuncionamentoDTO implements Serializable {
         this.abertura = entity.getAbertura();
         this.fechamento = entity.getFechamento();
         this.restauranteId = entity.getRestauranteId();
+    }
+
+    public FuncionamentoDTO(FuncionamentoRequest request) {
+        this.id = request.getId();
+        this.diaEnum = request.getDiaEnum();
+        this.abertura = request.getAbertura();
+        this.fechamento = request.getFechamento();
+        this.restauranteId = request.getRestauranteId();
     }
 }

@@ -1,6 +1,8 @@
 package com.restaurante.app.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.restaurante.app.rest.request.AvaliacaoRequest;
 import com.restaurante.app.service.postgres.AvaliacaoService;
 import com.restaurante.domain.dto.AvaliacaoDTO;
 import org.junit.jupiter.api.AfterEach;
@@ -35,17 +37,20 @@ class AvaliacaoControllerTest {
 
     private ObjectMapper objectMapper; // Instanciação do ObjectMapper
 
-    private AvaliacaoDTO avaliacaoDTO;
+    private AvaliacaoRequest request;
 
     @BeforeEach
     void setUp() {
         mock = MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper(); // Instanciando o ObjectMapper
-        avaliacaoDTO = new AvaliacaoDTO();
-        avaliacaoDTO.setId(1L);
-        avaliacaoDTO.setRestauranteId(10L);
-        avaliacaoDTO.setNota(5);
-        avaliacaoDTO.setComentario("Ótima comida!");
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        request = new AvaliacaoRequest();
+        request.setId(1L);
+        request.setRestauranteId(10L);
+        request.setUsuarioId(1L);
+        request.setNota(5);
+        request.setComentario("Ótima comida!");
 
         AvaliacaoController controller = new AvaliacaoController(avaliacaoService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -58,11 +63,11 @@ class AvaliacaoControllerTest {
 
     @Test
     void testAvaliar() throws Exception {
-        when(avaliacaoService.save(any(AvaliacaoDTO.class))).thenReturn(avaliacaoDTO);
+        when(avaliacaoService.save(any(AvaliacaoDTO.class))).thenReturn(new AvaliacaoDTO(request));
 
         mockMvc.perform(post("/avaliacao")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(avaliacaoDTO))) // Usando o ObjectMapper para converter o DTO em String JSON
+                        .content(objectMapper.writeValueAsString(request))) // Usando o ObjectMapper para converter o DTO em String JSON
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
@@ -75,7 +80,7 @@ class AvaliacaoControllerTest {
 
     @Test
     void testBuscarAvaliacaoPorRestaurante() throws Exception {
-        List<AvaliacaoDTO> avaliacoes = Collections.singletonList(avaliacaoDTO);
+        List<AvaliacaoDTO> avaliacoes = Collections.singletonList(new AvaliacaoDTO(request));
 
         when(avaliacaoService.listarPorRestaurante(10L)).thenReturn(avaliacoes);
 

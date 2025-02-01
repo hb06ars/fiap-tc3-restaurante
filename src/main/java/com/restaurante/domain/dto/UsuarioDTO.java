@@ -1,6 +1,7 @@
 
 package com.restaurante.domain.dto;
 
+import com.restaurante.app.rest.request.UsuarioRequest;
 import com.restaurante.domain.entity.UsuarioEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,4 +30,10 @@ public class UsuarioDTO {
         this.celular = usuarioEntity.getCelular();
     }
 
+    public UsuarioDTO(UsuarioRequest request) {
+        this.id = request.getId();
+        this.nome = request.getNome();
+        this.email = request.getEmail();
+        this.celular = request.getCelular();
+    }
 }

@@ -36,11 +36,4 @@ public class RestauranteRequest {
     @NotNull(message = "O tipo de cozinha não pode ser nula. Por favor, forneça um valor.")
     private Integer capacidade = 0;
 
-    public RestauranteRequest(RestauranteDTO dto) {
-        this.id = dto.getId();
-        this.nome = dto.getNome();
-        this.localizacao = dto.getLocalizacao();
-        this.tipoCozinha = dto.getTipoCozinha();
-        this.capacidade = dto.getCapacidade();
-    }
 }

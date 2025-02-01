@@ -1,6 +1,7 @@
 package com.restaurante.app.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.restaurante.app.rest.request.UsuarioRequest;
 import com.restaurante.app.service.postgres.UsuarioService;
 import com.restaurante.domain.dto.UsuarioDTO;
 import org.junit.jupiter.api.AfterEach;
@@ -46,34 +47,40 @@ class UsuarioControllerTest {
 
     @Test
     void cadastro_DeveRetornarUsuarioDTO() throws Exception {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setNome("Usuário Teste");
+        UsuarioRequest request = new UsuarioRequest();
+        request.setCelular("11888888888");
+        request.setEmail("email@email.com");
+        request.setNome("Usuário");
+        var dto = new UsuarioDTO(request);
 
-        when(usuarioService.save(usuarioDTO)).thenReturn(usuarioDTO);
+        when(usuarioService.save(dto)).thenReturn(dto);
 
         mockMvc.perform(post("/usuario/cadastrar")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuarioDTO)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Usuário Teste"));
+                .andExpect(jsonPath("$.nome").value("Usuário"));
 
-        verify(usuarioService, times(1)).save(usuarioDTO);
+        verify(usuarioService, times(1)).save(dto);
     }
 
     @Test
     void atualizar_DeveRetornarUsuarioDTOAtualizado() throws Exception {
         Long id = 1L;
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setNome("Usuário Atualizado");
+        UsuarioRequest request = new UsuarioRequest();
+        request.setCelular("11888888888");
+        request.setEmail("email@email.com");
+        request.setNome("Usuário Atualizado");
+        var dto = new UsuarioDTO(request);
 
-        when(usuarioService.update(id, usuarioDTO)).thenReturn(usuarioDTO);
+        when(usuarioService.update(id, dto)).thenReturn(dto);
 
         mockMvc.perform(put("/usuario/atualizar/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuarioDTO)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("Usuário Atualizado"));
 
-        verify(usuarioService, times(1)).update(id, usuarioDTO);
+        verify(usuarioService, times(1)).update(id, dto);
     }
 }

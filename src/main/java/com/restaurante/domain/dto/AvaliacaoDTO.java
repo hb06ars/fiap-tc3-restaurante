@@ -1,6 +1,7 @@
 package com.restaurante.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.restaurante.app.rest.request.AvaliacaoRequest;
 import com.restaurante.domain.entity.AvaliacaoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,5 +37,14 @@ public class AvaliacaoDTO implements Serializable {
         this.usuarioId = entity.getUsuarioId();
         this.restauranteId = entity.getRestauranteId();
         this.datapost = entity.getDatapost();
+    }
+
+    public AvaliacaoDTO(AvaliacaoRequest request) {
+        this.id = request.getId();
+        this.nota = request.getNota();
+        this.comentario = request.getComentario();
+        this.usuarioId = request.getUsuarioId();
+        this.restauranteId = request.getRestauranteId();
+        this.datapost = request.getDatapost();
     }
 }

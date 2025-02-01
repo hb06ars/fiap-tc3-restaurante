@@ -1,6 +1,7 @@
 
 package com.restaurante.domain.dto;
 
+import com.restaurante.app.rest.request.ReservaRequest;
 import com.restaurante.domain.entity.ReservaEntity;
 import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
@@ -41,5 +42,17 @@ public class ReservaDTO implements Serializable {
         this.valorReserva = entity.getValorReserva();
         this.statusPagamento = entity.getStatusPagamento();
         this.statusReserva = entity.getStatusReserva();
+    }
+
+    public ReservaDTO(ReservaRequest request) {
+        this.id = request.getId();
+        this.usuarioId = request.getUsuarioId();
+        this.mesaId = request.getMesaId();
+        this.restauranteId = request.getRestauranteId();
+        this.dataDaReserva = request.getDataDaReserva();
+        this.dataFimReserva = request.getDataFimReserva();
+        this.valorReserva = request.getValorReserva();
+        this.statusPagamento = request.getStatusPagamento();
+        this.statusReserva = request.getStatusReserva();
     }
 }

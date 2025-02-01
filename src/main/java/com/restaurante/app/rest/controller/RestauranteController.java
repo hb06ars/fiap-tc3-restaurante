@@ -52,8 +52,8 @@ public class RestauranteController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
     @PutMapping("/{id}")
     public ResponseEntity<RestauranteDTO> atualizar(@PathVariable(name = "id") Long id,
-                                                    @RequestBody RestauranteDTO dto) {
-        return ResponseEntity.ok(atualizarRestauranteUseCase.execute(id, dto));
+                                                    @Valid @RequestBody RestauranteRequest request) {
+        return ResponseEntity.ok(atualizarRestauranteUseCase.execute(id, new RestauranteDTO(request)));
     }
 
     @Operation(summary = "Buscar Restaurante",

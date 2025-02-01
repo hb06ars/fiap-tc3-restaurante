@@ -1,5 +1,6 @@
 package com.restaurante.app.rest.controller;
 
+import com.restaurante.app.rest.request.MesaRequest;
 import com.restaurante.app.service.postgres.MesaService;
 import com.restaurante.domain.dto.MesaDTO;
 import com.restaurante.domain.dto.MesaDisponivelDTO;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,8 +34,8 @@ public class MesaController {
             description = "Salvar a Mesa do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
-    public ResponseEntity<MesaDTO> cadastro(@RequestBody MesaDTO dto) {
-        return ResponseEntity.ok(service.save(dto));
+    public ResponseEntity<MesaDTO> cadastro(@Valid @RequestBody MesaRequest request) {
+        return ResponseEntity.ok(service.save(new MesaDTO(request)));
     }
 
     @Operation(summary = "Atualizar Mesa",
@@ -41,8 +43,8 @@ public class MesaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/atualizar/{id}")
     public ResponseEntity<MesaDTO> atualizar(@PathVariable(name = "id") Long id,
-                                             @RequestBody MesaDTO dto) {
-        return ResponseEntity.ok(service.update(id, dto));
+                                             @Valid @RequestBody MesaRequest request) {
+        return ResponseEntity.ok(service.update(id, new MesaDTO(request)));
     }
 
     @Operation(summary = "Buscar Mesas",

@@ -1,5 +1,6 @@
 package com.restaurante.app.rest.controller;
 
+import com.restaurante.app.rest.request.AvaliacaoRequest;
 import com.restaurante.app.service.postgres.AvaliacaoService;
 import com.restaurante.domain.dto.AvaliacaoDTO;
 import com.restaurante.domain.util.HttpStatusCodes;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,8 +33,8 @@ public class AvaliacaoController {
             description = "Salvar a avaliação.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Registro salvo com sucesso.")
     @PostMapping
-    public ResponseEntity<AvaliacaoDTO> avaliar(@RequestBody AvaliacaoDTO dto) {
-        return ResponseEntity.ok(service.save(dto));
+    public ResponseEntity<AvaliacaoDTO> avaliar(@Valid @RequestBody AvaliacaoRequest request) {
+        return ResponseEntity.ok(service.save(new AvaliacaoDTO(request)));
     }
 
     @Operation(summary = "Buscar Avaliação Restaurante",

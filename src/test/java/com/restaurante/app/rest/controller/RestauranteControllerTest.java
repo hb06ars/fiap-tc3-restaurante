@@ -1,6 +1,7 @@
 package com.restaurante.app.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.restaurante.app.rest.request.RestauranteRequest;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.enums.TipoCozinhaEnum;
@@ -59,35 +60,43 @@ class RestauranteControllerTest {
 
     @Test
     void cadastrar_DeveRetornarRestauranteDTO() throws Exception {
-        RestauranteDTO restauranteDTO = new RestauranteDTO();
-        restauranteDTO.setNome("Restaurante Teste");
+        RestauranteRequest request = new RestauranteRequest();
+        request.setNome("Restaurante Teste");
+        request.setLocalizacao("São Paulo");
+        request.setCapacidade(10);
+        request.setTipoCozinha(TipoCozinhaEnum.BRASILEIRA);
+        RestauranteDTO dto = new RestauranteDTO(request);
 
-        when(cadastrarRestauranteUseCase.execute(restauranteDTO)).thenReturn(restauranteDTO);
+        when(cadastrarRestauranteUseCase.execute(dto)).thenReturn(dto);
 
         mockMvc.perform(post("/restaurante")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(restauranteDTO)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("Restaurante Teste"));
 
-        verify(cadastrarRestauranteUseCase, times(1)).execute(restauranteDTO);
+        verify(cadastrarRestauranteUseCase, times(1)).execute(dto);
     }
 
     @Test
     void atualizar_DeveRetornarRestauranteDTOAtualizado() throws Exception {
         Long id = 1L;
-        RestauranteDTO restauranteDTO = new RestauranteDTO();
-        restauranteDTO.setNome("Restaurante Atualizado");
+        RestauranteRequest request = new RestauranteRequest();
+        request.setNome("Restaurante Atualizado");
+        request.setLocalizacao("São Paulo");
+        request.setCapacidade(10);
+        request.setTipoCozinha(TipoCozinhaEnum.BRASILEIRA);
+        var dto = new RestauranteDTO(request);
 
-        when(atualizarRestauranteUseCase.execute(id, restauranteDTO)).thenReturn(restauranteDTO);
+        when(atualizarRestauranteUseCase.execute(id, dto)).thenReturn(dto);
 
         mockMvc.perform(put("/restaurante/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(restauranteDTO)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("Restaurante Atualizado"));
 
-        verify(atualizarRestauranteUseCase, times(1)).execute(id, restauranteDTO);
+        verify(atualizarRestauranteUseCase, times(1)).execute(id, dto);
     }
 
     @Test
