@@ -21,7 +21,6 @@
         <sonar.coverage.exclusions>
             **/domain/**/*,
             **/infra/**/*,
-            **/repository/**/*,
             **/config/*,
             **/exceptions/*,
             **/RestauranteApplication.java
