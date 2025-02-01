@@ -37,7 +37,7 @@ class ReservaRepositoryTest {
         openMocks = MockitoAnnotations.openMocks(this);
         reserva = new ReservaEntity();
         reserva.setId(1L);
-        reserva.setRestauranteId(100L);
+        reserva.setRestauranteId(1L);
         reserva.setStatusReserva(StatusReservaEnum.OCUPADO);
         reserva.setStatusPagamento(StatusPagamentoEnum.PAGO);
         reserva.setDataDaReserva(LocalDateTime.of(2025, 2, 1, 19, 0));
@@ -50,6 +50,33 @@ class ReservaRepositoryTest {
     }
 
     @Test
+    void testBuscarReservasPorFiltro() {
+        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 19, 0);
+
+        ReservaEntity reserva2 = new ReservaEntity();
+        reserva2.setId(2L);
+        reserva2.setRestauranteId(1L);
+        reserva2.setStatusReserva(StatusReservaEnum.RESERVADO);
+        reserva2.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
+        reserva2.setDataDaReserva(LocalDateTime.of(2025, 2, 1, 20, 0));
+        reserva2.setDataFimReserva(LocalDateTime.of(2025, 2, 1, 22, 0));
+
+        List<ReservaEntity> reservas = Arrays.asList(reserva, reserva2);
+
+        when(reservaRepository.findAllByFilter(1L, StatusReservaEnum.RESERVADO.name(), StatusPagamentoEnum.PAGO.name(), dataReserva))
+                .thenReturn(reservas);
+
+        List<ReservaEntity> resultado = reservaRepository.findAllByFilter(1L, StatusReservaEnum.RESERVADO.name(), StatusPagamentoEnum.PAGO.name(), dataReserva);
+
+        assertFalse(resultado.isEmpty());
+        assertEquals(2, resultado.size());
+        assertEquals(StatusReservaEnum.OCUPADO, resultado.get(0).getStatusReserva());
+        assertEquals(StatusReservaEnum.RESERVADO, resultado.get(1).getStatusReserva());
+
+        verify(reservaRepository, times(1)).findAllByFilter(1L, StatusReservaEnum.RESERVADO.name(), StatusPagamentoEnum.PAGO.name(), dataReserva);
+    }
+
+    @Test
     void testSalvarReserva() {
         when(reservaRepository.save(reserva)).thenReturn(reserva);
 
@@ -57,7 +84,7 @@ class ReservaRepositoryTest {
 
         assertNotNull(savedReserva);
         assertEquals(1L, savedReserva.getId());
-        assertEquals(100L, savedReserva.getRestauranteId());
+        assertEquals(1L, savedReserva.getRestauranteId());
         assertEquals(StatusReservaEnum.OCUPADO, savedReserva.getStatusReserva());
 
         verify(reservaRepository, times(1)).save(reserva);
@@ -76,37 +103,10 @@ class ReservaRepositoryTest {
     }
 
     @Test
-    void testBuscarReservasPorFiltro() {
-        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 19, 0);
-
-        ReservaEntity reserva2 = new ReservaEntity();
-        reserva2.setId(2L);
-        reserva2.setRestauranteId(100L);
-        reserva2.setStatusReserva(StatusReservaEnum.RESERVADO);
-        reserva2.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
-        reserva2.setDataDaReserva(LocalDateTime.of(2025, 2, 1, 20, 0));
-        reserva2.setDataFimReserva(LocalDateTime.of(2025, 2, 1, 22, 0));
-
-        List<ReservaEntity> reservas = Arrays.asList(reserva, reserva2);
-
-        when(reservaRepository.findAllByFilter(100L, StatusReservaEnum.RESERVADO.name(), StatusPagamentoEnum.PAGO.name(), dataReserva))
-                .thenReturn(reservas);
-
-        List<ReservaEntity> resultado = reservaRepository.findAllByFilter(100L, StatusReservaEnum.RESERVADO.name(), StatusPagamentoEnum.PAGO.name(), dataReserva);
-
-        assertFalse(resultado.isEmpty());
-        assertEquals(2, resultado.size());
-        assertEquals(StatusReservaEnum.OCUPADO, resultado.get(0).getStatusReserva());
-        assertEquals(StatusReservaEnum.RESERVADO, resultado.get(1).getStatusReserva());
-
-        verify(reservaRepository, times(1)).findAllByFilter(100L, StatusReservaEnum.RESERVADO.name(), StatusPagamentoEnum.PAGO.name(), dataReserva);
-    }
-
-    @Test
     void testAtualizarReserva() {
         ReservaEntity reservaAtualizada = new ReservaEntity();
         reservaAtualizada.setId(1L);
-        reservaAtualizada.setRestauranteId(100L);
+        reservaAtualizada.setRestauranteId(1L);
         reservaAtualizada.setStatusReserva(StatusReservaEnum.CANCELADO);
         reservaAtualizada.setStatusPagamento(StatusPagamentoEnum.CANCELADO);
         reservaAtualizada.setDataDaReserva(reserva.getDataDaReserva());

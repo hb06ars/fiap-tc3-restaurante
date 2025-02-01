@@ -45,6 +45,19 @@ class UsuarioRepositoryTest {
     }
 
     @Test
+    void testBuscarPorEmailOuCelular() {
+        when(usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999")).thenReturn(usuario);
+
+        UsuarioEntity foundUsuario = usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999");
+
+        assertNotNull(foundUsuario);
+        assertEquals("João Silva", foundUsuario.getNome());
+        assertEquals("joao@email.com", foundUsuario.getEmail());
+
+        verify(usuarioRepository, times(1)).findByEmailOrCelular("joao@email.com", "11999999999");
+    }
+
+    @Test
     void testSalvarUsuario() {
         when(usuarioRepository.save(usuario)).thenReturn(usuario);
 
@@ -68,19 +81,6 @@ class UsuarioRepositoryTest {
         assertEquals(1L, foundUsuario.get().getId());
 
         verify(usuarioRepository, times(1)).findById(1L);
-    }
-
-    @Test
-    void testBuscarPorEmailOuCelular() {
-        when(usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999")).thenReturn(usuario);
-
-        UsuarioEntity foundUsuario = usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999");
-
-        assertNotNull(foundUsuario);
-        assertEquals("João Silva", foundUsuario.getNome());
-        assertEquals("joao@email.com", foundUsuario.getEmail());
-
-        verify(usuarioRepository, times(1)).findByEmailOrCelular("joao@email.com", "11999999999");
     }
 
     @Test

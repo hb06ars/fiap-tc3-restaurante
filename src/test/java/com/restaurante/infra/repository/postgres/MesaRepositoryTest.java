@@ -36,12 +36,50 @@ class MesaRepositoryTest {
         mesa = new MesaEntity();
         mesa.setId(1L);
         mesa.setNomeMesa("Mesa 1");
-        mesa.setRestauranteId(100L);
+        mesa.setRestauranteId(1L);
     }
 
     @AfterEach
     void tearDown() throws Exception {
         openMocks.close();
+    }
+
+    @Test
+    void testBuscarMesasDisponiveis() {
+        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 19, 0);
+        Object[] mesaDisponivel1 = {1L, "Mesa 1", "Disponível"};
+        Object[] mesaDisponivel2 = {2L, "Mesa 2", "Disponível"};
+        List<Object[]> mesasDisponiveis = Arrays.asList(mesaDisponivel1, mesaDisponivel2);
+
+        when(mesaRepository.buscarMesasDisponiveis(1L, dataReserva)).thenReturn(mesasDisponiveis);
+
+        List<Object[]> resultado = mesaRepository.buscarMesasDisponiveis(1L, dataReserva);
+
+        assertFalse(resultado.isEmpty());
+        assertEquals(2, resultado.size());
+        assertEquals("Mesa 1", resultado.get(0)[1]);
+        assertEquals("Disponível", resultado.get(0)[2]);
+        assertEquals("Mesa 2", resultado.get(1)[1]);
+        assertEquals("Disponível", resultado.get(1)[2]);
+        verify(mesaRepository, times(1)).buscarMesasDisponiveis(1L, dataReserva);
+    }
+
+    @Test
+    void testBuscarTodasPorRestauranteId() {
+        MesaEntity mesa2 = new MesaEntity();
+        mesa2.setId(2L);
+        mesa2.setNomeMesa("Mesa 2");
+        mesa2.setRestauranteId(1L);
+        List<MesaEntity> mesas = Arrays.asList(mesa, mesa2);
+
+        when(mesaRepository.findAllByRestauranteId(1L)).thenReturn(mesas);
+
+        List<MesaEntity> resultado = mesaRepository.findAllByRestauranteId(1L);
+
+        assertEquals(2, resultado.size());
+        assertEquals("Mesa 1", resultado.get(0).getNomeMesa());
+        assertEquals("Mesa 2", resultado.get(1).getNomeMesa());
+        verify(mesaRepository, times(1)).findAllByRestauranteId(1L);
     }
 
     @Test
@@ -53,7 +91,7 @@ class MesaRepositoryTest {
         assertNotNull(savedMesa);
         assertEquals(1L, savedMesa.getId());
         assertEquals("Mesa 1", savedMesa.getNomeMesa());
-        assertEquals(100L, savedMesa.getRestauranteId());
+        assertEquals(1L, savedMesa.getRestauranteId());
 
         verify(mesaRepository, times(1)).save(mesa);
     }
@@ -70,52 +108,11 @@ class MesaRepositoryTest {
     }
 
     @Test
-    void testBuscarTodasPorRestauranteId() {
-        MesaEntity mesa2 = new MesaEntity();
-        mesa2.setId(2L);
-        mesa2.setNomeMesa("Mesa 2");
-        mesa2.setRestauranteId(100L);
-
-        List<MesaEntity> mesas = Arrays.asList(mesa, mesa2);
-
-        when(mesaRepository.findAllByRestauranteId(100L)).thenReturn(mesas);
-
-        List<MesaEntity> resultado = mesaRepository.findAllByRestauranteId(100L);
-
-        assertEquals(2, resultado.size());
-        assertEquals("Mesa 1", resultado.get(0).getNomeMesa());
-        assertEquals("Mesa 2", resultado.get(1).getNomeMesa());
-        verify(mesaRepository, times(1)).findAllByRestauranteId(100L);
-    }
-
-    @Test
-    void testBuscarMesasDisponiveis() {
-        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 19, 0);
-
-        Object[] mesaDisponivel1 = {1L, "Mesa 1", "Disponível"};
-        Object[] mesaDisponivel2 = {2L, "Mesa 2", "Disponível"};
-
-        List<Object[]> mesasDisponiveis = Arrays.asList(mesaDisponivel1, mesaDisponivel2);
-
-        when(mesaRepository.buscarMesasDisponiveis(100L, dataReserva)).thenReturn(mesasDisponiveis);
-
-        List<Object[]> resultado = mesaRepository.buscarMesasDisponiveis(100L, dataReserva);
-
-        assertFalse(resultado.isEmpty());
-        assertEquals(2, resultado.size());
-        assertEquals("Mesa 1", resultado.get(0)[1]);
-        assertEquals("Disponível", resultado.get(0)[2]);
-        assertEquals("Mesa 2", resultado.get(1)[1]);
-        assertEquals("Disponível", resultado.get(1)[2]);
-        verify(mesaRepository, times(1)).buscarMesasDisponiveis(100L, dataReserva);
-    }
-
-    @Test
     void testAtualizarMesa() {
         MesaEntity mesaAtualizada = new MesaEntity();
         mesaAtualizada.setId(1L);
         mesaAtualizada.setNomeMesa("Mesa VIP");
-        mesaAtualizada.setRestauranteId(100L);
+        mesaAtualizada.setRestauranteId(1L);
 
         when(mesaRepository.save(mesaAtualizada)).thenReturn(mesaAtualizada);
         MesaEntity updatedMesa = mesaRepository.save(mesaAtualizada);

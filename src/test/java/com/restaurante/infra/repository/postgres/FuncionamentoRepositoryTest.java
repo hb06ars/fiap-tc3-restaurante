@@ -37,36 +37,26 @@ class FuncionamentoRepositoryTest {
     void setUp() {
         funcionamento = new FuncionamentoEntity();
         funcionamento.setId(1L);
-        funcionamento.setRestauranteId(100L);
+        funcionamento.setRestauranteId(1L);
         funcionamento.setDiaEnum(DiaEnum.SEGUNDA);
         funcionamento.setAbertura(LocalTime.of(8, 0));
         funcionamento.setFechamento(LocalTime.of(22, 0));
     }
 
     @Test
-    void testSalvarFuncionamento() {
-        when(funcionamentoRepository.save(funcionamento)).thenReturn(funcionamento);
+    void testValidarData() {
+        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 12, 0);
+        List<FuncionamentoEntity> funcionamentoList = List.of(funcionamento);
 
-        FuncionamentoEntity savedFuncionamento = funcionamentoRepository.save(funcionamento);
+        when(funcionamentoRepository.validarData(1L, dataReserva, DiaEnum.SEGUNDA.name())).thenReturn(funcionamentoList);
 
-        assertNotNull(savedFuncionamento);
-        assertEquals(1L, savedFuncionamento.getId());
-        assertEquals(100L, savedFuncionamento.getRestauranteId());
-        assertEquals(DiaEnum.SEGUNDA, savedFuncionamento.getDiaEnum());
+        List<FuncionamentoEntity> resultado = funcionamentoRepository.validarData(1L, dataReserva, "SEGUNDA");
 
-        verify(funcionamentoRepository, times(1)).save(funcionamento);
-    }
+        assertFalse(resultado.isEmpty());
+        assertEquals(1, resultado.size());
+        assertEquals(1L, resultado.get(0).getRestauranteId());
 
-    @Test
-    void testBuscarPorId() {
-        when(funcionamentoRepository.findById(1L)).thenReturn(Optional.of(funcionamento));
-
-        Optional<FuncionamentoEntity> foundFuncionamento = funcionamentoRepository.findById(1L);
-
-        assertTrue(foundFuncionamento.isPresent());
-        assertEquals(1L, foundFuncionamento.get().getId());
-
-        verify(funcionamentoRepository, times(1)).findById(1L);
+        verify(funcionamentoRepository, times(1)).validarData(1L, dataReserva, "SEGUNDA");
     }
 
     @Test
@@ -100,27 +90,39 @@ class FuncionamentoRepositoryTest {
         verify(funcionamentoRepository, times(1)).findAllByRestauranteId(1L);
     }
 
+
     @Test
-    void testValidarData() {
-        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 12, 0);
-        List<FuncionamentoEntity> funcionamentoList = List.of(funcionamento);
+    void testSalvarFuncionamento() {
+        when(funcionamentoRepository.save(funcionamento)).thenReturn(funcionamento);
 
-        when(funcionamentoRepository.validarData(100L, dataReserva, DiaEnum.SEGUNDA.name())).thenReturn(funcionamentoList);
+        FuncionamentoEntity savedFuncionamento = funcionamentoRepository.save(funcionamento);
 
-        List<FuncionamentoEntity> resultado = funcionamentoRepository.validarData(100L, dataReserva, "SEGUNDA");
+        assertNotNull(savedFuncionamento);
+        assertEquals(1L, savedFuncionamento.getId());
+        assertEquals(1L, savedFuncionamento.getRestauranteId());
+        assertEquals(DiaEnum.SEGUNDA, savedFuncionamento.getDiaEnum());
 
-        assertFalse(resultado.isEmpty());
-        assertEquals(1, resultado.size());
-        assertEquals(100L, resultado.get(0).getRestauranteId());
-
-        verify(funcionamentoRepository, times(1)).validarData(100L, dataReserva, "SEGUNDA");
+        verify(funcionamentoRepository, times(1)).save(funcionamento);
     }
+
+    @Test
+    void testBuscarPorId() {
+        when(funcionamentoRepository.findById(1L)).thenReturn(Optional.of(funcionamento));
+
+        Optional<FuncionamentoEntity> foundFuncionamento = funcionamentoRepository.findById(1L);
+
+        assertTrue(foundFuncionamento.isPresent());
+        assertEquals(1L, foundFuncionamento.get().getId());
+
+        verify(funcionamentoRepository, times(1)).findById(1L);
+    }
+
 
     @Test
     void testAtualizarFuncionamento() {
         FuncionamentoEntity funcionamentoAtualizado = new FuncionamentoEntity();
         funcionamentoAtualizado.setId(1L);
-        funcionamentoAtualizado.setRestauranteId(100L);
+        funcionamentoAtualizado.setRestauranteId(1L);
         funcionamentoAtualizado.setDiaEnum(DiaEnum.SEGUNDA);
         funcionamentoAtualizado.setAbertura(LocalTime.of(9, 0));
         funcionamentoAtualizado.setFechamento(LocalTime.of(21, 0));

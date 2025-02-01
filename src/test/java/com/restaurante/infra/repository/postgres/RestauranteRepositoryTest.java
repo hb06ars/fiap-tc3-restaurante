@@ -49,32 +49,6 @@ class RestauranteRepositoryTest {
     }
 
     @Test
-    void testSalvarRestaurante() {
-        when(restauranteRepository.save(restaurante)).thenReturn(restaurante);
-
-        RestauranteEntity savedRestaurante = restauranteRepository.save(restaurante);
-
-        assertNotNull(savedRestaurante);
-        assertEquals(1L, savedRestaurante.getId());
-        assertEquals("Bistrô Gourmet", savedRestaurante.getNome());
-        assertEquals("São Paulo", savedRestaurante.getLocalizacao());
-
-        verify(restauranteRepository, times(1)).save(restaurante);
-    }
-
-    @Test
-    void testBuscarPorId() {
-        when(restauranteRepository.findById(1L)).thenReturn(Optional.of(restaurante));
-
-        Optional<RestauranteEntity> foundRestaurante = restauranteRepository.findById(1L);
-
-        assertTrue(foundRestaurante.isPresent());
-        assertEquals(1L, foundRestaurante.get().getId());
-
-        verify(restauranteRepository, times(1)).findById(1L);
-    }
-
-    @Test
     void testBuscarRestaurantesPorFiltro() {
         RestauranteEntity restaurante2 = new RestauranteEntity();
         restaurante2.setId(2L);
@@ -93,8 +67,31 @@ class RestauranteRepositoryTest {
         assertEquals(2, resultado.size());
         assertEquals("Bistrô Gourmet", resultado.get(0).getNome());
         assertEquals("Pizzaria Bella", resultado.get(1).getNome());
-
         verify(restauranteRepository, times(1)).buscarRestaurantes("Bistrô", "São Paulo", "Francesa");
+    }
+
+    @Test
+    void testSalvarRestaurante() {
+        when(restauranteRepository.save(restaurante)).thenReturn(restaurante);
+
+        RestauranteEntity savedRestaurante = restauranteRepository.save(restaurante);
+
+        assertNotNull(savedRestaurante);
+        assertEquals(1L, savedRestaurante.getId());
+        assertEquals("Bistrô Gourmet", savedRestaurante.getNome());
+        assertEquals("São Paulo", savedRestaurante.getLocalizacao());
+        verify(restauranteRepository, times(1)).save(restaurante);
+    }
+
+    @Test
+    void testBuscarPorId() {
+        when(restauranteRepository.findById(1L)).thenReturn(Optional.of(restaurante));
+
+        Optional<RestauranteEntity> foundRestaurante = restauranteRepository.findById(1L);
+
+        assertTrue(foundRestaurante.isPresent());
+        assertEquals(1L, foundRestaurante.get().getId());
+        verify(restauranteRepository, times(1)).findById(1L);
     }
 
     @Test
@@ -110,7 +107,6 @@ class RestauranteRepositoryTest {
         RestauranteEntity updatedRestaurante = restauranteRepository.save(restauranteAtualizado);
 
         assertEquals("Bistrô de Luxo", updatedRestaurante.getNome());
-
         verify(restauranteRepository, times(1)).save(restauranteAtualizado);
     }
 
