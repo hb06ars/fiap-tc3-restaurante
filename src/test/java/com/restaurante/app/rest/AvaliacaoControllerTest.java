@@ -1,66 +1,94 @@
 package com.restaurante.app.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.app.service.postgres.AvaliacaoService;
 import com.restaurante.domain.dto.AvaliacaoDTO;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class AvaliacaoControllerTest {
 
-    @Mock
-    private AvaliacaoService service;
+    AutoCloseable mock;
 
-    @InjectMocks
-    private AvaliacaoController controller;
+    private MockMvc mockMvc;
+
+    @Mock
+    private AvaliacaoService avaliacaoService;
+
+    private ObjectMapper objectMapper; // Instanciação do ObjectMapper
+
+    private AvaliacaoDTO avaliacaoDTO;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        mock = MockitoAnnotations.openMocks(this);
+        objectMapper = new ObjectMapper(); // Instanciando o ObjectMapper
+        avaliacaoDTO = new AvaliacaoDTO();
+        avaliacaoDTO.setId(1L);
+        avaliacaoDTO.setRestauranteId(10L);
+        avaliacaoDTO.setNota(5);
+        avaliacaoDTO.setComentario("Ótima comida!");
+
+        AvaliacaoController controller = new AvaliacaoController(avaliacaoService);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mock.close();
     }
 
     @Test
-    @DisplayName("Teste para avaliar")
-    void testAvaliar() {
-        AvaliacaoDTO inputDto = new AvaliacaoDTO();
-        inputDto.setRestauranteId(1L);
-        when(service.save(any(AvaliacaoDTO.class))).thenReturn(inputDto);
+    void testAvaliar() throws Exception {
+        when(avaliacaoService.save(any(AvaliacaoDTO.class))).thenReturn(avaliacaoDTO);
 
-        ResponseEntity<AvaliacaoDTO> response = controller.avaliar(inputDto);
+        mockMvc.perform(post("/avaliacao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(avaliacaoDTO))) // Usando o ObjectMapper para converter o DTO em String JSON
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.restauranteId").value(10L))
+                .andExpect(jsonPath("$.nota").value(5))
+                .andExpect(jsonPath("$.comentario").value("Ótima comida!"));
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(inputDto, response.getBody());
-        verify(service, times(1)).save(any(AvaliacaoDTO.class));
+        Mockito.verify(avaliacaoService, Mockito.times(1)).save(any(AvaliacaoDTO.class));
     }
 
     @Test
-    @DisplayName("Teste para buscar avaliações por restaurante")
-    void testBuscar() {
-        Long idRestaurante = 1L;
-        AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO();
-        avaliacaoDTO.setRestauranteId(idRestaurante);
-        List<AvaliacaoDTO> expectedList = Arrays.asList(avaliacaoDTO);
+    void testBuscarAvaliacaoPorRestaurante() throws Exception {
+        List<AvaliacaoDTO> avaliacoes = Collections.singletonList(avaliacaoDTO);
 
-        when(service.listarPorRestaurante(idRestaurante)).thenReturn(expectedList);
+        when(avaliacaoService.listarPorRestaurante(10L)).thenReturn(avaliacoes);
 
-        ResponseEntity<List<AvaliacaoDTO>> response = controller.buscar(idRestaurante);
+        mockMvc.perform(get("/avaliacao/10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].restauranteId").value(10L))
+                .andExpect(jsonPath("$[0].nota").value(5))
+                .andExpect(jsonPath("$[0].comentario").value("Ótima comida!"));
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedList, response.getBody());
-        verify(service, times(1)).listarPorRestaurante(idRestaurante);
+        Mockito.verify(avaliacaoService, Mockito.times(1)).listarPorRestaurante(10L);
     }
 }

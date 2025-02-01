@@ -2,97 +2,112 @@ package com.restaurante.app.rest;
 
 import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.domain.dto.FuncionamentoDTO;
-import com.restaurante.domain.dto.MessageSuccessDTO;
+import com.restaurante.domain.enums.DiaEnum;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FuncionamentoControllerTest {
 
-    @Mock
-    private FuncionamentoService service;
+    private MockMvc mockMvc;
 
-    @InjectMocks
-    private FuncionamentoController controller;
+    @Mock
+    private FuncionamentoService funcionamentoService;
+
+    private FuncionamentoDTO funcionamentoDTO;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        funcionamentoDTO = new FuncionamentoDTO();
+        funcionamentoDTO.setId(1L);
+        funcionamentoDTO.setDiaEnum(DiaEnum.SEGUNDA);
+        funcionamentoDTO.setAbertura(LocalTime.of(8, 0, 1)); // 08:00
+        funcionamentoDTO.setFechamento(LocalTime.of(18, 0, 1)); // 18:00
+        funcionamentoDTO.setRestauranteId(1L);
+
+        FuncionamentoController funcionamentoController = new FuncionamentoController(funcionamentoService);
+        mockMvc = MockMvcBuilders.standaloneSetup(funcionamentoController).build();
     }
 
     @Test
-    @DisplayName("Teste para cadastrar funcionamento")
-    void testCadastro() {
-        FuncionamentoDTO inputDto = new FuncionamentoDTO();
-        inputDto.setId(1L);
-        when(service.save(any(FuncionamentoDTO.class))).thenReturn(inputDto);
+    void testCadastrarFuncionamento() throws Exception {
+        when(funcionamentoService.save(any(FuncionamentoDTO.class))).thenReturn(funcionamentoDTO);
 
-        ResponseEntity<FuncionamentoDTO> response = controller.cadastro(inputDto);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(inputDto, response.getBody());
-        verify(service, times(1)).save(any(FuncionamentoDTO.class));
+        mockMvc.perform(post("/funcionamento/cadastrar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"diaEnum\":\"SEGUNDA\", \"abertura\":\"08:00:01\", \"fechamento\":\"18:00:01\", \"restauranteId\":1}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.diaEnum").value(DiaEnum.SEGUNDA.name()))
+                .andExpect(jsonPath("$.abertura[0]").value(8))
+                .andExpect(jsonPath("$.abertura[1]").value(0))
+                .andExpect(jsonPath("$.abertura[2]").value(1))
+                .andExpect(jsonPath("$.fechamento[0]").value(18))
+                .andExpect(jsonPath("$.fechamento[1]").value(0))
+                .andExpect(jsonPath("$.fechamento[2]").value(1))
+                .andExpect(jsonPath("$.restauranteId").value(1));
     }
 
     @Test
-    @DisplayName("Teste para atualizar funcionamento")
-    void testAtualizar() {
-        Long idFuncionamento = 1L;
-        FuncionamentoDTO inputDto = new FuncionamentoDTO();
-        inputDto.setId(idFuncionamento);
-        when(service.update(anyLong(), any(FuncionamentoDTO.class))).thenReturn(inputDto);
+    void testAtualizarFuncionamento() throws Exception {
+        when(funcionamentoService.update(any(Long.class), any(FuncionamentoDTO.class))).thenReturn(funcionamentoDTO);
 
-        ResponseEntity<FuncionamentoDTO> response = controller.atualizar(idFuncionamento, inputDto);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(inputDto, response.getBody());
-        verify(service, times(1)).update(eq(idFuncionamento), any(FuncionamentoDTO.class));
+        mockMvc.perform(put("/funcionamento/atualizar/{idFuncionamento}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"diaEnum\":\"SEGUNDA\", \"abertura\":\"08:00:01\", \"fechamento\":\"18:00:01\", \"restauranteId\":1}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.diaEnum").value(DiaEnum.SEGUNDA.name()))
+                .andExpect(jsonPath("$.abertura[0]").value(8))
+                .andExpect(jsonPath("$.abertura[1]").value(0))
+                .andExpect(jsonPath("$.abertura[2]").value(1))
+                .andExpect(jsonPath("$.fechamento[0]").value(18))
+                .andExpect(jsonPath("$.fechamento[1]").value(0))
+                .andExpect(jsonPath("$.fechamento[2]").value(1))
+                .andExpect(jsonPath("$.restauranteId").value(1));
     }
 
     @Test
-    @DisplayName("Teste para deletar funcionamento")
-    void testDeletar() {
-        Long idFuncionamento = 1L;
-        doNothing().when(service).delete(idFuncionamento);
-
-        ResponseEntity<MessageSuccessDTO> response = controller.deletar(idFuncionamento);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Registro removido com sucesso", response.getBody().getMensagem());
-        verify(service, times(1)).delete(idFuncionamento);
+    void testDeletarFuncionamento() throws Exception {
+        mockMvc.perform(delete("/funcionamento/deletar/{idFuncionamento}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.mensagem").value("Registro removido com sucesso"));
     }
 
     @Test
-    @DisplayName("Teste para buscar funcionamento por restaurante")
-    void testBuscarPorRestaurante() {
-        Long idRestaurante = 1L;
-        FuncionamentoDTO funcionamentoDTO = new FuncionamentoDTO();
-        funcionamentoDTO.setRestauranteId(idRestaurante);
-        List<FuncionamentoDTO> expectedList = Arrays.asList(funcionamentoDTO);
+    void testBuscarPorRestaurante() throws Exception {
+        when(funcionamentoService.buscarPorRestaurante(1L)).thenReturn(Collections.singletonList(funcionamentoDTO));
 
-        when(service.buscarPorRestaurante(idRestaurante)).thenReturn(expectedList);
-
-        ResponseEntity<List<FuncionamentoDTO>> response = controller.buscarPorRestaurante(idRestaurante);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedList, response.getBody());
-        verify(service, times(1)).buscarPorRestaurante(idRestaurante);
+        mockMvc.perform(get("/funcionamento/{idRestaurante}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].diaEnum").value(DiaEnum.SEGUNDA.name()))
+                .andExpect(jsonPath("$[0].abertura[0]").value(8))
+                .andExpect(jsonPath("$[0].abertura[1]").value(0))
+                .andExpect(jsonPath("$[0].abertura[2]").value(1))
+                .andExpect(jsonPath("$[0].fechamento[0]").value(18))
+                .andExpect(jsonPath("$[0].fechamento[1]").value(0))
+                .andExpect(jsonPath("$[0].fechamento[2]").value(1))
+                .andExpect(jsonPath("$[0].restauranteId").value(1));
     }
 }

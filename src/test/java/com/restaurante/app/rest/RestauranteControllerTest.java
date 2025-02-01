@@ -1,25 +1,37 @@
 package com.restaurante.app.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.app.service.postgres.RestauranteService;
-import com.restaurante.domain.dto.MessageSuccessDTO;
 import com.restaurante.domain.dto.RestauranteDTO;
+import com.restaurante.domain.enums.TipoCozinhaEnum;
 import com.restaurante.domain.useCase.AtualizarRestauranteUseCase;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class RestauranteControllerTest {
+
+    AutoCloseable mock;
+
+    private MockMvc mockMvc;
 
     @Mock
     private RestauranteService restauranteService;
@@ -30,74 +42,82 @@ class RestauranteControllerTest {
     @Mock
     private AtualizarRestauranteUseCase atualizarRestauranteUseCase;
 
-    private RestauranteController restauranteController;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        restauranteController = new RestauranteController(restauranteService, cadastrarRestauranteUseCase, atualizarRestauranteUseCase);
+        mock = MockitoAnnotations.openMocks(this);
+        objectMapper = new ObjectMapper();
+        RestauranteController restauranteController = new RestauranteController(restauranteService, cadastrarRestauranteUseCase, atualizarRestauranteUseCase);
+        mockMvc = MockMvcBuilders.standaloneSetup(restauranteController).build();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mock.close();
     }
 
     @Test
-    void cadastrar_DeveRetornarRestauranteDTO() {
+    void cadastrar_DeveRetornarRestauranteDTO() throws Exception {
         RestauranteDTO restauranteDTO = new RestauranteDTO();
         restauranteDTO.setNome("Restaurante Teste");
 
         when(cadastrarRestauranteUseCase.execute(restauranteDTO)).thenReturn(restauranteDTO);
 
-        ResponseEntity<RestauranteDTO> response = restauranteController.cadastrar(restauranteDTO);
+        mockMvc.perform(post("/restaurante")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(restauranteDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Restaurante Teste"));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(restauranteDTO, response.getBody());
-        verify(cadastrarRestauranteUseCase).execute(restauranteDTO);
+        verify(cadastrarRestauranteUseCase, times(1)).execute(restauranteDTO);
     }
 
     @Test
-    void atualizar_DeveRetornarRestauranteDTOAtualizado() {
+    void atualizar_DeveRetornarRestauranteDTOAtualizado() throws Exception {
         Long id = 1L;
         RestauranteDTO restauranteDTO = new RestauranteDTO();
         restauranteDTO.setNome("Restaurante Atualizado");
 
         when(atualizarRestauranteUseCase.execute(id, restauranteDTO)).thenReturn(restauranteDTO);
 
-        ResponseEntity<RestauranteDTO> response = restauranteController.atualizar(id, restauranteDTO);
+        mockMvc.perform(put("/restaurante/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(restauranteDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Restaurante Atualizado"));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(restauranteDTO, response.getBody());
-        verify(atualizarRestauranteUseCase).execute(id, restauranteDTO);
+        verify(atualizarRestauranteUseCase, times(1)).execute(id, restauranteDTO);
     }
 
     @Test
-    void buscar_DeveRetornarListaDeRestaurantes() {
-        List<RestauranteDTO> restaurantes = new ArrayList<>();
+    void buscar_DeveRetornarListaDeRestaurantes() throws Exception {
         RestauranteDTO restaurante1 = new RestauranteDTO();
         restaurante1.setNome("Restaurante 1");
         RestauranteDTO restaurante2 = new RestauranteDTO();
         restaurante2.setNome("Restaurante 2");
-        restaurantes.add(restaurante1);
-        restaurantes.add(restaurante2);
 
-        when(restauranteService.buscarRestaurantes("", "", "")).thenReturn(restaurantes);
+        when(restauranteService.buscarRestaurantes("Restaurante 1", "São Paulo", TipoCozinhaEnum.BRASILEIRA.name())).thenReturn(List.of(restaurante1, restaurante2));
 
-        ResponseEntity<List<RestauranteDTO>> response = restauranteController.buscar("", "", "");
+        mockMvc.perform(get("/restaurante")
+                        .param("nome", "Restaurante 1")
+                        .param("localizacao", "São Paulo")
+                        .param("tipoCozinha", TipoCozinhaEnum.BRASILEIRA.name()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nome").value("Restaurante 1"))
+                .andExpect(jsonPath("$[1].nome").value("Restaurante 2"));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(restaurantes, response.getBody());
-        verify(restauranteService).buscarRestaurantes("", "", "");
+        verify(restauranteService, times(1)).buscarRestaurantes("Restaurante 1", "São Paulo", TipoCozinhaEnum.BRASILEIRA.name());
     }
 
     @Test
-    void deletar_DeveRetornarMensagemDeSucesso() {
+    void deletar_DeveRetornarMensagemDeSucesso() throws Exception {
         Long id = 1L;
 
-        ResponseEntity<MessageSuccessDTO> response = restauranteController.deletar(id);
+        mockMvc.perform(delete("/restaurante/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.mensagem").value("Registro deletado com sucesso."));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals("Registro deletado com sucesso.", response.getBody().getMensagem());
-        verify(restauranteService).delete(id);
+        verify(restauranteService, times(1)).delete(id);
     }
 }

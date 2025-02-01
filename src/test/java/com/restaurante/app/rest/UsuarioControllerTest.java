@@ -1,54 +1,79 @@
 package com.restaurante.app.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.app.service.postgres.UsuarioService;
 import com.restaurante.domain.dto.UsuarioDTO;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
 class UsuarioControllerTest {
+
+    AutoCloseable mock;
+
+    private MockMvc mockMvc;
 
     @Mock
     private UsuarioService usuarioService;
 
-    @InjectMocks
-    private UsuarioController usuarioController;
-
-    private UsuarioDTO usuarioDTO;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
-        usuarioDTO = new UsuarioDTO(1L, "Fulano", "email@email.com", "11999999999");
+        mock = MockitoAnnotations.openMocks(this);
+        objectMapper = new ObjectMapper();
+        UsuarioController usuarioController = new UsuarioController(usuarioService);
+        mockMvc = MockMvcBuilders.standaloneSetup(usuarioController).build();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mock.close();
     }
 
     @Test
-    void cadastro_ReturnsUsuarioDTO() {
+    void cadastro_DeveRetornarUsuarioDTO() throws Exception {
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setNome("Usuário Teste");
+
         when(usuarioService.save(usuarioDTO)).thenReturn(usuarioDTO);
 
-        ResponseEntity<UsuarioDTO> response = usuarioController.cadastro(usuarioDTO);
+        mockMvc.perform(post("/usuario/cadastrar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(usuarioDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Usuário Teste"));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(usuarioDTO, response.getBody());
+        verify(usuarioService, times(1)).save(usuarioDTO);
     }
 
     @Test
-    void atualizar_ReturnsUpdatedUsuarioDTO() {
-        when(usuarioService.update(1L, usuarioDTO)).thenReturn(usuarioDTO);
+    void atualizar_DeveRetornarUsuarioDTOAtualizado() throws Exception {
+        Long id = 1L;
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setNome("Usuário Atualizado");
 
-        ResponseEntity<UsuarioDTO> response = usuarioController.atualizar(1L, usuarioDTO);
+        when(usuarioService.update(id, usuarioDTO)).thenReturn(usuarioDTO);
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(usuarioDTO, response.getBody());
+        mockMvc.perform(put("/usuario/atualizar/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(usuarioDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Usuário Atualizado"));
+
+        verify(usuarioService, times(1)).update(id, usuarioDTO);
     }
 }

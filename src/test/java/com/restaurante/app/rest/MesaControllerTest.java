@@ -1,84 +1,133 @@
 package com.restaurante.app.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.app.service.postgres.MesaService;
 import com.restaurante.domain.dto.MesaDTO;
 import com.restaurante.domain.dto.MesaDisponivelDTO;
-import com.restaurante.domain.enums.StatusReservaEnum;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
 class MesaControllerTest {
+
+    AutoCloseable mock;
+
+    private MockMvc mockMvc;
 
     @Mock
     private MesaService mesaService;
 
-    @InjectMocks
-    private MesaController mesaController;
+    private ObjectMapper objectMapper;
 
     private MesaDTO mesaDTO;
-    private List<MesaDisponivelDTO> mesaDisponivelDTOList;
-    private List<MesaDTO> mesaDTOList;
+    private MesaDisponivelDTO mesaDisponivelDTO;
 
     @BeforeEach
     void setUp() {
-        mesaDTO = new MesaDTO(1L, "Mesa 1", 1L);
-        mesaDisponivelDTOList = List.of(new MesaDisponivelDTO(1L, "Mesa 1", StatusReservaEnum.OCUPADO.name()));
-        mesaDTOList = List.of(mesaDTO);
+        mock = MockitoAnnotations.openMocks(this);
+        objectMapper = new ObjectMapper(); // Instanciando o ObjectMapper
+        mesaDTO = new MesaDTO();
+        mesaDTO.setId(1L);
+        mesaDTO.setNomeMesa("Mesa 1");
+        mesaDTO.setRestauranteId(10L);
+
+        mesaDisponivelDTO = new MesaDisponivelDTO();
+        mesaDisponivelDTO.setMesaId(1L);
+        mesaDisponivelDTO.setMesaNome("Mesa 1");
+        mesaDisponivelDTO.setStatusMesa("Disponível");
+
+        MesaController controller = new MesaController(mesaService);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        mock.close();
     }
 
     @Test
-    void cadastro_ReturnsMesaDTO() {
-        when(mesaService.save(mesaDTO)).thenReturn(mesaDTO);
+    void testCadastrarMesa() throws Exception {
+        when(mesaService.save(any(MesaDTO.class))).thenReturn(mesaDTO);
 
-        ResponseEntity<MesaDTO> response = mesaController.cadastro(mesaDTO);
+        mockMvc.perform(post("/mesa/cadastrar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(mesaDTO))) // Usando o ObjectMapper para converter o DTO em String JSON
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.nomeMesa").value("Mesa 1"))
+                .andExpect(jsonPath("$.restauranteId").value(10L));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mesaDTO, response.getBody());
+        Mockito.verify(mesaService, Mockito.times(1)).save(any(MesaDTO.class));
     }
 
     @Test
-    void atualizar_ReturnsUpdatedMesaDTO() {
-        when(mesaService.update(1L, mesaDTO)).thenReturn(mesaDTO);
+    void testAtualizarMesa() throws Exception {
+        when(mesaService.update(eq(1L), any(MesaDTO.class))).thenReturn(mesaDTO);
 
-        ResponseEntity<MesaDTO> response = mesaController.atualizar(1L, mesaDTO);
+        mockMvc.perform(post("/mesa/atualizar/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(mesaDTO))) // Usando o ObjectMapper para converter o DTO em String JSON
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.nomeMesa").value("Mesa 1"))
+                .andExpect(jsonPath("$.restauranteId").value(10L));
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mesaDTO, response.getBody());
+        Mockito.verify(mesaService, Mockito.times(1)).update(eq(1L), any(MesaDTO.class));
     }
 
     @Test
-    void buscarMesas_ReturnsMesaDisponivelDTOList() {
-        when(mesaService.buscarMesas(1L)).thenReturn(mesaDisponivelDTOList);
+    void testBuscarMesaPorId() throws Exception {
+        List<MesaDisponivelDTO> mesas = Arrays.asList(mesaDisponivelDTO);
 
-        ResponseEntity<List<MesaDisponivelDTO>> response = mesaController.buscarMesas(1L);
+        when(mesaService.buscarMesas(1L)).thenReturn(mesas);
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mesaDisponivelDTOList, response.getBody());
+        mockMvc.perform(get("/mesa/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].mesaId").value(1L))
+                .andExpect(jsonPath("$[0].mesaNome").value("Mesa 1"))
+                .andExpect(jsonPath("$[0].statusMesa").value("Disponível"));
+
+        Mockito.verify(mesaService, Mockito.times(1)).buscarMesas(1L);
     }
 
     @Test
-    void buscarMesasPorRestaurante_ReturnsMesaDTOList() {
-        when(mesaService.findAllByIdRestaurante(1L)).thenReturn(mesaDTOList);
+    void testBuscarMesasPorRestaurante() throws Exception {
+        List<MesaDTO> mesas = Arrays.asList(mesaDTO);
 
-        ResponseEntity<List<MesaDTO>> response = mesaController.buscarMesasPorRestaurante(1L);
+        when(mesaService.findAllByIdRestaurante(10L)).thenReturn(mesas);
 
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mesaDTOList, response.getBody());
+        mockMvc.perform(get("/mesa/listaporrestaurante/10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].nomeMesa").value("Mesa 1"))
+                .andExpect(jsonPath("$[0].restauranteId").value(10L));
+
+        Mockito.verify(mesaService, Mockito.times(1)).findAllByIdRestaurante(10L);
     }
 }
