@@ -4,6 +4,7 @@ import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.enums.DiaEnum;
 import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,6 +30,8 @@ import static org.mockito.Mockito.when;
 
 class FuncionamentoServiceTest {
 
+    AutoCloseable openMocks;
+
     @InjectMocks
     private FuncionamentoService funcionamentoService;
 
@@ -39,7 +42,7 @@ class FuncionamentoServiceTest {
 
     @BeforeEach
     void setUp() throws NoSuchFieldException, IllegalAccessException {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         Field toleranciaMesaField = FuncionamentoService.class.getDeclaredField("toleranciaMesa");
         toleranciaMesaField.setAccessible(true);
@@ -52,6 +55,11 @@ class FuncionamentoServiceTest {
         funcionamentoDTO.setFechamento(LocalTime.parse("18:00:00"));
         funcionamentoDTO.setDiaEnum(DiaEnum.SEGUNDA);
         funcionamentoDTO.setRestauranteId(1L);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

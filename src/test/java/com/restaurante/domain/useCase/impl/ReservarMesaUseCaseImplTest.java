@@ -4,6 +4,7 @@ import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.useCase.ValidarDataUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,6 +19,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ReservarMesaUseCaseImplTest {
+
+    AutoCloseable openMocks;
 
     @Mock
     private ValidarReservaUseCase validarReservaUseCase;
@@ -34,8 +37,13 @@ class ReservarMesaUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         reservarMesaUseCase = new ReservarMesaUseCaseImpl(toleranciaMesa, validarReservaUseCase, validaDataUseCase, reservaService);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

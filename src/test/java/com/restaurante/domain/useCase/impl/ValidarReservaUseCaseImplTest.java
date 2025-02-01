@@ -3,6 +3,7 @@ package com.restaurante.domain.useCase.impl;
 import com.restaurante.domain.dto.MesaDisponivelDTO;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.useCase.BuscarMesaDisponivelUseCase;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,6 +21,8 @@ import static org.mockito.Mockito.when;
 
 class ValidarReservaUseCaseImplTest {
 
+    AutoCloseable openMocks;
+
     @InjectMocks
     private ValidarReservaUseCaseImpl validarReservaUseCase;
 
@@ -28,7 +31,12 @@ class ValidarReservaUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

@@ -10,6 +10,7 @@ import com.restaurante.infra.exceptions.CapacidadeException;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.MesaRepository;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,6 +35,8 @@ import static org.mockito.Mockito.when;
 
 class MesaServiceTest {
 
+    AutoCloseable openMocks;
+
     @InjectMocks
     private MesaService mesaService;
 
@@ -48,7 +51,7 @@ class MesaServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         mesaDTO = new MesaDTO();
         mesaDTO.setRestauranteId(1L);
@@ -57,6 +60,11 @@ class MesaServiceTest {
         mesaEntity = new MesaEntity();
         mesaEntity.setRestauranteId(1L);
         mesaEntity.setNomeMesa("Mesa 1");
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

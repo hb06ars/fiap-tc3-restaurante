@@ -5,13 +5,13 @@ import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.TipoCozinhaEnum;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +28,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class RestauranteServiceTest {
+
+    AutoCloseable openMocks;
 
     @Mock
     private RestauranteRepository restauranteRepository;
@@ -42,8 +43,14 @@ class RestauranteServiceTest {
 
     @BeforeEach
     void setUp() {
+        openMocks = MockitoAnnotations.openMocks(this);
         restauranteDTO = new RestauranteDTO(1L, "Restaurante A", "Local A", TipoCozinhaEnum.BRASILEIRA, 50);
         restauranteEntity = new RestauranteEntity(restauranteDTO);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.restaurante.domain.dto.MesaDisponivelDTO;
 import com.restaurante.domain.util.DataFormat;
 import com.restaurante.infra.exceptions.ReservaException;
 import com.restaurante.infra.repository.postgres.MesaRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -21,6 +22,8 @@ import static org.mockito.Mockito.when;
 
 class BuscarMesaDisponivelUseCaseImplTest {
 
+    AutoCloseable openMocks;
+
     @Mock
     private MesaRepository mesaRepository;
 
@@ -28,9 +31,15 @@ class BuscarMesaDisponivelUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         buscarMesaDisponivelUseCase = new BuscarMesaDisponivelUseCaseImpl(mesaRepository);
     }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
+    }
+
 
     @Test
     void execute_DeveRetornarMesaDisponivelDTO() {

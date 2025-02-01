@@ -4,6 +4,7 @@ import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +23,8 @@ import static org.mockito.Mockito.when;
 
 class CadastrarRestauranteUseCaseImplTest {
 
+    AutoCloseable openMocks;
+
     @Mock
     private RestauranteService restauranteService;
 
@@ -36,7 +39,12 @@ class CadastrarRestauranteUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

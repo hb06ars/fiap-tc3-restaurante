@@ -3,6 +3,7 @@ package com.restaurante.domain.useCase.impl;
 import com.restaurante.app.service.postgres.MesaService;
 import com.restaurante.domain.dto.MesaDTO;
 import com.restaurante.infra.exceptions.CapacidadeException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.when;
 
 class InsercaoRemocaoDasMesasUseCaseImplTest {
 
+    AutoCloseable openMocks;
+
     @Mock
     private MesaService mesaService;
 
@@ -31,7 +34,12 @@ class InsercaoRemocaoDasMesasUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

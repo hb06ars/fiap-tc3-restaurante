@@ -4,6 +4,7 @@ import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.enums.DiaEnum;
 import com.restaurante.infra.exceptions.ReservaException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,8 @@ import static org.mockito.Mockito.when;
 
 class ValidaDataUseCaseImplTest {
 
+    AutoCloseable openMocks;
+
     @InjectMocks
     private ValidarDataUseCaseImpl validaDataUseCase;
 
@@ -33,7 +36,12 @@ class ValidaDataUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

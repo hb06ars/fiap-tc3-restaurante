@@ -4,12 +4,12 @@ import com.restaurante.domain.dto.UsuarioDTO;
 import com.restaurante.domain.entity.UsuarioEntity;
 import com.restaurante.infra.exceptions.RecordAlreadyExistsException;
 import com.restaurante.infra.repository.postgres.UsuarioRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +24,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class UsuarioServiceTest {
+
+    AutoCloseable openMocks;
 
     @Mock
     private UsuarioRepository usuarioRepository;
@@ -38,8 +39,14 @@ class UsuarioServiceTest {
 
     @BeforeEach
     void setUp() {
+        openMocks = MockitoAnnotations.openMocks(this);
         usuarioDTO = new UsuarioDTO(1L, "Usuário A", "usuarioA@email.com", "123456789");
         usuarioEntity = new UsuarioEntity(usuarioDTO);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

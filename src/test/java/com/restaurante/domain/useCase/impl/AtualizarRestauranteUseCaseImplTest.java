@@ -4,6 +4,7 @@ import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +23,8 @@ import static org.mockito.Mockito.when;
 
 class AtualizarRestauranteUseCaseImplTest {
 
+    AutoCloseable openMocks;
+
     @InjectMocks
     private AtualizarRestauranteUseCaseImpl atualizarRestauranteUseCase;
 
@@ -37,7 +40,7 @@ class AtualizarRestauranteUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         id = 1L;
         restauranteDTO = new RestauranteDTO();
         restauranteDTO.setId(id);
@@ -49,6 +52,12 @@ class AtualizarRestauranteUseCaseImplTest {
         restauranteOriginal.setNome("Restaurante Original");
         restauranteOriginal.setCapacidade(50);
     }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
+    }
+
 
     @Test
     void testExecute_Success() {

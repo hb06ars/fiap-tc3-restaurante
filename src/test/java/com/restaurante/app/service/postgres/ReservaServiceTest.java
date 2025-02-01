@@ -6,12 +6,12 @@ import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
 import com.restaurante.infra.exceptions.FieldNotFoundException;
 import com.restaurante.infra.repository.postgres.ReservaRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -29,8 +29,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class ReservaServiceTest {
+
+    AutoCloseable openMocks;
 
     @Mock
     private ReservaRepository reservaRepository;
@@ -43,6 +44,7 @@ class ReservaServiceTest {
 
     @BeforeEach
     void setUp() {
+        openMocks = MockitoAnnotations.openMocks(this);
         reservaDTO = ReservaDTO.builder()
                 .id(1L)
                 .dataDaReserva(LocalDateTime.now())
@@ -54,6 +56,11 @@ class ReservaServiceTest {
                 .valorReserva(BigDecimal.valueOf(100L))
                 .build();
         reservaEntity = new ReservaEntity(reservaDTO);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.restaurante.app.service.postgres;
 import com.restaurante.domain.dto.AvaliacaoDTO;
 import com.restaurante.domain.entity.AvaliacaoEntity;
 import com.restaurante.infra.repository.postgres.AvaliacaoRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.when;
 
 class AvaliacaoServiceTest {
 
+    AutoCloseable openMocks;
+
     @InjectMocks
     private AvaliacaoService avaliacaoService;
 
@@ -33,11 +36,16 @@ class AvaliacaoServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         avaliacaoDTO = new AvaliacaoDTO();
         avaliacaoDTO.setId(1L);
         avaliacaoDTO.setComentario("Ótimo Restaurante!");
         avaliacaoDTO.setNota(5);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test
