@@ -90,4 +90,27 @@ class InsercaoRemocaoDasMesasUseCaseImplTest {
         verify(mesaService, never()).delete(anyLong());
         verify(mesaService, never()).salvarTodasMesas(anyList());
     }
+
+
+    @Test
+    @DisplayName("Teste para executar use case com capacidade maior que a capacidade original")
+    void testExecuteCapacidadeMaiorQueOriginalDiferente() {
+        Long idRestaurante = 1L;
+        int capacidadeOriginal = 10;
+        int capacidadeAtualizada = 5;
+
+        List<MesaDTO> mesaDTOs = new ArrayList<>();
+        for (int i = 1; i <= capacidadeOriginal; i++) {
+            MesaDTO mesaDTO = new MesaDTO();
+            mesaDTO.setId((long) i);
+            mesaDTO.setNomeMesa("MESA " + i);
+            mesaDTOs.add(mesaDTO);
+        }
+
+        when(mesaService.findAllByIdRestaurante(idRestaurante)).thenReturn(mesaDTOs);
+        useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada);
+
+        verify(mesaService, times(5)).delete(anyLong());
+        verify(mesaService, never()).salvarTodasMesas(anyList());
+    }
 }
