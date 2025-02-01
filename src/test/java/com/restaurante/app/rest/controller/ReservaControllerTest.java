@@ -1,4 +1,4 @@
-package com.restaurante.app.rest;
+package com.restaurante.app.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

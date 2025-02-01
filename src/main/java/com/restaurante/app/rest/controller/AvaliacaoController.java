@@ -1,4 +1,4 @@
-package com.restaurante.app.rest;
+package com.restaurante.app.rest.controller;
 
 import com.restaurante.app.service.postgres.AvaliacaoService;
 import com.restaurante.domain.dto.AvaliacaoDTO;
