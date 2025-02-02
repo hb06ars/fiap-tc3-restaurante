@@ -1,5 +1,6 @@
 package com.restaurante.app.rest.controller;
 
+import com.restaurante.app.rest.request.ReservaFilter;
 import com.restaurante.app.rest.request.ReservaRequest;
 import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
@@ -54,7 +55,7 @@ public class ReservaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping("/{idrestaurante}")
     public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable(name = "idrestaurante") Long idrestaurante,
-                                                   @Valid @RequestBody ReservaRequest request) {
+                                                   @Valid @RequestBody ReservaFilter request) {
         return ResponseEntity.ok(reservaService.buscar(idrestaurante, new ReservaDTO(request)));
     }
 

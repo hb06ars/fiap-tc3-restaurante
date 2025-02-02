@@ -72,8 +72,8 @@ public class ReservaService {
             throw new FieldNotFoundException("Informe a data.");
         return repository.findAllByFilter(
                 idrestaurante,
-                dto.getStatusReserva() != null ? dto.getStatusReserva().toString() : "",
-                dto.getStatusPagamento() != null ? dto.getStatusPagamento().toString() : "",
+                dto.getStatusReserva(),
+                dto.getStatusPagamento(),
                 DataFormat.truncate(dto.getDataDaReserva())
         ).stream().map(ReservaDTO::new).toList();
     }
