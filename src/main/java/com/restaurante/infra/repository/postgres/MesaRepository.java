@@ -30,5 +30,6 @@ public interface MesaRepository extends JpaRepository<MesaEntity, Long> {
             @Param("dataReserva") LocalDateTime dataReserva
     );
 
-    List<MesaEntity> findAllByRestauranteId(Long idRestaurante);
+    @Query("SELECT m FROM MesaEntity m WHERE m.restauranteId = :idRestaurante")
+    List<MesaEntity> findAllByRestauranteId(@Param("idRestaurante") Long idRestaurante);
 }

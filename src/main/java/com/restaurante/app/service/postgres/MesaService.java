@@ -36,11 +36,9 @@ public class MesaService {
                 .orElseThrow(() -> new ObjectNotFoundException("Restaurante não encontrado."));
 
         var mesasDoRestaurante = findAllByIdRestaurante(dto.getRestauranteId());
-        if (mesasDoRestaurante != null && !mesasDoRestaurante.isEmpty()) {
-            var capacidade = restaurante.getCapacidade();
-            if (capacidade > mesasDoRestaurante.size())
-                return new MesaDTO(repository.save(new MesaEntity(dto)));
-        }
+        var capacidade = restaurante.getCapacidade();
+        if (mesasDoRestaurante == null || (capacidade > mesasDoRestaurante.size()))
+            return new MesaDTO(repository.save(new MesaEntity(dto)));
         throw new CapacidadeException("Capacidade acima do limite.");
     }
 
