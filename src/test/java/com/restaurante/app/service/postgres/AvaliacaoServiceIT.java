@@ -80,7 +80,19 @@ class AvaliacaoServiceIT extends BaseUnitTest {
 
     @Test
     void testUpdate_Success() {
-        AvaliacaoDTO updatedAvaliacao = avaliacaoService.update(1L, null);
+        UsuarioEntity usuarioEntity = usuarioRepository.save(getRandom(UsuarioEntity.class));
+        RestauranteEntity restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        AvaliacaoDTO dto = getRandom(AvaliacaoDTO.class);
+        dto.setNota(5);
+        dto.setUsuarioId(usuarioEntity.getId());
+        dto.setRestauranteId(restauranteEntity.getId());
+        var avaliacaoSaved = avaliacaoService.save(dto);
+
+        dto.setComentario("Alteração");
+        AvaliacaoDTO updatedAvaliacao = avaliacaoService.update(avaliacaoSaved.getId(), avaliacaoSaved);
+        assertNotNull(updatedAvaliacao);
+        assertThat(updatedAvaliacao.getId()).isPositive();
+        assertThat(updatedAvaliacao.getComentario()).isEqualTo("Alteração");
     }
 
     @Test
