@@ -35,16 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase
 @Transactional
 class ReservarMesaUseCaseImplIT extends BaseUnitTest {
-
-    @Autowired
-    private ValidarReservaUseCase validarReservaUseCase;
-
-    @Autowired
-    private ValidarDataUseCase validaDataUseCase;
-
-    @Autowired
-    private ReservaService reservaService;
-
     @Autowired
     private ReservarMesaUseCaseImpl reservarMesaUseCase;
     @Autowired
