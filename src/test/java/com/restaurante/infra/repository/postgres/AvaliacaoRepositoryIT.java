@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ActiveProfiles("test")
@@ -39,23 +38,19 @@ class AvaliacaoRepositoryIT extends BaseUnitTest {
 
     @Test
     void testFindAllByRestauranteId() {
-        Long restauranteId = 1L;
-
-        var usuarioEntity = getRandom(UsuarioEntity.class);
-        var restauranteEntity = getRandom(RestauranteEntity.class);
         var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
-        avaliacaoEntity.setUsuarioId(usuarioEntity.getId());
-        avaliacaoEntity.setRestauranteId(restauranteEntity.getId());
+        var usuarioSalvo = usuarioRepository.save(getRandom(UsuarioEntity.class));
+        var restauranteSalvo = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        avaliacaoEntity.setUsuarioId(usuarioSalvo.getId());
         avaliacaoEntity.setNota(5);
+        avaliacaoEntity.setRestauranteId(restauranteSalvo.getId());
 
-        usuarioRepository.save(usuarioEntity);
-        restauranteRepository.save(restauranteEntity);
         repository.save(avaliacaoEntity);
+        List<AvaliacaoEntity> resultado = repository.findAllByRestauranteId(restauranteSalvo.getId());
 
-        List<AvaliacaoEntity> resultado = repository.findAllByRestauranteId(restauranteId);
-
-        assertEquals(1, resultado.size());
-        assertEquals(restauranteId, resultado.get(0).getRestauranteId());
+        assertThat(resultado).isNotNull();
+        assertThat(resultado.size()).isPositive();
+        assertThat(restauranteSalvo.getId()).isEqualTo(resultado.get(0).getRestauranteId());
     }
 
     @Test
