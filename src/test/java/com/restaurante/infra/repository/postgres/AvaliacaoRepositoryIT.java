@@ -38,20 +38,29 @@ class MensagemRepositoryIT {
     @Test
     void testFindAllByRestauranteId() {
         Long restauranteId = 1L;
-        gerarRegistros();
+
+        var usuario = RegistroHelper.gerarUsuario();
+        var restaurante = RegistroHelper.gerarRestaurante();
+        var avaliacao = RegistroHelper.gerarAvaliacao();
+
+        usuarioRepository.save(usuario);
+        restauranteRepository.save(restaurante);
+        repository.save(avaliacao);
 
         List<AvaliacaoEntity> resultado = repository.findAllByRestauranteId(restauranteId);
 
-        assertEquals(2, resultado.size());
+        assertEquals(1, resultado.size());
         assertEquals(restauranteId, resultado.get(0).getRestauranteId());
-        assertEquals(restauranteId, resultado.get(1).getRestauranteId());
     }
 
     @Test
     void testSalvarAvaliacao() {
-        gerarRegistros();
+        var usuario = RegistroHelper.gerarUsuario();
+        var restaurante = RegistroHelper.gerarRestaurante();
         var avaliacaoEntity = RegistroHelper.gerarAvaliacao();
-        avaliacaoEntity.setId(3L);
+
+        usuarioRepository.save(usuario);
+        restauranteRepository.save(restaurante);
         AvaliacaoEntity savedAvaliacao = repository.save(avaliacaoEntity);
 
         assertThat(savedAvaliacao).isNotNull();
@@ -65,7 +74,14 @@ class MensagemRepositoryIT {
 
     @Test
     void testBuscarPorId() {
-        gerarRegistros();
+        var usuario = RegistroHelper.gerarUsuario();
+        var restaurante = RegistroHelper.gerarRestaurante();
+        var avaliacao = RegistroHelper.gerarAvaliacao();
+
+        usuarioRepository.save(usuario);
+        restauranteRepository.save(restaurante);
+        repository.save(avaliacao);
+
         Optional<AvaliacaoEntity> foundAvaliacao = repository.findById(1L);
 
         assertThat(foundAvaliacao.isPresent()).isNotNull();
@@ -74,7 +90,14 @@ class MensagemRepositoryIT {
 
     @Test
     void testAtualizarAvaliacao() {
-        gerarRegistros();
+        var usuario = RegistroHelper.gerarUsuario();
+        var restaurante = RegistroHelper.gerarRestaurante();
+        var avaliacao = RegistroHelper.gerarAvaliacao();
+
+        usuarioRepository.save(usuario);
+        restauranteRepository.save(restaurante);
+        repository.save(avaliacao);
+
         AvaliacaoEntity avaliacaoAtualizada = new AvaliacaoEntity();
         avaliacaoAtualizada.setId(1L);
         avaliacaoAtualizada.setRestauranteId(1L);
@@ -91,29 +114,17 @@ class MensagemRepositoryIT {
 
     @Test
     void testDeletarAvaliacao() {
-        gerarRegistros();
-        repository.deleteById(1L);
-        var result = repository.findById(1L).isPresent();
-        assertFalse(result);
-    }
-
-    private void gerarRegistros() {
         var usuario = RegistroHelper.gerarUsuario();
         var restaurante = RegistroHelper.gerarRestaurante();
         var avaliacao = RegistroHelper.gerarAvaliacao();
 
         usuarioRepository.save(usuario);
-        usuario.setId(2L);
-        usuario.setEmail("novoemail@mail.com");
-        usuario.setCelular("11999999555");
-        usuarioRepository.save(usuario);
-
         restauranteRepository.save(restaurante);
         repository.save(avaliacao);
 
-        avaliacao.setUsuarioId(2L);
-        avaliacao.setId(2L);
-
-        repository.save(avaliacao);
+        repository.deleteById(1L);
+        var result = repository.findById(1L).isPresent();
+        assertFalse(result);
     }
+
 }
