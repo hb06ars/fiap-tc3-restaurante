@@ -9,6 +9,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.Id;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -55,7 +55,7 @@ public class ReservaEntity implements Serializable {
 
     @Column(name = "data_fim_reserva")
     @NotNull(message = "A data fim reserva não pode ser nula. Por favor, forneça um valor para a data fim.")
-    private LocalDateTime dataFimReserva;
+    private LocalDateTime dataFimReserva = LocalDateTime.now().plusHours(2);
 
     @Column(name = "valor_reserva", nullable = false, precision = 10, scale = 2)
     @NotNull(message = "O valor da reserva não pode ser nulo. Por favor, forneça um valor.")

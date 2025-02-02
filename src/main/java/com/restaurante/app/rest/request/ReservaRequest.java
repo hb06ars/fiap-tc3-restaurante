@@ -3,15 +3,15 @@ package com.restaurante.app.rest.request;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -37,7 +37,7 @@ public class ReservaRequest {
     private LocalDateTime dataDaReserva = LocalDateTime.now();
 
     @NotNull(message = "A data fim reserva não pode ser nula. Por favor, forneça um valor para a data fim.")
-    private LocalDateTime dataFimReserva;
+    private LocalDateTime dataFimReserva = LocalDateTime.now().plusHours(2);
 
     @NotNull(message = "O valor da reserva não pode ser nulo. Por favor, forneça um valor.")
     private BigDecimal valorReserva = BigDecimal.ZERO;

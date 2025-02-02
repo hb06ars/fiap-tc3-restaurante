@@ -23,13 +23,13 @@ public enum DiaEnum {
     }
 
     private static final Map<Integer, DiaEnum> MAPA_DIAS = Map.of(
-            1, DOMINGO,
-            2, SEGUNDA,
-            3, TERCA,
-            4, QUARTA,
-            5, QUINTA,
-            6, SEXTA,
-            7, SABADO
+            1, SEGUNDA,
+            2, TERCA,
+            3, QUARTA,
+            4, QUINTA,
+            5, SEXTA,
+            6, SABADO,
+            7, DOMINGO
     );
 
     public static DiaEnum fromInt(int dia) {
