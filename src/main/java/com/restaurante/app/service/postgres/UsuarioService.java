@@ -59,7 +59,7 @@ public class UsuarioService {
     @Transactional
     public void delete(Long id) {
         if (repository.findById(id).isPresent()) {
-            repository.findById(id);
+            repository.deleteById(id);
         } else {
             throw new RuntimeException("Usuário com ID: " + id + ", não encontrado.");
         }

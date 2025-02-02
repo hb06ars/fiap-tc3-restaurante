@@ -58,7 +58,7 @@ public class RestauranteService {
     @Transactional
     public void delete(Long id) {
         if (repository.findById(id).isPresent()) {
-            repository.findById(id);
+            repository.deleteById(id);
         } else {
             throw new RuntimeException("Restaurante com ID: " + id + ", não encontrado.");
         }

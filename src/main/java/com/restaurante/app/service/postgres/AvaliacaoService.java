@@ -50,7 +50,7 @@ public class AvaliacaoService {
     @Transactional
     public void delete(Long id) {
         if (repository.findById(id).isPresent()) {
-            repository.findById(id);
+            repository.deleteById(id);
         } else {
             throw new ObjectNotFoundException("Avaliacao com ID: " + id + ", não encontrada.");
         }
