@@ -1,7 +1,6 @@
 package com.restaurante.infra.repository.postgres;
 
 
-import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.DiaEnum;
@@ -22,12 +21,9 @@ import static com.restaurante.utils.TestUtil.getRandom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -40,8 +36,6 @@ class repositoryIT {
 
     @Autowired
     private RestauranteRepository restauranteRepository;
-
-    private FuncionamentoEntity funcionamento;
 
     @Test
     void devePermitirCriarTabela() {
@@ -83,12 +77,11 @@ class repositoryIT {
     }
 
     @Test
-    void testBuscarTodosFUncionamentosPorRestauranteId() {
+    void testBuscarTodosFuncionamentosPorRestauranteId() {
         var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
 
         var diaAtual = LocalDate.now().getDayOfWeek().getValue();
         FuncionamentoEntity funcionamento1 = FuncionamentoEntity.builder()
-                .id(1L)
                 .diaEnum(DiaEnum.fromInt(LocalDate.now().getDayOfWeek().getValue()))
                 .abertura(LocalTime.of(8, 0))
                 .fechamento(LocalTime.of(22, 0))
@@ -97,7 +90,6 @@ class repositoryIT {
 
         var diaSeguinte = LocalDate.now().plusDays(1).getDayOfWeek().getValue();
         FuncionamentoEntity funcionamento2 = FuncionamentoEntity.builder()
-                .id(2L)
                 .diaEnum(DiaEnum.fromInt(diaSeguinte))
                 .abertura(LocalTime.of(8, 0))
                 .fechamento(LocalTime.of(22, 0))
@@ -105,64 +97,68 @@ class repositoryIT {
                 .build();
 
         var funcionamentoSaved = repository.saveAll(List.of(funcionamento1, funcionamento2));
-       var resultado = repository.findAllByRestauranteId(funcionamentoSaved.get(0).getRestauranteId());
+        var resultado = repository.findAllByRestauranteId(funcionamentoSaved.get(0).getRestauranteId());
 
-        assertEquals(2, resultado.size());
-        assertEquals(DiaEnum.fromInt(diaAtual), resultado.get(0).getDiaEnum());
-        assertEquals(DiaEnum.fromInt(diaSeguinte), resultado.get(1).getDiaEnum());
-
+        assertThat(resultado.size()).isEqualTo(2);
+        assertThat(resultado.get(0).getDiaEnum()).isEqualTo(DiaEnum.fromInt(diaAtual));
+        assertThat(resultado.get(1).getDiaEnum()).isEqualTo(DiaEnum.fromInt(diaSeguinte));
     }
 
 
     @Test
     void testSalvarFuncionamento() {
-        when(repository.save(funcionamento)).thenReturn(funcionamento);
-
+        var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        FuncionamentoEntity funcionamento = getRandom(FuncionamentoEntity.class);
+        funcionamento.setRestauranteId(restauranteEntity.getId());
         FuncionamentoEntity savedFuncionamento = repository.save(funcionamento);
 
         assertNotNull(savedFuncionamento);
-        assertEquals(1L, savedFuncionamento.getId());
-        assertEquals(1L, savedFuncionamento.getRestauranteId());
-        assertEquals(DiaEnum.SEGUNDA, savedFuncionamento.getDiaEnum());
-
-        verify(repository, times(1)).save(funcionamento);
+        assertThat(savedFuncionamento.getRestauranteId()).isPositive();
+        assertThat(savedFuncionamento.getRestauranteId()).isEqualTo(restauranteEntity.getId());
     }
 
     @Test
     void testBuscarPorId() {
-        when(repository.findById(1L)).thenReturn(Optional.of(funcionamento));
+        var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        FuncionamentoEntity funcionamento = getRandom(FuncionamentoEntity.class);
+        funcionamento.setRestauranteId(restauranteEntity.getId());
+        FuncionamentoEntity savedFuncionamento = repository.save(funcionamento);
 
-        Optional<FuncionamentoEntity> foundFuncionamento = repository.findById(1L);
+        Optional<FuncionamentoEntity> foundFuncionamento = repository.findById(savedFuncionamento.getId());
 
         assertTrue(foundFuncionamento.isPresent());
-        assertEquals(1L, foundFuncionamento.get().getId());
-
-        verify(repository, times(1)).findById(1L);
+        assertThat(savedFuncionamento.getRestauranteId()).isEqualTo(restauranteEntity.getId());
     }
 
 
     @Test
     void testAtualizarFuncionamento() {
-        FuncionamentoEntity funcionamentoAtualizado = new FuncionamentoEntity();
-        funcionamentoAtualizado.setId(1L);
-        funcionamentoAtualizado.setRestauranteId(1L);
-        funcionamentoAtualizado.setDiaEnum(DiaEnum.SEGUNDA);
-        funcionamentoAtualizado.setAbertura(LocalTime.of(9, 0));
-        funcionamentoAtualizado.setFechamento(LocalTime.of(21, 0));
+        var diaSeguinte = LocalDate.now().plusDays(1).getDayOfWeek().getValue();
+        var diaAtual = LocalDate.now().getDayOfWeek().getValue();
 
-        when(repository.save(funcionamentoAtualizado)).thenReturn(funcionamentoAtualizado);
-        FuncionamentoEntity updatedFuncionamento = repository.save(funcionamentoAtualizado);
+        var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
 
-        assertEquals(LocalTime.of(9, 0), updatedFuncionamento.getAbertura());
-        assertEquals(LocalTime.of(21, 0), updatedFuncionamento.getFechamento());
+        FuncionamentoEntity funcionamento = getRandom(FuncionamentoEntity.class);
+        funcionamento.setRestauranteId(restauranteEntity.getId());
+        funcionamento.setDiaEnum(DiaEnum.fromInt(diaAtual));
 
-        verify(repository, times(1)).save(funcionamentoAtualizado);
+        FuncionamentoEntity savedFuncionamento = repository.save(funcionamento);
+        savedFuncionamento.setDiaEnum(DiaEnum.fromInt(diaSeguinte));
+        var funcionamentoAtualizado = repository.save(savedFuncionamento);
+
+        assertNotEquals(funcionamento.getDiaEnum(), funcionamentoAtualizado.getDiaEnum());
+        assertEquals(savedFuncionamento.getAbertura(), funcionamentoAtualizado.getAbertura());
+        assertEquals(savedFuncionamento.getFechamento(), funcionamentoAtualizado.getFechamento());
     }
 
     @Test
     void testDeletarFuncionamento() {
-        doNothing().when(repository).deleteById(1L);
-        repository.deleteById(1L);
-        verify(repository, times(1)).deleteById(1L);
+        var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        FuncionamentoEntity funcionamento = getRandom(FuncionamentoEntity.class);
+        funcionamento.setRestauranteId(restauranteEntity.getId());
+        FuncionamentoEntity savedFuncionamento = repository.save(funcionamento);
+        repository.deleteById(savedFuncionamento.getId());
+        var result = repository.findById(savedFuncionamento.getId());
+        assertTrue(result.isEmpty());
     }
 }
