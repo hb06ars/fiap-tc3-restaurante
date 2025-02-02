@@ -25,7 +25,7 @@ class UsuarioRepositoryIT {
     @Test
     void testBuscarPorEmailOuCelular() {
         UsuarioEntity usuarioEntity = getRandom(UsuarioEntity.class);
-        
+
         var usuarioSaved = usuarioRepository.save(usuarioEntity);
         var result = usuarioRepository.findByEmailOrCelular(usuarioSaved.getEmail(), usuarioSaved.getCelular());
 
@@ -62,7 +62,7 @@ class UsuarioRepositoryIT {
 
         var usuarioSaved = usuarioRepository.save(usuarioEntity);
         usuarioSaved.setNome("Fulano de Tal");
-        var result = usuarioRepository.save(usuarioEntity);
+        var result = usuarioRepository.save(usuarioSaved);
 
         assertNotNull(result);
         assertThat(result.getNome()).isEqualTo("Fulano de Tal");
