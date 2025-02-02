@@ -154,7 +154,7 @@ class FuncionamentoServiceTest {
     @Test
     void testBuscarPorRestaurante() {
         FuncionamentoEntity funcionamentoEntity = new FuncionamentoEntity(funcionamentoDTO);
-        when(funcionamentoRepository.findAllByRestauranteId(1L)).thenReturn(List.of(new FuncionamentoDTO(funcionamentoEntity)));
+        when(funcionamentoRepository.findAllByRestauranteId(1L)).thenReturn(List.of(funcionamentoEntity));
 
         List<FuncionamentoDTO> funcionamentoList = funcionamentoService.buscarPorRestaurante(1L);
 

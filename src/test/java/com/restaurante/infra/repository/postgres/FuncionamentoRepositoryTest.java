@@ -61,7 +61,7 @@ class FuncionamentoRepositoryTest {
 
     @Test
     void testBuscarTodosFUncionamentosPorRestauranteId() {
-        FuncionamentoDTO funcionamentoDTO1 = FuncionamentoDTO.builder()
+        FuncionamentoEntity entity1 = FuncionamentoEntity.builder()
                 .id(1L)
                 .diaEnum(DiaEnum.SEGUNDA)
                 .abertura(LocalTime.of(8, 0))
@@ -69,7 +69,7 @@ class FuncionamentoRepositoryTest {
                 .restauranteId(2L)
                 .build();
 
-        FuncionamentoDTO funcionamentoDTO2 = FuncionamentoDTO.builder()
+        FuncionamentoEntity entity2 = FuncionamentoEntity.builder()
                 .id(1L)
                 .diaEnum(DiaEnum.TERCA)
                 .abertura(LocalTime.of(8, 0))
@@ -77,11 +77,14 @@ class FuncionamentoRepositoryTest {
                 .restauranteId(2L)
                 .build();
 
-        List<FuncionamentoDTO> funcionamentoDTOList = Arrays.asList(funcionamentoDTO1, funcionamentoDTO2);
+        List<FuncionamentoEntity> lista = Arrays.asList(entity1, entity2);
 
-        when(funcionamentoRepository.findAllByRestauranteId(1L)).thenReturn(funcionamentoDTOList);
+        when(funcionamentoRepository.findAllByRestauranteId(1L)).thenReturn(lista);
 
-        List<FuncionamentoDTO> resultado = funcionamentoRepository.findAllByRestauranteId(1L);
+        List<FuncionamentoDTO> resultado = funcionamentoRepository
+                .findAllByRestauranteId(1L)
+                .stream()
+                .map(FuncionamentoDTO::new).toList();
 
         assertEquals(2, resultado.size());
         assertEquals(DiaEnum.SEGUNDA, resultado.get(0).getDiaEnum());
