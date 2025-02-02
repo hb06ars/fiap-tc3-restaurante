@@ -73,7 +73,7 @@ public class FuncionamentoService {
     }
 
     public List<FuncionamentoDTO> buscarPorRestaurante(Long idRestaurante) {
-        return repository.findAllByRestauranteId(idRestaurante);
+        return repository.findAllByRestauranteId(idRestaurante).stream().map(FuncionamentoDTO::new).toList();
     }
 
     public void inserirDataFuncionamentoInicial(Long idRestaurante) {

@@ -23,5 +23,5 @@ public interface FuncionamentoRepository extends JpaRepository<FuncionamentoEnti
             @Param("diaEnum") String diaEnum
     );
 
-    List<FuncionamentoDTO> findAllByRestauranteId(Long idRestaurante);
+    List<FuncionamentoEntity> findAllByRestauranteId(Long idRestaurante);
 }
