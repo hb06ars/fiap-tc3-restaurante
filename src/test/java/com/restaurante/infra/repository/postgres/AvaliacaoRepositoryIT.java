@@ -44,6 +44,9 @@ class AvaliacaoRepositoryIT extends BaseUnitTest {
         var usuarioEntity = getRandom(UsuarioEntity.class);
         var restauranteEntity = getRandom(RestauranteEntity.class);
         var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
+        avaliacaoEntity.setUsuarioId(usuarioEntity.getId());
+        avaliacaoEntity.setRestauranteId(restauranteEntity.getId());
+        avaliacaoEntity.setNota(5);
 
         usuarioRepository.save(usuarioEntity);
         restauranteRepository.save(restauranteEntity);
