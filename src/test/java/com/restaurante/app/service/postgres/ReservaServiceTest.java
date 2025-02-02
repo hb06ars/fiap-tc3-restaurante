@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -133,7 +132,7 @@ class ReservaServiceTest {
 
     @Test
     void buscar_ReturnsReservaDTOList() {
-        when(reservaRepository.findAllByFilter(anyLong(), anyString(), anyString(), any()))
+        when(reservaRepository.findAllByFilter(anyLong(), any(), any(), any()))
                 .thenReturn(List.of(reservaEntity));
 
         List<ReservaDTO> result = reservaService.buscar(1L, reservaDTO);
