@@ -46,17 +46,18 @@ class repositoryIT {
 
     @Test
     void testValidarData_whenDataIsValid() {
+        var diaAtual = LocalDate.now().getDayOfWeek().getValue();
         var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
         var funcionamentoEntity = getRandom(FuncionamentoEntity.class);
-        funcionamentoEntity.setDiaEnum(DiaEnum.fromInt(LocalDate.now().getDayOfWeek().getValue()));
+        funcionamentoEntity.setDiaEnum(DiaEnum.fromInt(diaAtual));
         funcionamentoEntity.setRestauranteId(restauranteEntity.getId());
         funcionamentoEntity.setAbertura(LocalTime.of(8, 0));
         funcionamentoEntity.setFechamento(LocalTime.of(18, 0));
         var funcionamentoSaved = repository.save(funcionamentoEntity);
 
-        var dataReserva = LocalDateTime.of(LocalDate.now(), funcionamentoSaved.getAbertura().plusHours(1));
+        var dataReserva = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0, 1));
 
-        var dataValidada = repository.validarData(funcionamentoSaved.getId(), dataReserva, funcionamentoSaved.getDiaEnum().name());
+        var dataValidada = repository.validarData(funcionamentoSaved.getRestauranteId(), dataReserva, funcionamentoSaved.getDiaEnum().name());
         assertFalse(dataValidada.isEmpty());
     }
 
