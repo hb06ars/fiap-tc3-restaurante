@@ -1,7 +1,9 @@
 package com.restaurante.infra.repository.postgres;
 
 import com.restaurante.domain.entity.AvaliacaoEntity;
-import com.restaurante.utils.RegistroHelper;
+import com.restaurante.domain.entity.RestauranteEntity;
+import com.restaurante.domain.entity.UsuarioEntity;
+import com.restaurante.utils.BaseUnitTest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @Transactional
-class MensagemRepositoryIT {
+class AvaliacaoRepositoryIT extends BaseUnitTest {
 
     @Autowired
     private AvaliacaoRepository repository;
@@ -39,13 +41,13 @@ class MensagemRepositoryIT {
     void testFindAllByRestauranteId() {
         Long restauranteId = 1L;
 
-        var usuario = RegistroHelper.gerarUsuario();
-        var restaurante = RegistroHelper.gerarRestaurante();
-        var avaliacao = RegistroHelper.gerarAvaliacao();
+        var usuarioEntity = getRandom(UsuarioEntity.class);
+        var restauranteEntity = getRandom(RestauranteEntity.class);
+        var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
 
-        usuarioRepository.save(usuario);
-        restauranteRepository.save(restaurante);
-        repository.save(avaliacao);
+        usuarioRepository.save(usuarioEntity);
+        restauranteRepository.save(restauranteEntity);
+        repository.save(avaliacaoEntity);
 
         List<AvaliacaoEntity> resultado = repository.findAllByRestauranteId(restauranteId);
 
@@ -55,12 +57,12 @@ class MensagemRepositoryIT {
 
     @Test
     void testSalvarAvaliacao() {
-        var usuario = RegistroHelper.gerarUsuario();
-        var restaurante = RegistroHelper.gerarRestaurante();
-        var avaliacaoEntity = RegistroHelper.gerarAvaliacao();
+        var usuarioEntity = getRandom(UsuarioEntity.class);
+        var restauranteEntity = getRandom(RestauranteEntity.class);
+        var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
 
-        usuarioRepository.save(usuario);
-        restauranteRepository.save(restaurante);
+        usuarioRepository.save(usuarioEntity);
+        restauranteRepository.save(restauranteEntity);
         AvaliacaoEntity savedAvaliacao = repository.save(avaliacaoEntity);
 
         assertThat(savedAvaliacao).isNotNull();
@@ -74,13 +76,13 @@ class MensagemRepositoryIT {
 
     @Test
     void testBuscarPorId() {
-        var usuario = RegistroHelper.gerarUsuario();
-        var restaurante = RegistroHelper.gerarRestaurante();
-        var avaliacao = RegistroHelper.gerarAvaliacao();
+        var usuarioEntity = getRandom(UsuarioEntity.class);
+        var restauranteEntity = getRandom(RestauranteEntity.class);
+        var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
 
-        usuarioRepository.save(usuario);
-        restauranteRepository.save(restaurante);
-        repository.save(avaliacao);
+        usuarioRepository.save(usuarioEntity);
+        restauranteRepository.save(restauranteEntity);
+        repository.save(avaliacaoEntity);
 
         Optional<AvaliacaoEntity> foundAvaliacao = repository.findById(1L);
 
@@ -90,13 +92,13 @@ class MensagemRepositoryIT {
 
     @Test
     void testAtualizarAvaliacao() {
-        var usuario = RegistroHelper.gerarUsuario();
-        var restaurante = RegistroHelper.gerarRestaurante();
-        var avaliacao = RegistroHelper.gerarAvaliacao();
+        var usuarioEntity = getRandom(UsuarioEntity.class);
+        var restauranteEntity = getRandom(RestauranteEntity.class);
+        var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
 
-        usuarioRepository.save(usuario);
-        restauranteRepository.save(restaurante);
-        repository.save(avaliacao);
+        usuarioRepository.save(usuarioEntity);
+        restauranteRepository.save(restauranteEntity);
+        repository.save(avaliacaoEntity);
 
         AvaliacaoEntity avaliacaoAtualizada = new AvaliacaoEntity();
         avaliacaoAtualizada.setId(1L);
@@ -114,13 +116,13 @@ class MensagemRepositoryIT {
 
     @Test
     void testDeletarAvaliacao() {
-        var usuario = RegistroHelper.gerarUsuario();
-        var restaurante = RegistroHelper.gerarRestaurante();
-        var avaliacao = RegistroHelper.gerarAvaliacao();
+        var usuarioEntity = getRandom(UsuarioEntity.class);
+        var restauranteEntity = getRandom(RestauranteEntity.class);
+        var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
 
-        usuarioRepository.save(usuario);
-        restauranteRepository.save(restaurante);
-        repository.save(avaliacao);
+        usuarioRepository.save(usuarioEntity);
+        restauranteRepository.save(restauranteEntity);
+        repository.save(avaliacaoEntity);
 
         repository.deleteById(1L);
         var result = repository.findById(1L).isPresent();
