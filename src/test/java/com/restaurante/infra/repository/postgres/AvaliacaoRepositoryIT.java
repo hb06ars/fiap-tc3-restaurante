@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -55,75 +56,66 @@ class AvaliacaoRepositoryIT extends BaseUnitTest {
 
     @Test
     void testSalvarAvaliacao() {
-        var usuarioEntity = getRandom(UsuarioEntity.class);
-        var restauranteEntity = getRandom(RestauranteEntity.class);
         var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
+        var usuarioSalvo = usuarioRepository.save(getRandom(UsuarioEntity.class));
+        var restauranteSalvo = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        avaliacaoEntity.setUsuarioId(usuarioSalvo.getId());
+        avaliacaoEntity.setNota(5);
+        avaliacaoEntity.setRestauranteId(restauranteSalvo.getId());
 
-        usuarioRepository.save(usuarioEntity);
-        restauranteRepository.save(restauranteEntity);
-        AvaliacaoEntity savedAvaliacao = repository.save(avaliacaoEntity);
-
-        assertThat(savedAvaliacao).isNotNull();
-        assertThat(avaliacaoEntity.getId()).isEqualTo(savedAvaliacao.getId());
-        assertThat(avaliacaoEntity.getRestauranteId()).isEqualTo(savedAvaliacao.getRestauranteId());
-        assertThat(avaliacaoEntity.getComentario()).isEqualTo(savedAvaliacao.getComentario());
-        assertThat(avaliacaoEntity.getNota()).isEqualTo(savedAvaliacao.getNota());
+        var savedAvaliacao = repository.save(avaliacaoEntity);
 
         assertThat(savedAvaliacao).isNotNull();
+        assertThat(savedAvaliacao.getId()).isPositive();
     }
 
     @Test
     void testBuscarPorId() {
-        var usuarioEntity = getRandom(UsuarioEntity.class);
-        var restauranteEntity = getRandom(RestauranteEntity.class);
         var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
+        var usuarioSalvo = usuarioRepository.save(getRandom(UsuarioEntity.class));
+        var restauranteSalvo = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        avaliacaoEntity.setUsuarioId(usuarioSalvo.getId());
+        avaliacaoEntity.setNota(5);
+        avaliacaoEntity.setRestauranteId(restauranteSalvo.getId());
 
-        usuarioRepository.save(usuarioEntity);
-        restauranteRepository.save(restauranteEntity);
-        repository.save(avaliacaoEntity);
+        var savedAvaliacao = repository.save(avaliacaoEntity);
 
-        Optional<AvaliacaoEntity> foundAvaliacao = repository.findById(1L);
+        Optional<AvaliacaoEntity> avaliacaoEncontrada = repository.findById(savedAvaliacao.getId());
 
-        assertThat(foundAvaliacao.isPresent()).isNotNull();
-        assertThat(foundAvaliacao.get().getId()).isEqualTo(1L);
+        assertTrue(avaliacaoEncontrada.isPresent());
+        assertThat(avaliacaoEncontrada.get().getId()).isEqualTo(savedAvaliacao.getId());
     }
 
     @Test
     void testAtualizarAvaliacao() {
-        var usuarioEntity = getRandom(UsuarioEntity.class);
-        var restauranteEntity = getRandom(RestauranteEntity.class);
         var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
+        var usuarioSalvo = usuarioRepository.save(getRandom(UsuarioEntity.class));
+        var restauranteSalvo = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        avaliacaoEntity.setUsuarioId(usuarioSalvo.getId());
+        avaliacaoEntity.setNota(5);
+        avaliacaoEntity.setRestauranteId(restauranteSalvo.getId());
 
-        usuarioRepository.save(usuarioEntity);
-        restauranteRepository.save(restauranteEntity);
-        repository.save(avaliacaoEntity);
+        var savedAvaliacao = repository.save(avaliacaoEntity);
+        savedAvaliacao.setComentario("Alteração do comentário OK.");
+        var valorAtualizado = repository.save(savedAvaliacao);
 
-        AvaliacaoEntity avaliacaoAtualizada = new AvaliacaoEntity();
-        avaliacaoAtualizada.setId(1L);
-        avaliacaoAtualizada.setRestauranteId(1L);
-        avaliacaoAtualizada.setComentario("Excelente comida!");
-        avaliacaoAtualizada.setNota(5);
-
-        repository.save(avaliacaoAtualizada);
-        avaliacaoAtualizada.setComentario("Muito bom.");
-        repository.save(avaliacaoAtualizada);
-
-        assertThat(avaliacaoAtualizada.getId()).isEqualTo(1L);
-        assertThat(avaliacaoAtualizada.getComentario()).isEqualTo("Muito bom.");
+        assertThat(valorAtualizado.getId()).isEqualTo(savedAvaliacao.getId());
+        assertThat(valorAtualizado.getComentario()).isEqualTo("Alteração do comentário OK.");
     }
 
     @Test
     void testDeletarAvaliacao() {
-        var usuarioEntity = getRandom(UsuarioEntity.class);
-        var restauranteEntity = getRandom(RestauranteEntity.class);
         var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
+        var usuarioSalvo = usuarioRepository.save(getRandom(UsuarioEntity.class));
+        var restauranteSalvo = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        avaliacaoEntity.setUsuarioId(usuarioSalvo.getId());
+        avaliacaoEntity.setNota(5);
+        avaliacaoEntity.setRestauranteId(restauranteSalvo.getId());
 
-        usuarioRepository.save(usuarioEntity);
-        restauranteRepository.save(restauranteEntity);
-        repository.save(avaliacaoEntity);
+        var savedAvaliacao = repository.save(avaliacaoEntity);
+        repository.deleteById(savedAvaliacao.getId());
+        var result = repository.findById(savedAvaliacao.getId()).isPresent();
 
-        repository.deleteById(1L);
-        var result = repository.findById(1L).isPresent();
         assertFalse(result);
     }
 
