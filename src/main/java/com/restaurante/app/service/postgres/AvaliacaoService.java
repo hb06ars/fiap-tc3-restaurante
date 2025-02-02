@@ -41,6 +41,8 @@ public class AvaliacaoService {
     public AvaliacaoDTO update(Long id, AvaliacaoDTO avaliacaoSalvar) {
         Optional<AvaliacaoEntity> avaliacaoExistente = repository.findById(id);
         if (avaliacaoExistente.isPresent()) {
+            avaliacaoExistente.get().setComentario(avaliacaoSalvar.getComentario());
+            avaliacaoExistente.get().setNota(avaliacaoSalvar.getNota());
             return new AvaliacaoDTO(repository.save(avaliacaoExistente.get()));
         } else {
             throw new RuntimeException("Avaliação " + id + " não encontrada.");

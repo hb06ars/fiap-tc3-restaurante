@@ -88,8 +88,9 @@ class AvaliacaoServiceIT extends BaseUnitTest {
         dto.setRestauranteId(restauranteEntity.getId());
         var avaliacaoSaved = avaliacaoService.save(dto);
 
-        dto.setComentario("Alteração");
+        avaliacaoSaved.setComentario("Alteração");
         AvaliacaoDTO updatedAvaliacao = avaliacaoService.update(avaliacaoSaved.getId(), avaliacaoSaved);
+
         assertNotNull(updatedAvaliacao);
         assertThat(updatedAvaliacao.getId()).isPositive();
         assertThat(updatedAvaliacao.getComentario()).isEqualTo("Alteração");
