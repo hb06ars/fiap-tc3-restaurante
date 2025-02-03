@@ -12,7 +12,7 @@ spring:
       mode: always
 
 sonar:
-  token: sqp_e6b0eaa38d92c4c69bb9e554ef98feceba932e9c
+  token: ${SONAR_TOKEN}
   host:
     url: http://localhost:9000
   projectKey: restaurante
