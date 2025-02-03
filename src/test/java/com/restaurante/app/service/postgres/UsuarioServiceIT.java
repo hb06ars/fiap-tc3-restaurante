@@ -1,9 +1,7 @@
 package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.UsuarioDTO;
-import com.restaurante.domain.entity.UsuarioEntity;
 import com.restaurante.infra.exceptions.RecordAlreadyExistsException;
-import com.restaurante.infra.repository.postgres.UsuarioRepository;
 import com.restaurante.utils.BaseUnitTest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -14,38 +12,52 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureTestDatabase
 @Transactional
-class UsuarioServiceIT  extends BaseUnitTest {
+class UsuarioServiceIT extends BaseUnitTest {
 
     @Autowired
     private UsuarioService usuarioService;
 
-    private UsuarioDTO usuarioDTO;
-    private UsuarioEntity usuarioEntity;
-
     @Test
     void save_ReturnsUsuarioDTO_WhenUserDoesNotExist() {
-        UsuarioDTO result = usuarioService.save(usuarioDTO);
+        var result = usuarioService.save(getRandom(UsuarioDTO.class));
+
+        assertNotNull(result);
+        assertThat(result.getId()).isPositive();
     }
 
     @Test
     void save_ThrowsRecordAlreadyExistsException_WhenEmailOrCelularExists() {
-        RecordAlreadyExistsException thrown = assertThrows(RecordAlreadyExistsException.class, () -> usuarioService.save(usuarioDTO));
+        var usuarioSaved = usuarioService.save(getRandom(UsuarioDTO.class));
+        assertThrows(RecordAlreadyExistsException.class, () -> usuarioService.save(usuarioSaved));
     }
 
     @Test
     void findAll_ReturnsListOfUsuarios() {
+        usuarioService.save(getRandom(UsuarioDTO.class));
         List<UsuarioDTO> result = usuarioService.findAll();
+
+        assertNotNull(result);
+        assertThat(result.size()).isPositive();
+
     }
 
     @Test
     void findById_ReturnsUsuarioDTO() {
-        UsuarioDTO result = usuarioService.findById(1L);
+        var user = usuarioService.save(getRandom(UsuarioDTO.class));
+        UsuarioDTO result = usuarioService.findById(user.getId());
+
+        assertNotNull(result);
+        assertThat(result.getId()).isPositive();
+
     }
 
     @Test
@@ -55,12 +67,20 @@ class UsuarioServiceIT  extends BaseUnitTest {
 
     @Test
     void update_ReturnsUpdatedUsuarioDTO() {
-        UsuarioDTO result = usuarioService.update(1L, null);
+        var dto = getRandom(UsuarioDTO.class);
+        dto.setNome("Nome inicial");
+        var saved = usuarioService.save(dto);
+
+        saved.setNome("Teste nome original");
+        UsuarioDTO result = usuarioService.update(saved.getId(), saved);
+
+        assertNotNull(result);
+        assertThat(result.getId()).isPositive();
     }
 
     @Test
     void update_ThrowsRuntimeException_WhenUsuarioNotFound() {
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> usuarioService.update(1L, usuarioDTO));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> usuarioService.update(1L, null));
     }
 
     @Test
@@ -70,7 +90,10 @@ class UsuarioServiceIT  extends BaseUnitTest {
 
     @Test
     void delete_Success() {
-        usuarioService.delete(1L);
+        var saved = usuarioService.save(getRandom(UsuarioDTO.class));
+        usuarioService.delete(saved.getId());
+        var result = usuarioService.findById(saved.getId());
+        assertNull(result);
     }
 
     @Test
