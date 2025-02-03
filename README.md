@@ -23,7 +23,7 @@
 - Para subir a imagem basta executar o docker-compose.yaml
 
 ### SWAGGER
-- Swagger: http://localhost:8080/swagger-ui.html
+- Swagger: http://localhost:8080/swagger-ui/index.html#/
 
 # DICAS
 
