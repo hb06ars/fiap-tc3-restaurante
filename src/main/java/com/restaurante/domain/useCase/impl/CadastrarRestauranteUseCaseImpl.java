@@ -16,7 +16,8 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
     private final FuncionamentoService funcionamentoService;
     private final InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
 
-    public CadastrarRestauranteUseCaseImpl(RestauranteService service, FuncionamentoService funcionamentoService, InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
+    public CadastrarRestauranteUseCaseImpl(RestauranteService service, FuncionamentoService funcionamentoService,
+                                           InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
         this.service = service;
         this.funcionamentoService = funcionamentoService;
         this.insercaoRemocaoDasMesasUseCase = insercaoRemocaoDasMesasUseCase;
@@ -27,7 +28,8 @@ public class CadastrarRestauranteUseCaseImpl implements CadastrarRestauranteUseC
         var restauranteExistente = service.restauranteJaExiste(dto.getNome(), dto.getLocalizacao());
         if (!restauranteExistente) {
             var restauranteCadastrado = service.save(dto);
-            insercaoRemocaoDasMesasUseCase.execute(restauranteCadastrado.getId(), 0, restauranteCadastrado.getCapacidade());
+            insercaoRemocaoDasMesasUseCase.execute(restauranteCadastrado.getId(), 0,
+                    restauranteCadastrado.getCapacidade());
             funcionamentoService.inserirDataFuncionamentoInicial(restauranteCadastrado.getId());
             return restauranteCadastrado;
         } else {

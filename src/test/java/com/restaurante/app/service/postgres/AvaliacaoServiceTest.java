@@ -73,7 +73,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void testFindById_Found() {
+    void testFindByIdFound() {
         AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity(avaliacaoDTO);
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.of(avaliacaoEntity));
 
@@ -85,7 +85,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void testFindById_NotFound() {
+    void testFindByIdNotFound() {
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.empty());
 
         AvaliacaoDTO foundAvaliacao = avaliacaoService.findById(1L);
@@ -95,7 +95,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void testUpdate_Success() {
+    void testUpdateSuccess() {
         AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity(avaliacaoDTO);
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.of(avaliacaoEntity));
         when(avaliacaoRepository.save(any(AvaliacaoEntity.class))).thenReturn(avaliacaoEntity);
@@ -109,7 +109,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void testUpdate_NotFound() {
+    void testUpdateNotFound() {
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> avaliacaoService.update(1L, avaliacaoDTO));
@@ -118,7 +118,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void testDelete_Success() {
+    void testDeleteSuccess() {
         AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity(avaliacaoDTO);
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.of(avaliacaoEntity));
         avaliacaoService.delete(1L);
@@ -126,7 +126,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void testDelete_NotFound() {
+    void testDeleteNotFound() {
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> avaliacaoService.delete(1L));

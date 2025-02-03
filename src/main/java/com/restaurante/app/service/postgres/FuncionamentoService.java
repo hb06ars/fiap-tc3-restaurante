@@ -68,8 +68,11 @@ public class FuncionamentoService {
         }
     }
 
-    public List<FuncionamentoDTO> validarDataFuncionamento(Long restauranteId, LocalDateTime dataReserva, DiaEnum diaenum) {
-        return repository.validarData(restauranteId, dataReserva, diaenum.name()).stream().map(FuncionamentoDTO::new).toList();
+    public List<FuncionamentoDTO> validarDataFuncionamento(Long restauranteId,
+                                                           LocalDateTime dataReserva, DiaEnum diaenum) {
+        return repository.validarData(restauranteId, dataReserva, diaenum.name())
+                .stream()
+                .map(FuncionamentoDTO::new).toList();
     }
 
     public List<FuncionamentoDTO> buscarPorRestaurante(Long idRestaurante) {
@@ -87,7 +90,9 @@ public class FuncionamentoService {
                     .diaEnum(diaEnumAtual)
                     .build());
         });
-        repository.saveAll(funcionamentoDTOList.stream().map(FuncionamentoEntity::new).toList());
+        repository.saveAll(funcionamentoDTOList.stream()
+                .map(FuncionamentoEntity::new)
+                .toList());
     }
 
     private static List<DiaEnum> getDiasUteisCorridos() {

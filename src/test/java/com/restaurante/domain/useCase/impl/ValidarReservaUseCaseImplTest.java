@@ -40,7 +40,7 @@ class ValidarReservaUseCaseImplTest {
     }
 
     @Test
-    void testExecute_Success() {
+    void testExecuteSuccess() {
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setRestauranteId(1L);
         reservaDTO.setDataDaReserva(LocalDateTime.now());

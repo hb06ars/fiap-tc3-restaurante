@@ -22,7 +22,7 @@ class CadastrarRestauranteUseCaseImplIT {
     private CadastrarRestauranteUseCaseImpl cadastrarRestauranteUseCase;
 
     @Test
-    void execute_DeveRetornarMesaDisponivelDTO() {
+    void executeDeveRetornarMesaDisponivelDTO() {
         RestauranteDTO dto = getRandom(RestauranteDTO.class);
         dto.setCapacidade(3);
         RestauranteDTO resultado = cadastrarRestauranteUseCase.execute(dto);
@@ -30,7 +30,7 @@ class CadastrarRestauranteUseCaseImplIT {
     }
 
     @Test
-    void execute_DeveLancarReservaException_QuandoNaoHouverMesasDisponiveis() {
+    void executeDeveLancarReservaExceptionQuandoNaoHouverMesasDisponiveis() {
         RestauranteDTO dto = getRandom(RestauranteDTO.class);
         dto.setCapacidade(3);
         RestauranteDTO resultado = cadastrarRestauranteUseCase.execute(dto);

@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @Transactional
-class repositoryIT {
+class FuncionamentoRepositoryIT {
 
     @Autowired
     private FuncionamentoRepository repository;
@@ -45,7 +45,7 @@ class repositoryIT {
 
 
     @Test
-    void testValidarData_whenDataIsValid() {
+    void testValidarDatawhenDataIsValid() {
         var diaAtual = LocalDate.now().getDayOfWeek().getValue();
         var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
         var funcionamentoEntity = getRandom(FuncionamentoEntity.class);
@@ -57,12 +57,13 @@ class repositoryIT {
 
         var dataReserva = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0, 1));
 
-        var dataValidada = repository.validarData(funcionamentoSaved.getRestauranteId(), dataReserva, funcionamentoSaved.getDiaEnum().name());
+        var dataValidada = repository.validarData(funcionamentoSaved.getRestauranteId(), dataReserva,
+                funcionamentoSaved.getDiaEnum().name());
         assertFalse(dataValidada.isEmpty());
     }
 
     @Test
-    void testValidarData_whenDataIsInvalid() {
+    void testValidarDatawhenDataIsInvalid() {
         var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
         var funcionamentoEntity = getRandom(FuncionamentoEntity.class);
         funcionamentoEntity.setRestauranteId(restauranteEntity.getId());
@@ -71,9 +72,11 @@ class repositoryIT {
         funcionamentoEntity.setFechamento(LocalTime.of(18, 0));
         var funcionamentoSaved = repository.save(funcionamentoEntity);
 
-        var dataReserva = LocalDateTime.of(LocalDate.now(), funcionamentoSaved.getFechamento().plusHours(1));
+        var dataReserva = LocalDateTime.of(LocalDate.now(),
+                funcionamentoSaved.getFechamento().plusHours(1));
 
-        var dataValidada = repository.validarData(funcionamentoSaved.getId(), dataReserva, funcionamentoSaved.getDiaEnum().name());
+        var dataValidada = repository.validarData(funcionamentoSaved.getId(),
+                dataReserva, funcionamentoSaved.getDiaEnum().name());
         assertTrue(dataValidada.isEmpty());
     }
 

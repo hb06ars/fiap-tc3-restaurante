@@ -31,7 +31,7 @@ class AtualizarRestauranteUseCaseImplIT extends BaseUnitTest {
     private InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     @Test
-    void testExecute_Success() {
+    void testExecuteSuccess() {
         RestauranteDTO dto = getRandom(RestauranteDTO.class);
         dto.setCapacidade(3);
         var restauranteSaved = restauranteService.save(dto);
@@ -40,7 +40,7 @@ class AtualizarRestauranteUseCaseImplIT extends BaseUnitTest {
     }
 
     @Test
-    void testExecute_RestauranteNotFound() {
+    void testExecuteRestauranteNotFound() {
         RestauranteDTO dto = getRandom(RestauranteDTO.class);
         dto.setCapacidade(3);
         assertThrows(ObjectNotFoundException.class, () -> atualizarRestauranteUseCase.execute(1L, dto));

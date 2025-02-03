@@ -37,7 +37,7 @@ class ValidarReservaUseCaseImplIT extends BaseUnitTest {
     private MesaRepository mesaRepository;
 
     @Test
-    void testExecute_Success() {
+    void testExecuteSuccess() {
         UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);

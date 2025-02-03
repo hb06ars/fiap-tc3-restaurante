@@ -48,15 +48,18 @@ class FuncionamentoRepositoryTest {
         LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 12, 0);
         List<FuncionamentoEntity> funcionamentoList = List.of(funcionamento);
 
-        when(funcionamentoRepository.validarData(1L, dataReserva, DiaEnum.SEGUNDA.name())).thenReturn(funcionamentoList);
+        when(funcionamentoRepository.validarData(1L, dataReserva, DiaEnum.SEGUNDA.name()))
+                .thenReturn(funcionamentoList);
 
-        List<FuncionamentoEntity> resultado = funcionamentoRepository.validarData(1L, dataReserva, "SEGUNDA");
+        List<FuncionamentoEntity> resultado = funcionamentoRepository
+                .validarData(1L, dataReserva, "SEGUNDA");
 
         assertFalse(resultado.isEmpty());
         assertEquals(1, resultado.size());
         assertEquals(1L, resultado.get(0).getRestauranteId());
 
-        verify(funcionamentoRepository, times(1)).validarData(1L, dataReserva, "SEGUNDA");
+        verify(funcionamentoRepository, times(1))
+                .validarData(1L, dataReserva, "SEGUNDA");
     }
 
     @Test

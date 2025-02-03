@@ -54,7 +54,9 @@ class FuncionamentoControllerTest {
 
         mockMvc.perform(post("/funcionamento/cadastrar")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"diaEnum\":\"SEGUNDA\", \"abertura\":\"08:00:01\", \"fechamento\":\"18:00:01\", \"restauranteId\":1}"))
+                        .content("{\"diaEnum\":\"SEGUNDA\", \"abertura\":\"08:00:01\", " +
+                                "\"fechamento\":\"18:00:01\", " +
+                                "\"restauranteId\":1}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.diaEnum").value(DiaEnum.SEGUNDA.name()))
@@ -73,7 +75,8 @@ class FuncionamentoControllerTest {
 
         mockMvc.perform(put("/funcionamento/atualizar/{idFuncionamento}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"diaEnum\":\"SEGUNDA\", \"abertura\":\"08:00:01\", \"fechamento\":\"18:00:01\", \"restauranteId\":1}"))
+                        .content("{\"diaEnum\":\"SEGUNDA\", \"abertura\":\"08:00:01\", " +
+                                "\"fechamento\":\"18:00:01\", \"restauranteId\":1}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.diaEnum").value(DiaEnum.SEGUNDA.name()))
@@ -96,7 +99,8 @@ class FuncionamentoControllerTest {
 
     @Test
     void testBuscarPorRestaurante() throws Exception {
-        when(funcionamentoService.buscarPorRestaurante(1L)).thenReturn(Collections.singletonList(funcionamentoDTO));
+        when(funcionamentoService.buscarPorRestaurante(1L))
+                .thenReturn(Collections.singletonList(funcionamentoDTO));
 
         mockMvc.perform(get("/funcionamento/{idRestaurante}", 1L))
                 .andExpect(status().isOk())

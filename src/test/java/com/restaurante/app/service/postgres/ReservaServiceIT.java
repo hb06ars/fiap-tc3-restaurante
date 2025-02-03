@@ -150,7 +150,7 @@ class ReservaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void delete_Success() {
+    void deleteSuccess() {
         var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(4);

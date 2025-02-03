@@ -40,10 +40,10 @@ class BuscarMesaDisponivelUseCaseImplIT extends BaseUnitTest {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private BuscarMesaDisponivelUseCaseImpl buscarMesaDisponivelUseCase;
+    private BuscarMesaDisponivelUseCaseImpl buscarMesaUseCase;
 
     @Test
-    void execute_DeveRetornarMesaDisponivelDTO() {
+    void executeDeveRetornarMesaDisponivelDTO() {
         var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
         var mesaEntity = getRandom(MesaEntity.class);
@@ -55,13 +55,13 @@ class BuscarMesaDisponivelUseCaseImplIT extends BaseUnitTest {
         reservaEntity.setUsuarioId(usuarioSaved.getId());
         reservaRepository.save(reservaEntity);
 
-        MesaDisponivelDTO resultado = buscarMesaDisponivelUseCase.execute(restauranteSaved.getId(), LocalDateTime.now());
+        MesaDisponivelDTO resultado = buscarMesaUseCase.execute(restauranteSaved.getId(), LocalDateTime.now());
         assertNotNull(resultado);
         assertThat(resultado.getMesaId()).isPositive();
     }
 
     @Test
-    void execute_DeveLancarReservaException_QuandoNaoHouverMesasDisponiveis() {
-        assertThrows(ReservaException.class, () -> buscarMesaDisponivelUseCase.execute(1L, LocalDateTime.now()));
+    void executeDeveLancarReservaExceptionQuandoNaoHouverMesasDisponiveis() {
+        assertThrows(ReservaException.class, () -> buscarMesaUseCase.execute(1L, LocalDateTime.now()));
     }
 }

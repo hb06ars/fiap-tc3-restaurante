@@ -88,7 +88,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void delete_Success() {
+    void deleteSuccess() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);

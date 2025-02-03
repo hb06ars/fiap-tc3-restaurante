@@ -42,32 +42,32 @@ class BuscarMesaDisponivelUseCaseImplTest {
 
 
     @Test
-    void execute_DeveRetornarMesaDisponivelDTO() {
-        Long restauranteId = 1L;
+    void executeDeveRetornarMesaDisponivelDTO() {
+        Long id = 1L;
         LocalDateTime dataReserva = LocalDateTime.now();
 
         List<Object[]> mesasDisponiveis = new ArrayList<>();
         mesasDisponiveis.add(new Object[]{1L, "Mesa 1", "Reservado"});
 
-        when(mesaRepository.buscarMesasDisponiveis(restauranteId, DataFormat.truncate(dataReserva))).thenReturn(mesasDisponiveis);
+        when(mesaRepository.buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva))).thenReturn(mesasDisponiveis);
 
-        MesaDisponivelDTO resultado = buscarMesaDisponivelUseCase.execute(restauranteId, dataReserva);
+        MesaDisponivelDTO resultado = buscarMesaDisponivelUseCase.execute(id, dataReserva);
 
         assertNotNull(resultado);
         assertEquals(1L, resultado.getMesaId());
         assertEquals("Mesa 1", resultado.getMesaNome());
         assertEquals("Reservado", resultado.getStatusMesa());
-        verify(mesaRepository).buscarMesasDisponiveis(restauranteId, DataFormat.truncate(dataReserva));
+        verify(mesaRepository).buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva));
     }
 
     @Test
-    void execute_DeveLancarReservaException_QuandoNaoHouverMesasDisponiveis() {
-        Long restauranteId = 1L;
+    void executeDeveLancarReservaExceptionQuandoNaoHouverMesasDisponiveis() {
+        Long id = 1L;
         LocalDateTime dataReserva = LocalDateTime.now();
 
-        when(mesaRepository.buscarMesasDisponiveis(restauranteId, DataFormat.truncate(dataReserva))).thenReturn(new ArrayList<>());
+        when(mesaRepository.buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva))).thenReturn(new ArrayList<>());
 
-        assertThrows(ReservaException.class, () -> buscarMesaDisponivelUseCase.execute(restauranteId, dataReserva));
-        verify(mesaRepository).buscarMesasDisponiveis(restauranteId, DataFormat.truncate(dataReserva));
+        assertThrows(ReservaException.class, () -> buscarMesaDisponivelUseCase.execute(id, dataReserva));
+        verify(mesaRepository).buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva));
     }
 }

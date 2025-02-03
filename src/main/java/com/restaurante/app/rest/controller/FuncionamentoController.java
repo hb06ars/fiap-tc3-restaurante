@@ -62,7 +62,8 @@ public class FuncionamentoController {
             description = "Buscar horários de funcionamento do restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping("/{idRestaurante}")
-    public ResponseEntity<List<FuncionamentoDTO>> buscarPorRestaurante(@PathVariable(name = "idRestaurante") Long idRestaurante) {
+    public ResponseEntity<List<FuncionamentoDTO>> buscarPorRestaurante(
+            @PathVariable(name = "idRestaurante") Long idRestaurante) {
         return ResponseEntity.ok(service.buscarPorRestaurante(idRestaurante));
     }
 

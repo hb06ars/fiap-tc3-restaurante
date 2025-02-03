@@ -35,7 +35,7 @@ class AtualizarRestauranteUseCaseImplTest {
     private InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
 
     private RestauranteDTO restauranteDTO;
-    private RestauranteDTO restauranteOriginal;
+    private RestauranteDTO restOriginal;
     private Long id;
 
     @BeforeEach
@@ -47,10 +47,10 @@ class AtualizarRestauranteUseCaseImplTest {
         restauranteDTO.setNome("Restaurante Teste");
         restauranteDTO.setCapacidade(100);
 
-        restauranteOriginal = new RestauranteDTO();
-        restauranteOriginal.setId(id);
-        restauranteOriginal.setNome("Restaurante Original");
-        restauranteOriginal.setCapacidade(50);
+        restOriginal = new RestauranteDTO();
+        restOriginal.setId(id);
+        restOriginal.setNome("Restaurante Original");
+        restOriginal.setCapacidade(50);
     }
 
     @AfterEach
@@ -60,8 +60,8 @@ class AtualizarRestauranteUseCaseImplTest {
 
 
     @Test
-    void testExecute_Success() {
-        when(restauranteService.findById(id)).thenReturn(restauranteOriginal);
+    void testExecuteSuccess() {
+        when(restauranteService.findById(id)).thenReturn(restOriginal);
         when(restauranteService.update(id, restauranteDTO)).thenReturn(restauranteDTO);
 
         RestauranteDTO result = atualizarRestauranteUseCase.execute(id, restauranteDTO);
@@ -71,12 +71,12 @@ class AtualizarRestauranteUseCaseImplTest {
         assertEquals(restauranteDTO.getCapacidade(), result.getCapacidade());
 
         verify(insercaoRemocaoDasMesasUseCase, times(1))
-                .execute(restauranteOriginal.getId(), restauranteOriginal.getCapacidade(), restauranteDTO.getCapacidade());
+                .execute(restOriginal.getId(), restOriginal.getCapacidade(), restauranteDTO.getCapacidade());
         verify(restauranteService, times(1)).update(id, restauranteDTO);
     }
 
     @Test
-    void testExecute_RestauranteNotFound() {
+    void testExecuteRestauranteNotFound() {
         when(restauranteService.findById(id)).thenReturn(null);
         assertThrows(ObjectNotFoundException.class, () -> atualizarRestauranteUseCase.execute(id, restauranteDTO));
         verify(restauranteService, never()).update(anyLong(), any());

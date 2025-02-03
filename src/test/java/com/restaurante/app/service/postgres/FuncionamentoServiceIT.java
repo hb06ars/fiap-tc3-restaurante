@@ -58,13 +58,13 @@ class FuncionamentoServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void testFindById_Found() {
+    void testFindByIdFound() {
         FuncionamentoDTO foundFuncionamento = funcionamentoService.findById(1L);
         assertNull(foundFuncionamento);
     }
 
     @Test
-    void testUpdate_Success() {
+    void testUpdateSuccess() {
         RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
         FuncionamentoDTO dto = getRandom(FuncionamentoDTO.class);
@@ -79,13 +79,13 @@ class FuncionamentoServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void testUpdate_NotFound() {
+    void testUpdateNotFound() {
         FuncionamentoDTO dto = getRandom(FuncionamentoDTO.class);
         assertThrows(RuntimeException.class, () -> funcionamentoService.update(1L, dto));
     }
 
     @Test
-    void testDelete_Success() {
+    void testDeleteSuccess() {
         RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
         FuncionamentoDTO dto = getRandom(FuncionamentoDTO.class);
@@ -97,7 +97,7 @@ class FuncionamentoServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void testDelete_NotFound() {
+    void testDeleteNotFound() {
         assertThrows(RuntimeException.class, () -> funcionamentoService.delete(1L));
     }
 

@@ -89,7 +89,7 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void delete_Success() {
+    void deleteSuccess() {
         var saved = usuarioService.save(getRandom(UsuarioDTO.class));
         usuarioService.delete(saved.getId());
         var result = usuarioService.findById(saved.getId());

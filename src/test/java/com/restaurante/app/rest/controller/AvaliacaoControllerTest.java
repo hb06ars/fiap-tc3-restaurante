@@ -67,7 +67,7 @@ class AvaliacaoControllerTest {
 
         mockMvc.perform(post("/avaliacao")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))) // Usando o ObjectMapper para converter o DTO em String JSON
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))

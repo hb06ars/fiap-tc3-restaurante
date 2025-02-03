@@ -110,7 +110,7 @@ class ReservaServiceTest {
     }
 
     @Test
-    void delete_Success() {
+    void deleteSuccess() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reservaEntity));
         reservaService.delete(1L);
         verify(reservaRepository, times(1)).deleteById(1L);

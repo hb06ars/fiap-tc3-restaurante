@@ -48,13 +48,14 @@ class CadastrarRestauranteUseCaseImplTest {
     }
 
     @Test
-    void execute_DeveCadastrarRestauranteQuandoNaoExistir() {
+    void executeDeveCadastrarRestauranteQuandoNaoExistir() {
         RestauranteDTO restauranteDTO = new RestauranteDTO();
         restauranteDTO.setNome("Restaurante Teste");
         restauranteDTO.setLocalizacao("Rua A");
         restauranteDTO.setCapacidade(50);
 
-        when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao())).thenReturn(false);
+        when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao()))
+                .thenReturn(false);
         when(restauranteService.save(restauranteDTO)).thenReturn(restauranteDTO);
 
         RestauranteDTO resultado = cadastrarRestauranteUseCase.execute(restauranteDTO);
@@ -62,19 +63,22 @@ class CadastrarRestauranteUseCaseImplTest {
         assertNotNull(resultado);
         verify(restauranteService).restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao());
         verify(restauranteService).save(restauranteDTO);
-        verify(insercaoRemocaoDasMesasUseCase).execute(resultado.getId(), 0, resultado.getCapacidade());
+        verify(insercaoRemocaoDasMesasUseCase).execute(resultado.getId(),
+                0, resultado.getCapacidade());
         verify(funcionamentoService).inserirDataFuncionamentoInicial(resultado.getId());
     }
 
     @Test
-    void execute_DeveLancarExcecaoQuandoRestauranteJaExistir() {
+    void executeDeveLancarExcecaoQuandoRestauranteJaExistir() {
         RestauranteDTO restauranteDTO = new RestauranteDTO();
         restauranteDTO.setNome("Restaurante Teste");
         restauranteDTO.setLocalizacao("Rua A");
 
-        when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao())).thenReturn(true);
+        when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(),
+                restauranteDTO.getLocalizacao())).thenReturn(true);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> cadastrarRestauranteUseCase.execute(restauranteDTO));
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> cadastrarRestauranteUseCase.execute(restauranteDTO));
 
         assertEquals("O Restaurante já existe, tente atualizar o mesmo!", exception.getMessage());
         verify(restauranteService).restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao());

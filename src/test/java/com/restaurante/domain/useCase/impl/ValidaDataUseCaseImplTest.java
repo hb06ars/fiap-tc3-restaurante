@@ -45,7 +45,7 @@ class ValidaDataUseCaseImplTest {
     }
 
     @Test
-    void testExecute_Success() {
+    void testExecuteSuccess() {
         LocalDateTime dataReserva = LocalDateTime.of(2025, 1, 30, 18, 0);
         LocalDate diaSelecionado = LocalDate.of(2025, 1, 30);
         FuncionamentoDTO dto = FuncionamentoDTO.builder()

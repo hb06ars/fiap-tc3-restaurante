@@ -69,17 +69,17 @@ class AvaliacaoServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void testFindById_Found() {
+    void testFindByIdFound() {
         AvaliacaoDTO foundAvaliacao = avaliacaoService.findById(1L);
     }
 
     @Test
-    void testFindById_NotFound() {
+    void testFindByIdNotFound() {
         AvaliacaoDTO foundAvaliacao = avaliacaoService.findById(1L);
     }
 
     @Test
-    void testUpdate_Success() {
+    void testUpdateSuccess() {
         UsuarioEntity usuarioEntity = usuarioRepository.save(getRandom(UsuarioEntity.class));
         RestauranteEntity restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
         AvaliacaoDTO dto = getRandom(AvaliacaoDTO.class);
@@ -97,12 +97,12 @@ class AvaliacaoServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void testUpdate_NotFound() {
+    void testUpdateNotFound() {
         assertThrows(RuntimeException.class, () -> avaliacaoService.update(1L, null));
     }
 
     @Test
-    void testDelete_Success() {
+    void testDeleteSuccess() {
         UsuarioEntity usuarioEntity = usuarioRepository.save(getRandom(UsuarioEntity.class));
         RestauranteEntity restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
         AvaliacaoDTO dto = getRandom(AvaliacaoDTO.class);
@@ -118,7 +118,7 @@ class AvaliacaoServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void testDelete_NotFound() {
+    void testDeleteNotFound() {
         assertThrows(RuntimeException.class, () -> avaliacaoService.delete(1L));
     }
 

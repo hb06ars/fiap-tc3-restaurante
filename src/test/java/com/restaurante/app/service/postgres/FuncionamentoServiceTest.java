@@ -102,7 +102,7 @@ class FuncionamentoServiceTest {
     }
 
     @Test
-    void testUpdate_Success() {
+    void testUpdateSuccess() {
         FuncionamentoEntity funcionamentoEntity = new FuncionamentoEntity(funcionamentoDTO);
         when(funcionamentoRepository.findById(1L)).thenReturn(Optional.of(funcionamentoEntity));
         when(funcionamentoRepository.save(any(FuncionamentoEntity.class))).thenReturn(funcionamentoEntity);
@@ -123,7 +123,7 @@ class FuncionamentoServiceTest {
     }
 
     @Test
-    void testDelete_Success() {
+    void testDeleteSuccess() {
         FuncionamentoEntity funcionamentoEntity = new FuncionamentoEntity(funcionamentoDTO);
         when(funcionamentoRepository.findById(1L)).thenReturn(Optional.of(funcionamentoEntity));
         funcionamentoService.delete(1L);

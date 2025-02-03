@@ -13,19 +13,19 @@ import org.springframework.stereotype.Component;
 public class AtualizarRestauranteUseCaseImpl implements AtualizarRestauranteUseCase {
 
     private final RestauranteService service;
-    private final InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase;
+    private final InserirRemoverMesasUseCase addRemoveMesas;
 
-    public AtualizarRestauranteUseCaseImpl(RestauranteService service, InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
+    public AtualizarRestauranteUseCaseImpl(RestauranteService service, InserirRemoverMesasUseCase addRemoveMesas) {
         this.service = service;
-        this.insercaoRemocaoDasMesasUseCase = insercaoRemocaoDasMesasUseCase;
+        this.addRemoveMesas = addRemoveMesas;
     }
 
     @Override
     public RestauranteDTO execute(Long id, RestauranteDTO dto) {
-        RestauranteDTO restauranteOriginal = service.findById(id);
-        if (restauranteOriginal != null) {
-            insercaoRemocaoDasMesasUseCase.execute(restauranteOriginal.getId(), restauranteOriginal.getCapacidade(), dto.getCapacidade());
-            return service.update(restauranteOriginal.getId(), dto);
+        RestauranteDTO original = service.findById(id);
+        if (original != null) {
+            addRemoveMesas.execute(original.getId(), original.getCapacidade(), dto.getCapacidade());
+            return service.update(original.getId(), dto);
         }
         throw new ObjectNotFoundException("Restaurante não encontrado no sistema!");
     }

@@ -45,7 +45,7 @@ class ValidaDataUseCaseImplIT extends BaseUnitTest {
     private MesaRepository mesaRepository;
 
     @Test
-    void testExecute_Success() {
+    void testExecuteSuccess() {
         LocalDateTime dataReserva = LocalDate.now().atTime(10, 0);
         LocalDate diaSelecionado = LocalDate.now();
         usuarioRepository.save(getRandom(UsuarioEntity.class));

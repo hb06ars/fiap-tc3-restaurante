@@ -118,7 +118,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void delete_Success() {
+    void deleteSuccess() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(restauranteEntity));
 
         restauranteService.delete(1L);
