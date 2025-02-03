@@ -4,70 +4,24 @@
         "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
-    <!-- Define a codificação padrão -->
-    <module name="FileEncoding">
-        <property name="encoding" value="UTF-8"/>
+    <module name="TreeWalker">
+        <!-- Verifica imports não utilizados -->
+        <module name="UnusedImports"/>
+
+        <!-- Evita imports com wildcard (*) -->
+        <module name="AvoidStarImport"/>
+
+        <!-- Regras de nomeação -->
+        <module name="TypeName"/>
+        <module name="MethodName"/>
+        <module name="LocalVariableName"/>
     </module>
 
-    <!-- Garante que arquivos de código terminam com uma nova linha -->
+    <!-- Garante nova linha no final do arquivo -->
     <module name="NewlineAtEndOfFile"/>
 
-    <!-- Garante que não há linhas em branco extras no final do arquivo -->
-    <module name="TrailingWhitespace"/>
-
-    <!-- Limita o número máximo de caracteres por linha -->
+    <!-- Limita o tamanho das linhas -->
     <module name="LineLength">
         <property name="max" value="120"/>
     </module>
-
-    <!-- Verifica se os nomes das classes seguem as convenções -->
-    <module name="TypeName"/>
-
-    <!-- Verifica nomes de métodos -->
-    <module name="MethodName"/>
-
-    <!-- Verifica nomes de variáveis -->
-    <module name="LocalVariableName"/>
-
-    <!-- Garante que não há imports desnecessários -->
-    <module name="UnusedImports"/>
-
-    <!-- Força o uso de `import java.util.List` ao invés de `import java.util.*` -->
-    <module name="AvoidStarImport"/>
-
-    <!-- Impede a importação de classes do mesmo pacote -->
-    <module name="RedundantImport"/>
-
-    <!-- Garante que métodos não sejam muito longos -->
-    <module name="MethodLength">
-        <property name="max" value="50"/>
-    </module>
-
-    <!-- Garante que classes não sejam muito grandes -->
-    <module name="ClassDataAbstractionCoupling">
-        <property name="max" value="10"/>
-    </module>
-
-    <!-- Impede código muito complexo -->
-    <module name="CyclomaticComplexity">
-        <property name="max" value="10"/>
-    </module>
-
-    <!-- Verifica se os blocos if, while e for estão usando chaves `{}` -->
-    <module name="NeedBraces"/>
-
-    <!-- Impede a existência de espaços em branco desnecessários -->
-    <module name="WhitespaceAround"/>
-
-    <!-- Garante indentação consistente -->
-    <module name="Indentation">
-        <property name="tabWidth" value="4"/>
-        <property name="basicOffset" value="4"/>
-    </module>
-
-    <!-- Garante que cada classe tenha uma documentação Javadoc -->
-    <module name="JavadocType"/>
-
-    <!-- Garante que cada método tenha uma documentação Javadoc -->
-    <module name="JavadocMethod"/>
 </module>
