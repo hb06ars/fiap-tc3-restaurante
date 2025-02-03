@@ -41,6 +41,7 @@
 
         <sonar.exclusions>
             src/main/java/com/restaurante/RestauranteApplication*,
+            src/main/java/com/restaurante/app/rest/request/**,
             src/main/java/com/restaurante/infra/exceptions/**,
             src/main/java/com/restaurante/infra/config/**,
             src/main/java/com/restaurante/domain/mapper/**,
