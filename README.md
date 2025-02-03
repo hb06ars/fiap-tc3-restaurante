@@ -31,7 +31,7 @@
     Crie um projeto local no sonar através da URL: http://localhost:9000/projects.
     Após a criação será gerado o comando para execução, utilize o comando maven, exemplo:
     mvn clean verify
-    mvn clean verify sonar:sonar -Dsonar.projectKey=restaurante -Dsonar.projectName="restaurante" -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_691089050af08e36f15bcc69185c78248f6edca7 
+    mvn clean verify sonar:sonar -Dsonar.projectKey=restaurante -Dsonar.projectName="restaurante" -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_691089050af08e36f15bcc69185c78248f6edca7 -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml 
     Exeutando o comando, será gerado a url para verificar a cobertura do Sonar.
 
 ### JMETER: <br>
