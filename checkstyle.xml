@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <!-- Define a codificação padrão -->
+    <module name="FileEncoding">
+        <property name="encoding" value="UTF-8"/>
+    </module>
+
+    <!-- Garante que arquivos de código terminam com uma nova linha -->
+    <module name="NewlineAtEndOfFile"/>
+
+    <!-- Garante que não há linhas em branco extras no final do arquivo -->
+    <module name="TrailingWhitespace"/>
+
+    <!-- Limita o número máximo de caracteres por linha -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+    </module>
+
+    <!-- Verifica se os nomes das classes seguem as convenções -->
+    <module name="TypeName"/>
+
+    <!-- Verifica nomes de métodos -->
+    <module name="MethodName"/>
+
+    <!-- Verifica nomes de variáveis -->
+    <module name="LocalVariableName"/>
+
+    <!-- Garante que não há imports desnecessários -->
+    <module name="UnusedImports"/>
+
+    <!-- Força o uso de `import java.util.List` ao invés de `import java.util.*` -->
+    <module name="AvoidStarImport"/>
+
+    <!-- Impede a importação de classes do mesmo pacote -->
+    <module name="RedundantImport"/>
+
+    <!-- Garante que métodos não sejam muito longos -->
+    <module name="MethodLength">
+        <property name="max" value="50"/>
+    </module>
+
+    <!-- Garante que classes não sejam muito grandes -->
+    <module name="ClassDataAbstractionCoupling">
+        <property name="max" value="10"/>
+    </module>
+
+    <!-- Impede código muito complexo -->
+    <module name="CyclomaticComplexity">
+        <property name="max" value="10
