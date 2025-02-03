@@ -1,6 +1,5 @@
 package com.restaurante.app.rest.request;
 
-import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.enums.TipoCozinhaEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

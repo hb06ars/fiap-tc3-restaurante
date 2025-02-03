@@ -1,6 +1,5 @@
 package com.restaurante.domain.useCase.impl;
 
-import com.restaurante.app.service.postgres.ReservaService;
 import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.entity.MesaEntity;
@@ -8,8 +7,6 @@ import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.entity.UsuarioEntity;
 import com.restaurante.domain.enums.DiaEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
-import com.restaurante.domain.useCase.ValidarDataUseCase;
-import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import com.restaurante.infra.repository.postgres.MesaRepository;
 import com.restaurante.infra.repository.postgres.ReservaRepository;

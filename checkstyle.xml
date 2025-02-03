@@ -50,4 +50,24 @@
 
     <!-- Impede código muito complexo -->
     <module name="CyclomaticComplexity">
-        <property name="max" value="10
+        <property name="max" value="10"/>
+    </module>
+
+    <!-- Verifica se os blocos if, while e for estão usando chaves `{}` -->
+    <module name="NeedBraces"/>
+
+    <!-- Impede a existência de espaços em branco desnecessários -->
+    <module name="WhitespaceAround"/>
+
+    <!-- Garante indentação consistente -->
+    <module name="Indentation">
+        <property name="tabWidth" value="4"/>
+        <property name="basicOffset" value="4"/>
+    </module>
+
+    <!-- Garante que cada classe tenha uma documentação Javadoc -->
+    <module name="JavadocType"/>
+
+    <!-- Garante que cada método tenha uma documentação Javadoc -->
+    <module name="JavadocMethod"/>
+</module>
