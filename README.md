@@ -28,10 +28,11 @@
 # DICAS
 
 ### SONAR: <br>
-    Crie um projeto local no sonar através da URL: http://localhost:9000/projects.<br>
-    Após a criação será gerado o comando para execução, utilize o comando maven, exemplo:<br>
+    Crie um projeto local no sonar através da URL: http://localhost:9000/projects.
+    Após a criação será gerado o comando para execução, utilize o comando maven, exemplo:
+    mvn clean verify
     mvn clean verify sonar:sonar -Dsonar.projectKey=restaurante -Dsonar.projectName="restaurante" -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_691089050af08e36f15bcc69185c78248f6edca7 
-    <br>Exeutando o comando, será gerado a url para verificar a cobertura do Sonar.
+    Exeutando o comando, será gerado a url para verificar a cobertura do Sonar.
 
 ### JMETER: <br>
     Na pasta: /src/test/jmeter há um arquivo padrão para realizar testes de stress em algumas requisições.
