@@ -1,9 +1,6 @@
 package com.restaurante.domain.useCase.impl;
 
-import com.restaurante.app.service.postgres.FuncionamentoService;
-import com.restaurante.app.service.postgres.RestauranteService;
 import com.restaurante.domain.dto.RestauranteDTO;
-import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,6 @@ class CadastrarRestauranteUseCaseImplIT {
         RestauranteDTO dto = getRandom(RestauranteDTO.class);
         dto.setCapacidade(3);
         RestauranteDTO resultado = cadastrarRestauranteUseCase.execute(dto);
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> cadastrarRestauranteUseCase.execute(resultado));
+        assertThrows(RuntimeException.class, () -> cadastrarRestauranteUseCase.execute(resultado));
     }
 }

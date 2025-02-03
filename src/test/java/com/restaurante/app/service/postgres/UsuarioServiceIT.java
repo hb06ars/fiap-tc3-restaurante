@@ -80,7 +80,7 @@ class UsuarioServiceIT extends BaseUnitTest {
 
     @Test
     void update_ThrowsRuntimeException_WhenUsuarioNotFound() {
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> usuarioService.update(1L, null));
+        assertThrows(RuntimeException.class, () -> usuarioService.update(1L, null));
     }
 
     @Test
@@ -98,6 +98,6 @@ class UsuarioServiceIT extends BaseUnitTest {
 
     @Test
     void delete_ThrowsRuntimeException_WhenUsuarioNotFound() {
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> usuarioService.delete(1L));
+        assertThrows(RuntimeException.class, () -> usuarioService.delete(1L));
     }
 }
