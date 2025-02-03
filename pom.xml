@@ -39,14 +39,17 @@
         <junit.version>5.9.3</junit.version>
         <aspectj.version>1.9.19</aspectj.version>
 
-        <sonar.exclusions>src/main/java/com/restaurante/RestauranteApplication*</sonar.exclusions>
-        <sonar.exclusions>src/main/java/com/restaurante/infra/exceptions/**</sonar.exclusions>
-        <sonar.exclusions>src/main/java/com/restaurante/infra/config/**</sonar.exclusions>
-        <sonar.exclusions>src/main/java/com/restaurante/domain/dto/**</sonar.exclusions>
-        <sonar.exclusions>src/main/java/com/restaurante/domain/entity/**</sonar.exclusions>
-        <sonar.exclusions>src/main/java/com/restaurante/domain/enums/**</sonar.exclusions>
-        <sonar.exclusions>src/main/java/com/restaurante/domain/util/**</sonar.exclusions>
-        <sonar.exclusions>src/main/java/com/restaurante/domain/validator/**</sonar.exclusions>
+        <sonar.exclusions>
+            src/main/java/com/restaurante/RestauranteApplication*,
+            src/main/java/com/restaurante/infra/exceptions/**,
+            src/main/java/com/restaurante/infra/config/**,
+            src/main/java/com/restaurante/domain/mapper/**,
+            src/main/java/com/restaurante/domain/dto/**,
+            src/main/java/com/restaurante/domain/entity/**,
+            src/main/java/com/restaurante/domain/enums/**,
+            src/main/java/com/restaurante/domain/util/**,
+            src/main/java/com/restaurante/domain/validator/**
+        </sonar.exclusions>
 
     </properties>
     <dependencies>
