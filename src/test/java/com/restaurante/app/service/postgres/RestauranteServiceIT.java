@@ -130,7 +130,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     @Test
     void restauranteJaExiste_ReturnsFalse_WhenRestaurantDoesNotExist() {
         boolean resultado = restauranteService.restauranteJaExiste("Restaurante Teste", "Localização Teste");
-        
+
         assertFalse(resultado);
     }
 
