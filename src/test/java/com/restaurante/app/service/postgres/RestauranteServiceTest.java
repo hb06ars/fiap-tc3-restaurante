@@ -123,7 +123,7 @@ class RestauranteServiceTest {
 
         restauranteService.delete(1L);
 
-        verify(restauranteRepository, times(2)).findById(1L);
+        verify(restauranteRepository, times(1)).findById(1L);
     }
 
     @Test

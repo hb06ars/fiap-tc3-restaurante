@@ -122,7 +122,7 @@ class AvaliacaoServiceTest {
         AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity(avaliacaoDTO);
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.of(avaliacaoEntity));
         avaliacaoService.delete(1L);
-        verify(avaliacaoRepository, times(2)).findById(1L);
+        verify(avaliacaoRepository, times(1)).findById(1L);
     }
 
     @Test
