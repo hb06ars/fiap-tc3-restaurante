@@ -1,5 +1,10 @@
 # RESTAURANTE
 
+### SUBIR APLICAÇÃO
+- Deve ser executado: [docker-compose.yaml](docker-compose.yaml)
+- Em seguida, apontar o Enviroments Variables para o arquivo: [variaveis.env](env%2Fvariaveis.env)
+- Por fim, aguarde subir a imagem e assim iniciar a aplicação.
+
 ### REGRAS
 - Definindo regras de negócio aqui
 
