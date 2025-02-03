@@ -61,6 +61,16 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
+    void findByEmailOrCelular_ReturnsUsuarioDTO() {
+        var user = usuarioService.save(getRandom(UsuarioDTO.class));
+        UsuarioDTO result = usuarioService.findByEmailOrCelular(user.getEmail(), user.getCelular());
+
+        assertNotNull(result);
+        assertThat(result.getId()).isPositive();
+
+    }
+
+    @Test
     void findById_ReturnsNull_WhenUsuarioNotFound() {
         UsuarioDTO result = usuarioService.findById(1L);
     }
