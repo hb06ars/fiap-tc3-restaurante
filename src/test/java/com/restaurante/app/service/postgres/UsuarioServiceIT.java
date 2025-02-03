@@ -71,6 +71,17 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
+    void findByEmailOrCelular_ReturnsNull_whenCelularIsNull() {
+        assertThrows(RuntimeException.class, () -> usuarioService.findByEmailOrCelular("email@mail.com", null));
+    }
+
+    @Test
+    void findByEmailOrCelular_ReturnsNull_whenEmailIsNull() {
+        assertThrows(RuntimeException.class, () -> usuarioService.findByEmailOrCelular(null, "123456789"));
+    }
+
+
+    @Test
     void findById_ReturnsNull_WhenUsuarioNotFound() {
         UsuarioDTO result = usuarioService.findById(1L);
     }
