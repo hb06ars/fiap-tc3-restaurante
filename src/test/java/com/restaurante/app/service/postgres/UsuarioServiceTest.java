@@ -92,6 +92,16 @@ class UsuarioServiceTest {
     }
 
     @Test
+    void findByEmailOrCelular_ReturnsUsuarioDTO() {
+        when(usuarioRepository.findByEmailOrCelular(anyString(), anyString())).thenReturn(usuarioEntity);
+
+        UsuarioDTO result = usuarioService.findByEmailOrCelular("email@mail.com", "11999999999");
+
+        assertNotNull(result);
+        assertEquals(usuarioDTO.getNome(), result.getNome());
+    }
+
+    @Test
     void findById_ReturnsNull_WhenUsuarioNotFound() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
