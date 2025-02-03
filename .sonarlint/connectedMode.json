@@ -1,4 +1,5 @@
 {
-    "sonarQubeUri": "http://localhost:9008",
-    "projectKey": "restaurante"
+    "sonarQubeUri": "http://localhost:9000",
+    "projectKey": "restaurante",
+    "token": "sqp_691089050af08e36f15bcc69185c78248f6edca7"
 }

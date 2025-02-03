@@ -28,9 +28,9 @@
 # DICAS
 
 ### SONAR: <br>
-    Crie um projeto local no sonar através da URL: http://localhost:9008/projects.<br>
+    Crie um projeto local no sonar através da URL: http://localhost:9000/projects.<br>
     Após a criação será gerado o comando para execução, utilize o comando maven, exemplo:<br>
-    mvn clean verify sonar:sonar -Dsonar.projectKey=Restaurante -Dsonar.projectName='Restaurante' -Dsonar.host.url=http://localhost:9008 -Dsonar.token=sqp_7aef4486d8f65650be7052f9b333342b6ede6686
+    mvn clean verify sonar:sonar -Dsonar.projectKey=Restaurante -Dsonar.projectName='Restaurante' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_7aef4486d8f65650be7052f9b333342b6ede6686
     <br>Exeutando o comando, será gerado a url para verificar a cobertura do Sonar.
 
 ### JMETER: <br>

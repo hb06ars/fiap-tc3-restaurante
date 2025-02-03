@@ -7,7 +7,7 @@ services:
     environment:
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
     ports:
-      - "9008:9000"
+      - "9000:9000"
     volumes:
       - ./data/sonarqube_data:/data/opt/sonarqube/data
       - ./data/sonarqube_logs:/data/opt/sonarqube/logs
