@@ -23,9 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class RestauranteServiceIT  extends BaseUnitTest {
 
     @Autowired
-    private RestauranteRepository restauranteRepository;
-
-    @Autowired
     private RestauranteService restauranteService;
 
     private RestauranteDTO restauranteDTO;

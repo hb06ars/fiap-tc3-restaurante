@@ -137,7 +137,7 @@ class UsuarioServiceTest {
     void delete_Success() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
         usuarioService.delete(1L);
-        verify(usuarioRepository, times(2)).findById(1L);
+        verify(usuarioRepository, times(1)).findById(1L);
     }
 
     @Test

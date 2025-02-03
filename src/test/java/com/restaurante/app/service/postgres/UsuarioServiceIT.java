@@ -23,9 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UsuarioServiceIT  extends BaseUnitTest {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
     private UsuarioService usuarioService;
 
     private UsuarioDTO usuarioDTO;

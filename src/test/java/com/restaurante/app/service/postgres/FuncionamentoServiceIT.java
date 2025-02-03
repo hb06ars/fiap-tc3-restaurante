@@ -3,7 +3,6 @@ package com.restaurante.app.service.postgres;
 import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.DiaEnum;
-import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import com.restaurante.utils.BaseUnitTest;
 import jakarta.transaction.Transactional;
@@ -30,9 +29,6 @@ class FuncionamentoServiceIT extends BaseUnitTest {
 
     @Autowired
     private FuncionamentoService funcionamentoService;
-
-    @Autowired
-    private FuncionamentoRepository funcionamentoRepository;
     @Autowired
     private RestauranteRepository restauranteRepository;
 
