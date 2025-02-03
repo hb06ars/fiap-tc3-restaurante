@@ -7,6 +7,10 @@ spring:
     password: ${POSTGRES_PASS}
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
+  sql:
+    init:
+      mode: always
+
 sonar:
   token: sqp_e6b0eaa38d92c4c69bb9e554ef98feceba932e9c
   host:
