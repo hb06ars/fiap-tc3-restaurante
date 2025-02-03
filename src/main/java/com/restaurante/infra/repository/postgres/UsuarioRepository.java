@@ -7,7 +7,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
-    @Query("SELECT u FROM UsuarioEntity u WHERE u.email = :email OR u.celular = :celular")
-    UsuarioEntity findByEmailOrCelular(@Param("email") String email, @Param("celular") String celular);
 
+    @Query("SELECT u FROM UsuarioEntity u " +
+            " WHERE (:email IS NOT NULL OR :celular  IS NOT NULL)" +
+            " AND (:email IS NULL OR u.email = :email) " +
+            " AND (:celular IS NULL OR u.celular = :celular)")
+    UsuarioEntity findByEmailOrCelular(@Param("email") String email, @Param("celular") String celular);
 }

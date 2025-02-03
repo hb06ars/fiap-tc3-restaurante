@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -43,6 +45,17 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable(name = "id") Long id,
                                                 @Valid @RequestBody UsuarioRequest request) {
         return ResponseEntity.ok(service.update(id, new UsuarioDTO(request)));
+    }
+
+    @Operation(summary = "Buscar Usuário",
+            description = "Buscar o Usuário.")
+    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
+    @GetMapping
+    public ResponseEntity<UsuarioDTO> buscar(
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "celular", required = false) String celular
+    ) {
+        return ResponseEntity.ok(service.findByEmailOrCelular(email, celular));
     }
 
 }
