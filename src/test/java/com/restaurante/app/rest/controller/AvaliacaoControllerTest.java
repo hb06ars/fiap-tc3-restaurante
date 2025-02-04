@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.restaurante.app.rest.request.AvaliacaoRequest;
 import com.restaurante.app.service.postgres.AvaliacaoService;
 import com.restaurante.domain.dto.AvaliacaoDTO;
+import com.restaurante.utils.BaseUnitTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class AvaliacaoControllerTest {
+class AvaliacaoControllerTest extends BaseUnitTest {
 
     AutoCloseable openMocks;
 
@@ -90,6 +92,22 @@ class AvaliacaoControllerTest {
     }
 
     @Test
+    void testAvaliarExcecaoQuandoJsonInvalido() throws Exception {
+        AvaliacaoRequest req = getRandom(AvaliacaoRequest.class);
+        req.setRestauranteId(null);
+
+        mockMvc.perform(post("/avaliacao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.erro").value("Erro na validação de dados"))
+                .andExpect(jsonPath("$.detalhe").value("O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante."))
+                .andExpect(jsonPath("$.campo").value("restauranteId"))
+                .andExpect(jsonPath("$.statusCode").value(400));
+        verify(avaliacaoService, never()).save(any(AvaliacaoDTO.class));
+    }
+
+    @Test
     void testBuscarAvaliacaoPorRestaurante() throws Exception {
         List<AvaliacaoDTO> avaliacoes = Collections.singletonList(new AvaliacaoDTO(request));
 
@@ -108,5 +126,14 @@ class AvaliacaoControllerTest {
         verify(avaliacaoService, times(1)).listarPorRestaurante(10L);
         assertThat(logTracker.size()).isEqualTo(1);
         assertThat(logTracker.contains("requisição para buscar avaliação pelo idRestaurante foi efetuada")).isTrue();
+    }
+
+    @Test
+    void testBuscarAvaliacaoPorRestauranteQuandoRestauranteNaoEncontrado() throws Exception {
+        var id = "2";
+        mockMvc.perform(get("/avaliacao/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(avaliacaoService, times(1)).listarPorRestaurante(any());
     }
 }
