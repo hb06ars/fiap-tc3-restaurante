@@ -1,5 +1,7 @@
 package com.restaurante.app.rest.controller;
 
+import com.callibrity.logging.test.LogTracker;
+import com.callibrity.logging.test.LogTrackerStub;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.restaurante.app.rest.request.AvaliacaoRequest;
@@ -8,6 +10,7 @@ import com.restaurante.domain.dto.AvaliacaoDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -18,7 +21,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,9 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AvaliacaoControllerTest {
 
-    AutoCloseable mock;
+    AutoCloseable openMocks;
 
     private MockMvc mockMvc;
+
+    @RegisterExtension
+    LogTrackerStub logTracker = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
+            .recordForType(AvaliacaoController.class);
 
     @Mock
     private AvaliacaoService avaliacaoService;
@@ -41,7 +50,7 @@ class AvaliacaoControllerTest {
 
     @BeforeEach
     void setUp() {
-        mock = MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
@@ -58,7 +67,7 @@ class AvaliacaoControllerTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        mock.close();
+        openMocks.close();
     }
 
     @Test
@@ -75,7 +84,8 @@ class AvaliacaoControllerTest {
                 .andExpect(jsonPath("$.nota").value(5))
                 .andExpect(jsonPath("$.comentario").value("Ótima comida!"));
 
-        Mockito.verify(avaliacaoService, Mockito.times(1)).save(any(AvaliacaoDTO.class));
+        verify(avaliacaoService, Mockito.times(1)).save(any(AvaliacaoDTO.class));
+        assertThat(logTracker.size()).isEqualTo(1);
     }
 
     @Test
@@ -94,6 +104,7 @@ class AvaliacaoControllerTest {
                 .andExpect(jsonPath("$[0].nota").value(5))
                 .andExpect(jsonPath("$[0].comentario").value("Ótima comida!"));
 
-        Mockito.verify(avaliacaoService, Mockito.times(1)).listarPorRestaurante(10L);
+        verify(avaliacaoService, Mockito.times(1)).listarPorRestaurante(10L);
+        assertThat(logTracker.size()).isEqualTo(1);
     }
 }

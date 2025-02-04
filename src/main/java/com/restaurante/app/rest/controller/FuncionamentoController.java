@@ -37,6 +37,7 @@ public class FuncionamentoController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
     public ResponseEntity<FuncionamentoDTO> cadastro(@Valid @RequestBody FuncionamentoRequest request) {
+        log.info("requisição para cadastrar funcionamento foi efetuada");
         return ResponseEntity.ok(service.save(new FuncionamentoDTO(request)));
     }
 
@@ -46,6 +47,7 @@ public class FuncionamentoController {
     @PutMapping("/atualizar/{idFuncionamento}")
     public ResponseEntity<FuncionamentoDTO> atualizar(@PathVariable(name = "idFuncionamento") Long idFuncionamento,
                                                       @Valid @RequestBody FuncionamentoRequest request) {
+        log.info("requisição para atualizar funcionamento foi efetuada");
         return ResponseEntity.ok(service.update(idFuncionamento, new FuncionamentoDTO(request)));
     }
 
@@ -55,6 +57,7 @@ public class FuncionamentoController {
     @DeleteMapping("/deletar/{idFuncionamento}")
     public ResponseEntity<MessageSuccessDTO> deletar(@PathVariable(name = "idFuncionamento") Long idFuncionamento) {
         service.delete(idFuncionamento);
+        log.info("requisição para deletar funcionamento foi efetuada");
         return ResponseEntity.ok(MessageSuccessDTO.builder().mensagem("Registro removido com sucesso").build());
     }
 
@@ -64,6 +67,7 @@ public class FuncionamentoController {
     @GetMapping("/{idRestaurante}")
     public ResponseEntity<List<FuncionamentoDTO>> buscarPorRestaurante(
             @PathVariable(name = "idRestaurante") Long idRestaurante) {
+        log.info("requisição para buscar funcionamento pelo idRestaurante foi efetuada");
         return ResponseEntity.ok(service.buscarPorRestaurante(idRestaurante));
     }
 

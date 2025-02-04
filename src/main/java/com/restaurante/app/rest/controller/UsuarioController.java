@@ -35,6 +35,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
     public ResponseEntity<UsuarioDTO> cadastro(@Valid @RequestBody UsuarioRequest request) {
+        log.info("requisição para cadastrar usuário foi efetuada");
         return ResponseEntity.ok(service.save(new UsuarioDTO(request)));
     }
 
@@ -44,6 +45,7 @@ public class UsuarioController {
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<UsuarioDTO> atualizar(@PathVariable(name = "id") Long id,
                                                 @Valid @RequestBody UsuarioRequest request) {
+        log.info("requisição para atualizar usuário foi efetuada");
         return ResponseEntity.ok(service.update(id, new UsuarioDTO(request)));
     }
 
@@ -55,6 +57,7 @@ public class UsuarioController {
             @RequestParam(name = "email", required = false) String email,
             @RequestParam(name = "celular", required = false) String celular
     ) {
+        log.info("requisição para buscar usuário foi efetuada");
         return ResponseEntity.ok(service.findByEmailOrCelular(email, celular));
     }
 

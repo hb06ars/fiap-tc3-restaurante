@@ -35,6 +35,7 @@ public class MesaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping("/cadastrar")
     public ResponseEntity<MesaDTO> cadastro(@Valid @RequestBody MesaRequest request) {
+        log.info("requisição para cadastrar mesa foi efetuada");
         return ResponseEntity.ok(service.save(new MesaDTO(request)));
     }
 
@@ -44,6 +45,7 @@ public class MesaController {
     @PostMapping("/atualizar/{id}")
     public ResponseEntity<MesaDTO> atualizar(@PathVariable(name = "id") Long id,
                                              @Valid @RequestBody MesaRequest request) {
+        log.info("requisição para atualizar mesa foi efetuada");
         return ResponseEntity.ok(service.update(id, new MesaDTO(request)));
     }
 
@@ -52,6 +54,7 @@ public class MesaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping(("/{id}"))
     public ResponseEntity<List<MesaDisponivelDTO>> buscarMesas(@PathVariable(name = "id") Long id) {
+        log.info("requisição para buscar mesa foi efetuada");
         return ResponseEntity.ok(service.buscarMesas(id));
     }
 
@@ -60,6 +63,7 @@ public class MesaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping(("/listaporrestaurante/{idRestaurante}"))
     public ResponseEntity<List<MesaDTO>> buscarMesasPorRestaurante(@PathVariable(name = "idRestaurante") Long idRestaurante) {
+        log.info("requisição para buscar mesa pelo idRestaurante foi efetuada");
         return ResponseEntity.ok(service.findAllByIdRestaurante(idRestaurante));
     }
 

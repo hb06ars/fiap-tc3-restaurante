@@ -44,6 +44,7 @@ public class RestauranteController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
     public ResponseEntity<RestauranteDTO> cadastrar(@Valid @RequestBody RestauranteRequest request) {
+        log.info("requisição para cadastrar restaurante foi efetuada");
         return ResponseEntity.ok(cadastrarRestauranteUseCase.execute(new RestauranteDTO(request)));
     }
 
@@ -53,6 +54,7 @@ public class RestauranteController {
     @PutMapping("/{id}")
     public ResponseEntity<RestauranteDTO> atualizar(@PathVariable(name = "id") Long id,
                                                     @Valid @RequestBody RestauranteRequest request) {
+        log.info("requisição para atualizar restaurante foi efetuada");
         return ResponseEntity.ok(atualizarRestauranteUseCase.execute(id, new RestauranteDTO(request)));
     }
 
@@ -64,6 +66,7 @@ public class RestauranteController {
             @RequestParam(defaultValue = "") String nome,
             @RequestParam(defaultValue = "") String localizacao,
             @RequestParam(defaultValue = "") String tipoCozinha) {
+        log.info("requisição para buscar restaurante foi efetuada");
         return ResponseEntity.ok(service.buscarRestaurantes(nome, localizacao, tipoCozinha));
     }
 
@@ -72,6 +75,7 @@ public class RestauranteController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Deleção realizada com sucesso.")
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageSuccessDTO> deletar(@PathVariable(name = "id") Long id) {
+        log.info("requisição para deletar restaurante foi efetuada");
         service.delete(id);
         return ResponseEntity.ok(MessageSuccessDTO.builder().mensagem("Registro deletado com sucesso.").build());
     }

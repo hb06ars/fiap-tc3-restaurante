@@ -34,6 +34,7 @@ public class AvaliacaoController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Registro salvo com sucesso.")
     @PostMapping
     public ResponseEntity<AvaliacaoDTO> avaliar(@Valid @RequestBody AvaliacaoRequest request) {
+        log.info("requisição para buscar avaliação foi efetuada");
         return ResponseEntity.ok(service.save(new AvaliacaoDTO(request)));
     }
 
@@ -42,6 +43,7 @@ public class AvaliacaoController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Registros encontrados com sucesso.")
     @GetMapping("/{idRestaurante}")
     public ResponseEntity<List<AvaliacaoDTO>> buscar(@PathVariable(name = "idRestaurante") Long idRestaurante) {
+        log.info("requisição para buscar avaliação pelo idRestaurante foi efetuada");
         return ResponseEntity.ok(service.listarPorRestaurante(idRestaurante));
     }
 

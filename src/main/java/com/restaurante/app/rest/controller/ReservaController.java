@@ -39,6 +39,7 @@ public class ReservaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
     @PostMapping
     public ResponseEntity<ReservaDTO> cadastro(@Valid @RequestBody ReservaRequest request) {
+        log.info("requisição para salvar reserva foi efetuada");
         return ResponseEntity.ok(reservarMesaUseCase.salvar(new ReservaDTO(request)));
     }
 
@@ -47,6 +48,7 @@ public class ReservaController {
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualizção realizada com sucesso.")
     @PutMapping("/{id}")
     public ResponseEntity<ReservaDTO> atualizacao(@PathVariable(name = "id") Long id, @Valid @RequestBody ReservaRequest request) {
+        log.info("requisição para atualizar reserva foi efetuada");
         return ResponseEntity.ok(reservarMesaUseCase.atualizar(id, new ReservaDTO(request)));
     }
 
@@ -56,6 +58,7 @@ public class ReservaController {
     @GetMapping("/{idrestaurante}")
     public ResponseEntity<List<ReservaDTO>> buscar(@PathVariable(name = "idrestaurante") Long idrestaurante,
                                                    @Valid @RequestBody ReservaFilter request) {
+        log.info("requisição para buscar reserva pelo idRestaurante foi efetuada");
         return ResponseEntity.ok(reservaService.buscar(idrestaurante, new ReservaDTO(request)));
     }
 
