@@ -2,11 +2,15 @@ package com.restaurante.app.rest.controller;
 
 import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.domain.dto.FuncionamentoDTO;
+import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.enums.DiaEnum;
+import com.restaurante.utils.BaseUnitTest;
+import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -14,6 +18,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalTime;
 import java.util.Collections;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -24,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FuncionamentoControllerTest {
+class FuncionamentoControllerTest extends BaseUnitTest {
 
     private MockMvc mockMvc;
 
@@ -87,6 +93,15 @@ class FuncionamentoControllerTest {
                 .andExpect(jsonPath("$.fechamento[1]").value(0))
                 .andExpect(jsonPath("$.fechamento[2]").value(1))
                 .andExpect(jsonPath("$.restauranteId").value(1));
+    }
+
+
+    @Test
+    void testAvaliarExcecaoQuandoIdNaoEncontrado() throws Exception {
+        mockMvc.perform(put("/funcionamento/atualizar/235")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(getRandom(FuncionamentoDTO.class))))
+                .andExpect(status().isOk());
     }
 
     @Test

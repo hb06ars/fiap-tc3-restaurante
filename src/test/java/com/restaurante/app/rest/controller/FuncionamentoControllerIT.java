@@ -3,6 +3,7 @@ package com.restaurante.app.rest.controller;
 import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.entity.RestauranteEntity;
+import com.restaurante.domain.enums.DiaEnum;
 import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import com.restaurante.utils.BaseUnitTest;
@@ -34,6 +35,8 @@ class FuncionamentoControllerIT extends BaseUnitTest {
     RestauranteRepository restauranteRepository;
     @Autowired
     FuncionamentoRepository avaliacaoRepository;
+    @Autowired
+    FuncionamentoRepository funcionamentoRepository;
 
     @BeforeEach
     public void setup() {
@@ -62,7 +65,6 @@ class FuncionamentoControllerIT extends BaseUnitTest {
                 .body("$", hasKey("restauranteId"));
     }
 
-
     @Test
     void testAvaliarExcecaoQuandoJsonInvalido() {
         FuncionamentoDTO request = getRandom(FuncionamentoDTO.class);
@@ -82,6 +84,46 @@ class FuncionamentoControllerIT extends BaseUnitTest {
                 .body("statusCode", equalTo(400));
     }
 
+    @Test
+    void testAtualizarFuncionamento() {
+        RestauranteEntity restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        FuncionamentoEntity request = getRandom(FuncionamentoEntity.class);
+        request.setDiaEnum(DiaEnum.SEGUNDA);
+        request.setRestauranteId(restauranteEntity.getId());
+        var saved = funcionamentoRepository.save(request);
+        saved.setDiaEnum(DiaEnum.DOMINGO);
+
+        given()
+                .filter(new AllureRestAssured())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(saved)
+                .when()
+                .put("/funcionamento/atualizar/1")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("$", hasKey("id"))
+                .body("$", hasKey("diaEnum"))
+                .body("$", hasKey("abertura"))
+                .body("$", hasKey("fechamento"))
+                .body("$", hasKey("restauranteId"));
+    }
+
+    @Test
+    void testAvaliarExcecaoQuandoIdNaoEncontrado() {
+        FuncionamentoEntity request = getRandom(FuncionamentoEntity.class);
+
+        given()
+                .filter(new AllureRestAssured())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .when()
+                .put("/funcionamento/atualizar/9")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("message[0].erro", equalTo("O objeto solicitado não foi encontrado no sistema"))
+                .body("message[0].detalhe", equalTo("Funcionamento 9 não encontrado."))
+                .body("statusCode", equalTo(404));
+    }
 
     @Test
     void testDeletarFuncionamento() {

@@ -44,6 +44,7 @@ public class FuncionamentoController {
     @Operation(summary = "Atualizar Funcionamento",
             description = "Atualizar o horário de Funcionamento do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualização realizada com sucesso.")
+    @ApiResponse(responseCode = HttpStatusCodes.NOT_FOUND, description = "Registro não encontrado.")
     @PutMapping("/atualizar/{idFuncionamento}")
     public ResponseEntity<FuncionamentoDTO> atualizar(@PathVariable(name = "idFuncionamento") Long idFuncionamento,
                                                       @Valid @RequestBody FuncionamentoRequest request) {
