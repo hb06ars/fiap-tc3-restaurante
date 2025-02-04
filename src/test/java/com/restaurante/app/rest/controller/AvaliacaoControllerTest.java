@@ -35,7 +35,7 @@ class AvaliacaoControllerTest {
     @Mock
     private AvaliacaoService avaliacaoService;
 
-    private ObjectMapper objectMapper; // Instanciação do ObjectMapper
+    private ObjectMapper objectMapper;
 
     private AvaliacaoRequest request;
 

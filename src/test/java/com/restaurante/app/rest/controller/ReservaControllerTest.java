@@ -41,7 +41,7 @@ class ReservaControllerTest {
     @Mock
     private ReservarMesaUseCase reservarMesaUseCase;
 
-    private ObjectMapper objectMapper;  // Instanciação do ObjectMapper
+    private ObjectMapper objectMapper;
 
     private ReservaDTO reservaDTO;
 
@@ -73,53 +73,52 @@ class ReservaControllerTest {
 
     @Test
     void testCadastrarReserva() throws Exception {
-        // Simula o comportamento do serviço
         when(reservarMesaUseCase.salvar(any(ReservaDTO.class))).thenReturn(reservaDTO);
 
         mockMvc.perform(post("/reserva")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaDTO)))  // Usando o ObjectMapper para converter o DTO em String JSON
-                .andExpect(status().isOk())  // Verifica se o status é 200 OK
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  // Verifica o tipo de conteúdo
-                .andExpect(jsonPath("$.usuarioId").value(1L))  // Verifica o usuário ID
-                .andExpect(jsonPath("$.mesaId").value(1L))  // Verifica a mesa ID
-                .andExpect(jsonPath("$.restauranteId").value(1L))  // Verifica o restaurante ID
-                .andExpect(jsonPath("$.dataDaReserva").exists())  // Verifica se a data da reserva existe
-                .andExpect(jsonPath("$.dataFimReserva").exists())  // Verifica se a data de fim da reserva existe
-                .andExpect(jsonPath("$.valorReserva").value(200))  // Verifica o valor da reserva
-                .andExpect(jsonPath("$.statusPagamento").value(StatusPagamentoEnum.PENDENTE.name()))  // Verifica o status de pagamento
-                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));  // Verifica o status da reserva
+                        .content(objectMapper.writeValueAsString(reservaDTO))) 
+                .andExpect(status().isOk())  
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  
+                .andExpect(jsonPath("$.usuarioId").value(1L))  
+                .andExpect(jsonPath("$.mesaId").value(1L))  
+                .andExpect(jsonPath("$.restauranteId").value(1L))  
+                .andExpect(jsonPath("$.dataDaReserva").exists())  
+                .andExpect(jsonPath("$.dataFimReserva").exists())  
+                .andExpect(jsonPath("$.valorReserva").value(200))  
+                .andExpect(jsonPath("$.statusPagamento").value(StatusPagamentoEnum.PENDENTE.name()))  
+                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));  
     }
 
     @Test
     void testAtualizarReserva() throws Exception {
-        // Simula o comportamento do serviço
+        
         when(reservarMesaUseCase.atualizar(any(Long.class), any(ReservaDTO.class))).thenReturn(reservaDTO);
 
         mockMvc.perform(put("/reserva/{id}", reservaDTO.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaDTO)))  // Usando o ObjectMapper para converter o DTO em String JSON
-                .andExpect(status().isOk())  // Verifica se o status é 200 OK
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  // Verifica o tipo de conteúdo
-                .andExpect(jsonPath("$.usuarioId").value(1L))  // Verifica o usuário ID
-                .andExpect(jsonPath("$.mesaId").value(1L))  // Verifica a mesa ID
-                .andExpect(jsonPath("$.restauranteId").value(1L))  // Verifica o restaurante ID
-                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));  // Verifica o status da reserva
+                        .content(objectMapper.writeValueAsString(reservaDTO))) 
+                .andExpect(status().isOk())  
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  
+                .andExpect(jsonPath("$.usuarioId").value(1L))  
+                .andExpect(jsonPath("$.mesaId").value(1L))  
+                .andExpect(jsonPath("$.restauranteId").value(1L))  
+                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));  
     }
 
     @Test
     void testBuscarReservas() throws Exception {
-        // Simula o comportamento do serviço
+        
         when(reservaService.buscar(any(Long.class), any(ReservaDTO.class))).thenReturn(List.of(reservaDTO));
 
         mockMvc.perform(get("/reserva/{idrestaurante}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaDTO)))  // Usando o ObjectMapper para converter o DTO em String JSON
-                .andExpect(status().isOk())  // Verifica se o status é 200 OK
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  // Verifica o tipo de conteúdo
-                .andExpect(jsonPath("$[0].usuarioId").value(1L))  // Verifica o usuário ID
-                .andExpect(jsonPath("$[0].mesaId").value(1L))  // Verifica a mesa ID
-                .andExpect(jsonPath("$[0].restauranteId").value(1L))  // Verifica o restaurante ID
-                .andExpect(jsonPath("$[0].statusReserva").value(StatusReservaEnum.RESERVADO.name()));  // Verifica o status da reserva
+                        .content(objectMapper.writeValueAsString(reservaDTO))) 
+                .andExpect(status().isOk())  
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  
+                .andExpect(jsonPath("$[0].usuarioId").value(1L))  
+                .andExpect(jsonPath("$[0].mesaId").value(1L))  
+                .andExpect(jsonPath("$[0].restauranteId").value(1L))  
+                .andExpect(jsonPath("$[0].statusReserva").value(StatusReservaEnum.RESERVADO.name()));  
     }
 }

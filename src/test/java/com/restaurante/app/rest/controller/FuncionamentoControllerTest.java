@@ -40,8 +40,8 @@ class FuncionamentoControllerTest {
         funcionamentoDTO = new FuncionamentoDTO();
         funcionamentoDTO.setId(1L);
         funcionamentoDTO.setDiaEnum(DiaEnum.SEGUNDA);
-        funcionamentoDTO.setAbertura(LocalTime.of(8, 0, 1)); // 08:00
-        funcionamentoDTO.setFechamento(LocalTime.of(18, 0, 1)); // 18:00
+        funcionamentoDTO.setAbertura(LocalTime.of(8, 0, 1));
+        funcionamentoDTO.setFechamento(LocalTime.of(18, 0, 1));
         funcionamentoDTO.setRestauranteId(1L);
 
         FuncionamentoController funcionamentoController = new FuncionamentoController(funcionamentoService);

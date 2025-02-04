@@ -43,7 +43,7 @@ class MesaControllerTest {
     @BeforeEach
     void setUp() {
         mock = MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper(); // Instanciando o ObjectMapper
+        objectMapper = new ObjectMapper();
         mesaDTO = new MesaDTO();
         mesaDTO.setId(1L);
         mesaDTO.setNomeMesa("Mesa 1");
@@ -69,7 +69,7 @@ class MesaControllerTest {
 
         mockMvc.perform(post("/mesa/cadastrar")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mesaDTO))) // Usando o ObjectMapper para converter o DTO em String JSON
+                        .content(objectMapper.writeValueAsString(mesaDTO)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
@@ -85,7 +85,7 @@ class MesaControllerTest {
 
         mockMvc.perform(post("/mesa/atualizar/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mesaDTO))) // Usando o ObjectMapper para converter o DTO em String JSON
+                        .content(objectMapper.writeValueAsString(mesaDTO)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
