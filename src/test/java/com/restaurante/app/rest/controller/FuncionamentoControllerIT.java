@@ -89,7 +89,7 @@ class FuncionamentoControllerIT extends BaseUnitTest {
         RestauranteEntity restauranteSaved = restauranteRepository.save(restauranteEntity);
         FuncionamentoEntity entity = getRandom(FuncionamentoEntity.class);
         entity.setRestauranteId(restauranteSaved.getId());
-        var request = avaliacaoRepository.save(entity);
+        avaliacaoRepository.save(entity);
 
         given()
                 .filter(new AllureRestAssured())
