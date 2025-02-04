@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +22,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -84,8 +84,9 @@ class AvaliacaoControllerTest {
                 .andExpect(jsonPath("$.nota").value(5))
                 .andExpect(jsonPath("$.comentario").value("Ótima comida!"));
 
-        verify(avaliacaoService, Mockito.times(1)).save(any(AvaliacaoDTO.class));
+        verify(avaliacaoService, times(1)).save(any(AvaliacaoDTO.class));
         assertThat(logTracker.size()).isEqualTo(1);
+        assertThat(logTracker.contains("requisição para buscar avaliação foi efetuada")).isTrue();
     }
 
     @Test
@@ -104,7 +105,8 @@ class AvaliacaoControllerTest {
                 .andExpect(jsonPath("$[0].nota").value(5))
                 .andExpect(jsonPath("$[0].comentario").value("Ótima comida!"));
 
-        verify(avaliacaoService, Mockito.times(1)).listarPorRestaurante(10L);
+        verify(avaliacaoService, times(1)).listarPorRestaurante(10L);
         assertThat(logTracker.size()).isEqualTo(1);
+        assertThat(logTracker.contains("requisição para buscar avaliação pelo idRestaurante foi efetuada")).isTrue();
     }
 }
