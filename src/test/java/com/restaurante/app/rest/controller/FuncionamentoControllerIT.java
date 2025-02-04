@@ -95,7 +95,7 @@ class FuncionamentoControllerIT extends BaseUnitTest {
                 .filter(new AllureRestAssured())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .get("/funcionamento/deletar/1")
+                .delete("/funcionamento/deletar/1")
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -106,7 +106,7 @@ class FuncionamentoControllerIT extends BaseUnitTest {
                 .filter(new AllureRestAssured())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .delete("/funcionamento/deletar/1")
+                .get("/funcionamento/1")
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
