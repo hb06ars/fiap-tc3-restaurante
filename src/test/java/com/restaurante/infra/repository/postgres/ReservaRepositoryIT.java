@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.restaurante.utils.TestUtil.getRandom;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
@@ -109,28 +110,21 @@ class ReservaRepositoryIT {
 
     }
 
-//    @Test
-//    void testAtualizarReserva() {
-//        ReservaEntity reservaAtualizada = new ReservaEntity();
-//        reservaAtualizada.setId(1L);
-//        reservaAtualizada.setRestauranteId(1L);
-//        reservaAtualizada.setStatusReserva(StatusReservaEnum.CANCELADO);
-//        reservaAtualizada.setStatusPagamento(StatusPagamentoEnum.CANCELADO);
-//        reservaAtualizada.setDataDaReserva(reserva.getDataDaReserva());
-//        reservaAtualizada.setDataFimReserva(reserva.getDataFimReserva());
-//
-//        when(reservaRepository.save(reservaAtualizada)).thenReturn(reservaAtualizada);
-//        ReservaEntity updatedReserva = reservaRepository.save(reservaAtualizada);
-//
-//        assertEquals(StatusReservaEnum.CANCELADO, updatedReserva.getStatusReserva());
-//        assertEquals(StatusPagamentoEnum.CANCELADO, updatedReserva.getStatusPagamento());
-//        verify(reservaRepository, times(1)).save(reservaAtualizada);
-//    }
-//
-//    @Test
-//    void testDeletarReserva() {
-//        doNothing().when(reservaRepository).deleteById(1L);
-//        reservaRepository.deleteById(1L);
-//        verify(reservaRepository, times(1)).deleteById(1L);
-//    }
+    @Test
+    void testDeletarReserva() {
+        UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
+        RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
+        MesaEntity mesaEntity = getRandom(MesaEntity.class);
+        mesaEntity.setRestauranteId(restauranteSaved.getId());
+        MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
+        ReservaEntity entity = getRandom(ReservaEntity.class);
+        entity.setUsuarioId(usuarioSaved.getId());
+        entity.setMesaId(mesaSaved.getId());
+        entity.setRestauranteId(restauranteSaved.getId());
+        var reservaSaved = reservaRepository.save(entity);
+
+        reservaRepository.deleteById(1L);
+        var result = reservaRepository.findById(reservaSaved.getId());
+        assertFalse(result.isPresent());
+    }
 }
