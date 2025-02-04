@@ -106,14 +106,6 @@ class AvaliacaoControllerTest extends BaseUnitTest {
         req.setDatapost(LocalDateTime.now());
         req.setRestauranteId(null);
 
-        var result = mockMvc.perform(post("/avaliacao")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        var erro = result.getResolvedException().getCause();
-
 
         mockMvc.perform(post("/avaliacao")
                         .contentType(MediaType.APPLICATION_JSON)
