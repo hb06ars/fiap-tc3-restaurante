@@ -9,6 +9,7 @@ import com.restaurante.app.service.postgres.FuncionamentoService;
 import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.enums.DiaEnum;
 import com.restaurante.infra.exceptions.GlobalExceptionHandler;
+import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import com.restaurante.utils.BaseUnitTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -123,19 +125,25 @@ class FuncionamentoControllerTest extends BaseUnitTest {
 
     @Test
     void testAvaliarExcecaoQuandoIdNaoInformado() throws Exception {
-        FuncionamentoRequest request = new FuncionamentoRequest();
         mockMvc.perform(put("/funcionamento/atualizar/999")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(new FuncionamentoRequest())))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void testAvaliarExcecaoQuandoIdNaoEncontrado() throws Exception {
+
+        when(service.update(eq(999L), any(FuncionamentoDTO.class)))
+                .thenThrow(new ObjectNotFoundException("Funcionamento 999 não encontrado."));
+
         mockMvc.perform(put("/funcionamento/atualizar/999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message[0].erro").value("O objeto solicitado não foi encontrado no sistema"))
+                .andExpect(jsonPath("$.message[0].detalhe").value("Funcionamento 999 não encontrado."));
     }
 
     @Test
