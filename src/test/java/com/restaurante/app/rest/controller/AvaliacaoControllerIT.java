@@ -81,7 +81,10 @@ class AvaliacaoControllerIT extends BaseUnitTest {
                 .post("/avaliacao")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("erro", equalTo("Erro na validação de dados"));
+                .body("erro", equalTo("Erro na validação de dados"))
+                .body("detalhe", equalTo("O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante."))
+                .body("campo", equalTo("restauranteId"))
+                .body("statusCode", equalTo(400));
     }
 
 }
