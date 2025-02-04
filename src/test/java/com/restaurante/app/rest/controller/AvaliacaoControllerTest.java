@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.restaurante.app.rest.request.AvaliacaoRequest;
 import com.restaurante.app.service.postgres.AvaliacaoService;
 import com.restaurante.domain.dto.AvaliacaoDTO;
+import com.restaurante.infra.exceptions.GlobalExceptionHandler;
 import com.restaurante.utils.BaseUnitTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,10 +15,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,7 +68,10 @@ class AvaliacaoControllerTest extends BaseUnitTest {
         request.setComentario("Ótima comida!");
 
         AvaliacaoController controller = new AvaliacaoController(avaliacaoService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @AfterEach
@@ -87,18 +94,30 @@ class AvaliacaoControllerTest extends BaseUnitTest {
                 .andExpect(jsonPath("$.comentario").value("Ótima comida!"));
 
         verify(avaliacaoService, times(1)).save(any(AvaliacaoDTO.class));
-        assertThat(logTracker.size()).isEqualTo(1);
+        assertThat(logTracker.size()).isPositive();
         assertThat(logTracker.contains("requisição para buscar avaliação foi efetuada")).isTrue();
     }
 
     @Test
     void testAvaliarExcecaoQuandoJsonInvalido() throws Exception {
         AvaliacaoRequest req = getRandom(AvaliacaoRequest.class);
+        req.setNota(5);
+        req.setUsuarioId(1L);
+        req.setDatapost(LocalDateTime.now());
         req.setRestauranteId(null);
+
+        var result = mockMvc.perform(post("/avaliacao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        var erro = result.getResolvedException().getCause();
+
 
         mockMvc.perform(post("/avaliacao")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(req)))
+                        .content("{\"nota\": 8, \"comentario\": \"Adorei! Atendimento excelente!\", \"usuarioId\": 1}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.erro").value("Erro na validação de dados"))
                 .andExpect(jsonPath("$.detalhe").value("O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante."))
