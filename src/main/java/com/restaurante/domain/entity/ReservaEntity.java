@@ -79,7 +79,8 @@ public class ReservaEntity implements Serializable {
         this.dataDaReserva = dto.getDataDaReserva() != null ? dto.getDataDaReserva() : LocalDateTime.now();
         this.dataFimReserva = dto.getDataFimReserva();
         this.valorReserva = dto.getValorReserva() != null ? dto.getValorReserva() : BigDecimal.ZERO;
-        this.statusPagamento = dto.getStatusPagamento() != null ? dto.getStatusPagamento() : StatusPagamentoEnum.PENDENTE;
+        this.statusPagamento = dto.getStatusPagamento() != null ? dto.getStatusPagamento()
+                : StatusPagamentoEnum.PENDENTE;
         this.statusReserva = dto.getStatusReserva() != null ? dto.getStatusReserva() : StatusReservaEnum.OCUPADO;
     }
 

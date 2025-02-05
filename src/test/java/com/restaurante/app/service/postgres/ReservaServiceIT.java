@@ -49,7 +49,7 @@ class ReservaServiceIT extends BaseUnitTest {
     private ReservaService reservaService;
 
     @Test
-    void save_ReturnsReservaDTO() {
+    void saveReturnsReservaDTO() {
         var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(4);
@@ -69,7 +69,7 @@ class ReservaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findAll_ReturnsReservaDTOList() {
+    void findAllReturnsReservaDTOList() {
         var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(4);
@@ -91,7 +91,7 @@ class ReservaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findById_ReturnsReservaDTO() {
+    void findByIdReturnsReservaDTO() {
         var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(4);
@@ -114,13 +114,13 @@ class ReservaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findById_ReturnsNull_WhenReservaNotFound() {
+    void findByIdReturnsNullWhenReservaNotFound() {
         ReservaDTO result = reservaService.findById(1L);
         assertNull(result);
     }
 
     @Test
-    void update_ReturnsUpdatedReservaDTO() {
+    void updateReturnsUpdatedReservaDTO() {
         var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(4);
@@ -144,7 +144,7 @@ class ReservaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void update_ThrowsRuntimeException_WhenReservaNotFound() {
+    void updateThrowsRuntimeExceptionWhenReservaNotFound() {
         ReservaDTO dto = getRandom(ReservaDTO.class);
         assertThrows(RuntimeException.class, () -> reservaService.update(1L, dto));
     }
@@ -172,19 +172,19 @@ class ReservaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void delete_ThrowsRuntimeException_WhenReservaNotFound() {
+    void deleteThrowsRuntimeExceptionWhenReservaNotFound() {
         assertThrows(RuntimeException.class, () -> reservaService.delete(1L));
     }
 
     @Test
-    void buscar_ThrowsFieldNotFoundException_WhenDataDaReservaIsNull() {
+    void buscarThrowsFieldNotFoundExceptionWhenDataDaReservaIsNull() {
         ReservaDTO dto = getRandom(ReservaDTO.class);
         dto.setDataDaReserva(null);
         assertThrows(FieldNotFoundException.class, () -> reservaService.buscar(1L, dto));
     }
 
     @Test
-    void buscar_ReturnsReservaDTOList() {
+    void buscarReturnsReservaDTOList() {
         var diaAtual = LocalDate.now().getDayOfWeek().getValue();
         var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);

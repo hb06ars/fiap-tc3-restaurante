@@ -46,7 +46,7 @@ class ReservarMesaUseCaseImplIT extends BaseUnitTest {
     private MesaRepository mesaRepository;
 
     @Test
-    void salvar_DeveChamarValidacoesESalvarReserva() {
+    void salvarDeveChamarValidacoesESalvarReserva() {
         UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
@@ -77,7 +77,7 @@ class ReservarMesaUseCaseImplIT extends BaseUnitTest {
     }
 
     @Test
-    void atualizar_DeveAtualizarDadosDaReservaExistente() {
+    void atualizarDeveAtualizarDadosDaReservaExistente() {
         var diaAtual = LocalDate.now().getDayOfWeek().getValue();
 
         UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
@@ -112,7 +112,7 @@ class ReservarMesaUseCaseImplIT extends BaseUnitTest {
     }
 
     @Test
-    void preencherHorarioDeSaida_DeveDefinirHorarioDeSaidaCorreto() {
+    void preencherHorarioDeSaidaDeveDefinirHorarioDeSaidaCorreto() {
         var diaAtual = LocalDate.now().getDayOfWeek().getValue();
 
         UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));

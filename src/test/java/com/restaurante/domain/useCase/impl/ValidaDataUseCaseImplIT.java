@@ -67,7 +67,7 @@ class ValidaDataUseCaseImplIT extends BaseUnitTest {
     }
 
     @Test
-    void testExecute_DataInvalida() {
+    void testExecuteDataInvalida() {
         LocalDateTime dataReserva = LocalDate.now().atTime(9, 0);
         LocalDate diaSelecionado = LocalDate.now();
         assertThrows(ReservaException.class, () -> validaDataUseCase
@@ -75,14 +75,14 @@ class ValidaDataUseCaseImplIT extends BaseUnitTest {
     }
 
     @Test
-    void testBuscaDiaDaSemana_Feriado() {
+    void testBuscaDiaDaSemanaFeriado() {
         LocalDate diaSelecionado = LocalDate.of(2025, 12, 25);
         DiaEnum diaEnum = validaDataUseCase.buscaDiaDaSemana(diaSelecionado);
         assertEquals(DiaEnum.FERIADOS, diaEnum);
     }
 
     @Test
-    void testBuscaDiaDaSemana_Semana() {
+    void testBuscaDiaDaSemanaSemana() {
         LocalDate diaSelecionado = LocalDate.of(2025, 1, 27);
         DiaEnum diaEnum = validaDataUseCase.buscaDiaDaSemana(diaSelecionado);
         assertEquals(DiaEnum.SEGUNDA, diaEnum);

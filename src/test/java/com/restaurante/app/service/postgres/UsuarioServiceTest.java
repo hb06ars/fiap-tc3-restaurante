@@ -50,7 +50,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void save_ReturnsUsuarioDTO_WhenUserDoesNotExist() {
+    void saveReturnsUsuarioDTOWhenUserDoesNotExist() {
         when(usuarioRepository.findByEmailOrCelular(anyString(), anyString())).thenReturn(null);
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenReturn(usuarioEntity);
 
@@ -62,7 +62,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void save_ThrowsRecordAlreadyExistsException_WhenEmailOrCelularExists() {
+    void saveThrowsRecordAlreadyExistsExceptionWhenEmailOrCelularExists() {
         when(usuarioRepository.findByEmailOrCelular(anyString(), anyString())).thenReturn(usuarioEntity);
 
         RecordAlreadyExistsException thrown = assertThrows(RecordAlreadyExistsException.class,
@@ -72,7 +72,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void findAll_ReturnsListOfUsuarios() {
+    void findAllReturnsListOfUsuarios() {
         when(usuarioRepository.findAll()).thenReturn(List.of(usuarioEntity));
 
         List<UsuarioDTO> result = usuarioService.findAll();
@@ -83,7 +83,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void findById_ReturnsUsuarioDTO() {
+    void findByIdReturnsUsuarioDTO() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
 
         UsuarioDTO result = usuarioService.findById(1L);
@@ -93,7 +93,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void findByEmailOrCelular_ReturnsUsuarioDTO() {
+    void findByEmailOrCelularReturnsUsuarioDTO() {
         when(usuarioRepository.findByEmailOrCelular(anyString(), anyString())).thenReturn(usuarioEntity);
 
         UsuarioDTO result = usuarioService.findByEmailOrCelular("email@mail.com", "11999999999");
@@ -103,19 +103,19 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void findByEmailOrCelular_ReturnsNull_whenCelularIsNull() {
+    void findByEmailOrCelularReturnsNullwhenCelularIsNull() {
         assertThrows(RuntimeException.class, () -> usuarioService
                 .findByEmailOrCelular("email@mail.com", null));
     }
 
     @Test
-    void findByEmailOrCelular_ReturnsNull_whenEmailIsNull() {
+    void findByEmailOrCelularReturnsNullwhenEmailIsNull() {
         assertThrows(RuntimeException.class, () -> usuarioService
                 .findByEmailOrCelular(null, "123456789"));
     }
 
     @Test
-    void findById_ReturnsNull_WhenUsuarioNotFound() {
+    void findByIdReturnsNullWhenUsuarioNotFound() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         UsuarioDTO result = usuarioService.findById(1L);
@@ -124,7 +124,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void update_ReturnsUpdatedUsuarioDTO() {
+    void updateReturnsUpdatedUsuarioDTO() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenReturn(usuarioEntity);
 
@@ -138,7 +138,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void update_ThrowsRuntimeException_WhenUsuarioNotFound() {
+    void updateThrowsRuntimeExceptionWhenUsuarioNotFound() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         RuntimeException thrown = assertThrows(RuntimeException.class,
@@ -148,7 +148,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void update_ThrowsRuntimeException_WhenEmailOrCelularAlreadyExists() {
+    void updateThrowsRuntimeExceptionWhenEmailOrCelularAlreadyExists() {
         UsuarioDTO updatedDTO = new UsuarioDTO(1L, "Usuário A",
                 "usuarioA@email.com", "987654321");
 
@@ -168,7 +168,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    void delete_ThrowsRuntimeException_WhenUsuarioNotFound() {
+    void deleteThrowsRuntimeExceptionWhenUsuarioNotFound() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> usuarioService.delete(1L));

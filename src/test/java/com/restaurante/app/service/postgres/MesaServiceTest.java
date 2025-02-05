@@ -68,7 +68,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void save_ValidMesa_ReturnsMesaDTO() {
+    void saveValidMesaReturnsMesaDTO() {
         var restaurante = RestauranteEntity.builder()
                 .id(1L)
                 .capacidade(100)
@@ -95,7 +95,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void save_CapacidadeExcedida_ThrowsCapacidadeException() {
+    void saveCapacidadeExcedidaThrowsCapacidadeException() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(new RestauranteEntity()));
         when(mesaRepository.findAllByRestauranteId(1L))
                 .thenReturn(Collections.singletonList(new MesaEntity()));
@@ -104,14 +104,14 @@ class MesaServiceTest {
     }
 
     @Test
-    void save_RestauranteNaoEncontrado_ThrowsObjectNotFoundException() {
+    void saveRestauranteNaoEncontradoThrowsObjectNotFoundException() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ObjectNotFoundException.class, () -> mesaService.save(mesaDTO));
     }
 
     @Test
-    void findAll_ReturnsMesaDTOList() {
+    void findAllReturnsMesaDTOList() {
         when(mesaRepository.findAll()).thenReturn(Collections.singletonList(mesaEntity));
 
         List<MesaDTO> mesas = mesaService.findAll();
@@ -122,7 +122,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void findById_ExistingMesa_ReturnsMesaDTO() {
+    void findByIdExistingMesaReturnsMesaDTO() {
         when(mesaRepository.findById(1L)).thenReturn(Optional.of(mesaEntity));
 
         MesaDTO foundMesa = mesaService.findById(1L);
@@ -132,7 +132,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void findById_MesaNaoEncontrada_ReturnsNull() {
+    void findByIdMesaNaoEncontradaReturnsNull() {
         when(mesaRepository.findById(1L)).thenReturn(Optional.empty());
 
         MesaDTO foundMesa = mesaService.findById(1L);
@@ -141,7 +141,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void update_ExistingMesa_ReturnsUpdatedMesaDTO() {
+    void updateExistingMesaReturnsUpdatedMesaDTO() {
         when(mesaRepository.findById(1L)).thenReturn(Optional.of(mesaEntity));
         when(mesaRepository.save(any(MesaEntity.class))).thenReturn(mesaEntity);
 
@@ -153,14 +153,14 @@ class MesaServiceTest {
     }
 
     @Test
-    void update_MesaNaoEncontrada_ThrowsRuntimeException() {
+    void updateMesaNaoEncontradaThrowsRuntimeException() {
         when(mesaRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> mesaService.update(1L, mesaDTO));
     }
 
     @Test
-    void delete_ExistingMesa_DeletesMesa() {
+    void deleteExistingMesaDeletesMesa() {
         when(mesaRepository.findById(1L)).thenReturn(Optional.of(mesaEntity));
 
         mesaService.delete(1L);
@@ -169,7 +169,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void buscarMesas_ReturnsMesaDisponivelDTOList() {
+    void buscarMesasReturnsMesaDisponivelDTOList() {
         Object[] mesaArray = new Object[]{1L, "Mesa 1", StatusReservaEnum.OCUPADO.name()};
         when(mesaRepository.buscarMesasDisponiveis(any(), any())).thenReturn(List.<Object[]>of(mesaArray));
         List<MesaDisponivelDTO> mesasDisponiveis = mesaService.buscarMesas(1L);
@@ -177,7 +177,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void salvarTodasMesas_SavesAllMesas() {
+    void salvarTodasMesasSavesAllMesas() {
         List<MesaEntity> mesas = Collections.singletonList(mesaEntity);
 
         when(mesaRepository.saveAll(anyList())).thenReturn(mesas);
@@ -189,7 +189,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void findAllByIdRestaurante_ReturnsMesaDTOList() {
+    void findAllByIdRestauranteReturnsMesaDTOList() {
         when(mesaRepository.findAllByRestauranteId(1L))
                 .thenReturn(Collections.singletonList(mesaEntity));
 
@@ -201,7 +201,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void findAllByRestaurante_ReturnsListOfMesas_WhenRestauranteHasMesas() {
+    void findAllByRestauranteReturnsListOfMesasWhenRestauranteHasMesas() {
         List<MesaEntity> mesas = List.of(
                 new MesaEntity(1L, "Mesa 1", 1L),
                 new MesaEntity(2L, "Mesa 2", 1L)
@@ -217,7 +217,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void findAllByRestaurante_ReturnsEmptyList_WhenRestauranteHasNoMesas() {
+    void findAllByRestauranteReturnsEmptyListWhenRestauranteHasNoMesas() {
         Mockito.when(mesaRepository.findAllByRestauranteId(any())).thenReturn(List.of());
         List<MesaDTO> mesasDTO = mesaService.findAllByRestaurante(1L);
 
@@ -226,7 +226,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void save_MesasIsEmpty_ThrowsCapacidadeException() {
+    void saveMesasIsEmptyThrowsCapacidadeException() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(new RestauranteEntity()));
         when(mesaRepository.findAllByRestauranteId(1L)).thenReturn(List.of());
         assertThrows(CapacidadeException.class, () -> mesaService.save(mesaDTO));

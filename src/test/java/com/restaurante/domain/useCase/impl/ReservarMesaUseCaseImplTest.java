@@ -50,7 +50,7 @@ class ReservarMesaUseCaseImplTest {
     }
 
     @Test
-    void salvar_DeveChamarValidacoesESalvarReserva() {
+    void salvarDeveChamarValidacoesESalvarReserva() {
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setRestauranteId(1L);
         reservaDTO.setDataDaReserva(LocalDateTime.now());
@@ -67,7 +67,7 @@ class ReservarMesaUseCaseImplTest {
     }
 
     @Test
-    void atualizar_DeveAtualizarDadosDaReservaExistente() {
+    void atualizarDeveAtualizarDadosDaReservaExistente() {
         Long id = 1L;
         ReservaDTO reservaOriginal = new ReservaDTO();
         reservaOriginal.setRestauranteId(1L);
@@ -96,7 +96,7 @@ class ReservarMesaUseCaseImplTest {
     }
 
     @Test
-    void preencherHorarioDeSaida_DeveDefinirHorarioDeSaidaCorreto() {
+    void preencherHorarioDeSaidaDeveDefinirHorarioDeSaidaCorreto() {
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setDataDaReserva(LocalDateTime.now());
         reservarMesaUseCase.salvar(reservaDTO);

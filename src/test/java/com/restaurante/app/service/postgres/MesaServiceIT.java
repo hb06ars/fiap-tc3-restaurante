@@ -38,7 +38,7 @@ class MesaServiceIT extends BaseUnitTest {
     private RestauranteRepository restauranteRepository;
 
     @Test
-    void save_ValidMesa_ReturnsMesaDTO() {
+    void saveValidMesaReturnsMesaDTO() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
@@ -52,7 +52,7 @@ class MesaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void save_CapacidadeExcedida_ThrowsCapacidadeException() {
+    void saveCapacidadeExcedidaThrowsCapacidadeException() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(0);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
@@ -62,28 +62,28 @@ class MesaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void save_RestauranteNaoEncontrado_ThrowsObjectNotFoundException() {
+    void saveRestauranteNaoEncontradoThrowsObjectNotFoundException() {
         MesaDTO mesaDTO = getRandom(MesaDTO.class);
         assertThrows(ObjectNotFoundException.class, () -> mesaService.save(mesaDTO));
     }
 
     @Test
-    void findAll_ReturnsMesaDTOList() {
+    void findAllReturnsMesaDTOList() {
         List<MesaDTO> mesas = mesaService.findAll();
     }
 
     @Test
-    void findById_ExistingMesa_ReturnsMesaDTO() {
+    void findByIdExistingMesaReturnsMesaDTO() {
         MesaDTO foundMesa = mesaService.findById(1L);
     }
 
     @Test
-    void findById_MesaNaoEncontrada_ReturnsNull() {
+    void findByIdMesaNaoEncontradaReturnsNull() {
         MesaDTO foundMesa = mesaService.findById(1L);
     }
 
     @Test
-    void update_ExistingMesa_ReturnsUpdatedMesaDTO() {
+    void updateExistingMesaReturnsUpdatedMesaDTO() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
@@ -98,18 +98,18 @@ class MesaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void update_MesaNaoEncontrada_ThrowsRuntimeException() {
+    void updateMesaNaoEncontradaThrowsRuntimeException() {
         MesaDTO mesaDTO = getRandom(MesaDTO.class);
         assertThrows(RuntimeException.class, () -> mesaService.update(1L, mesaDTO));
     }
 
     @Test
-    void delete_ExistingMesa_DeletesMesa() {
+    void deleteExistingMesaDeletesMesa() {
         mesaService.delete(1L);
     }
 
     @Test
-    void buscarMesas_ReturnsMesaDisponivelDTOList() {
+    void buscarMesasReturnsMesaDisponivelDTOList() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
@@ -121,7 +121,7 @@ class MesaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void salvarTodasMesas_SavesAllMesas() {
+    void salvarTodasMesasSavesAllMesas() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
@@ -133,7 +133,7 @@ class MesaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findAllByIdRestaurante_ReturnsMesaDTOList() {
+    void findAllByIdRestauranteReturnsMesaDTOList() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
@@ -147,7 +147,7 @@ class MesaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findAllByRestaurante_ReturnsListOfMesas_WhenRestauranteHasMesas() {
+    void findAllByRestauranteReturnsListOfMesasWhenRestauranteHasMesas() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);
@@ -162,7 +162,7 @@ class MesaServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findAllByRestaurante_ReturnsEmptyList_WhenRestauranteHasNoMesas() {
+    void findAllByRestauranteReturnsEmptyListWhenRestauranteHasNoMesas() {
         var restauranteEntity = getRandom(RestauranteEntity.class);
         restauranteEntity.setCapacidade(10);
         var restauranteSaved = restauranteRepository.save(restauranteEntity);

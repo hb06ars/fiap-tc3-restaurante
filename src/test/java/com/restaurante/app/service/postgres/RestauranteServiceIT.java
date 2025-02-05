@@ -29,7 +29,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     private RestauranteService restauranteService;
 
     @Test
-    void save_ReturnsRestauranteDTO() {
+    void saveReturnsRestauranteDTO() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);
@@ -38,7 +38,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findAll_ReturnsRestauranteDTOList() {
+    void findAllReturnsRestauranteDTOList() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         restauranteService.save(restauranteDTO);
@@ -50,7 +50,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findById_ReturnsRestauranteDTO() {
+    void findByIdReturnsRestauranteDTO() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);
@@ -62,12 +62,12 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findById_ReturnsNull_WhenRestauranteNotFound() {
+    void findByIdReturnsNullWhenRestauranteNotFound() {
         RestauranteDTO result = restauranteService.findById(1L);
     }
 
     @Test
-    void update_ReturnsUpdatedRestauranteDTO() {
+    void updateReturnsUpdatedRestauranteDTO() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);
@@ -81,7 +81,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void update_ThrowsObjectNotFoundException_WhenRestauranteNotFound() {
+    void updateThrowsObjectNotFoundExceptionWhenRestauranteNotFound() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         assertThrows(ObjectNotFoundException.class, () -> restauranteService.update(1L, restauranteDTO));
@@ -100,12 +100,12 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void delete_ThrowsRuntimeException_WhenRestauranteNotFound() {
+    void deleteThrowsRuntimeExceptionWhenRestauranteNotFound() {
         assertThrows(RuntimeException.class, () -> restauranteService.delete(1L));
     }
 
     @Test
-    void buscarRestaurantes_ReturnsRestauranteDTOList() {
+    void buscarRestaurantesReturnsRestauranteDTOList() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);
@@ -118,7 +118,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void restauranteJaExiste_ReturnsTrue_WhenRestaurantExists() {
+    void restauranteJaExisteReturnsTrueWhenRestaurantExists() {
         RestauranteDTO restauranteDTO = getRandom(RestauranteDTO.class);
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);
@@ -130,7 +130,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void restauranteJaExiste_ReturnsFalse_WhenRestaurantDoesNotExist() {
+    void restauranteJaExisteReturnsFalseWhenRestaurantDoesNotExist() {
         boolean resultado = restauranteService
                 .restauranteJaExiste("Restaurante Teste", "Localização Teste");
 

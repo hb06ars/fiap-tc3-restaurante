@@ -84,7 +84,7 @@ class FuncionamentoServiceTest {
     }
 
     @Test
-    void testFindById_Found() {
+    void testFindByIdFound() {
         FuncionamentoEntity funcionamentoEntity = new FuncionamentoEntity(funcionamentoDTO);
         when(funcionamentoRepository.findById(1L)).thenReturn(Optional.of(funcionamentoEntity));
         FuncionamentoDTO foundFuncionamento = funcionamentoService.findById(1L);
@@ -94,7 +94,7 @@ class FuncionamentoServiceTest {
     }
 
     @Test
-    void testFindById_NotFound() {
+    void testFindByIdNotFound() {
         when(funcionamentoRepository.findById(1L)).thenReturn(Optional.empty());
         FuncionamentoDTO foundFuncionamento = funcionamentoService.findById(1L);
         assertNull(foundFuncionamento);
@@ -116,7 +116,7 @@ class FuncionamentoServiceTest {
     }
 
     @Test
-    void testUpdate_NotFound() {
+    void testUpdateNotFound() {
         when(funcionamentoRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> funcionamentoService.update(1L, funcionamentoDTO));
         verify(funcionamentoRepository, times(1)).findById(1L);
@@ -133,7 +133,7 @@ class FuncionamentoServiceTest {
     }
 
     @Test
-    void testDelete_NotFound() {
+    void testDeleteNotFound() {
         when(funcionamentoRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class, () -> funcionamentoService.delete(1L));
         verify(funcionamentoRepository, times(1)).findById(1L);

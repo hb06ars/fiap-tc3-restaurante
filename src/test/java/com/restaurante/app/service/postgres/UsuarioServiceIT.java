@@ -27,7 +27,7 @@ class UsuarioServiceIT extends BaseUnitTest {
     private UsuarioService usuarioService;
 
     @Test
-    void save_ReturnsUsuarioDTO_WhenUserDoesNotExist() {
+    void saveReturnsUsuarioDTOWhenUserDoesNotExist() {
         var result = usuarioService.save(getRandom(UsuarioDTO.class));
 
         assertNotNull(result);
@@ -35,13 +35,13 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void save_ThrowsRecordAlreadyExistsException_WhenEmailOrCelularExists() {
+    void saveThrowsRecordAlreadyExistsExceptionWhenEmailOrCelularExists() {
         var usuarioSaved = usuarioService.save(getRandom(UsuarioDTO.class));
         assertThrows(RecordAlreadyExistsException.class, () -> usuarioService.save(usuarioSaved));
     }
 
     @Test
-    void findAll_ReturnsListOfUsuarios() {
+    void findAllReturnsListOfUsuarios() {
         usuarioService.save(getRandom(UsuarioDTO.class));
         List<UsuarioDTO> result = usuarioService.findAll();
 
@@ -51,7 +51,7 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findById_ReturnsUsuarioDTO() {
+    void findByIdReturnsUsuarioDTO() {
         var user = usuarioService.save(getRandom(UsuarioDTO.class));
         UsuarioDTO result = usuarioService.findById(user.getId());
 
@@ -61,7 +61,7 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findByEmailOrCelular_ReturnsUsuarioDTO() {
+    void findByEmailOrCelularReturnsUsuarioDTO() {
         var user = usuarioService.save(getRandom(UsuarioDTO.class));
         UsuarioDTO result = usuarioService.findByEmailOrCelular(user.getEmail(), user.getCelular());
 
@@ -71,25 +71,25 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void findByEmailOrCelular_ReturnsNull_whenCelularIsNull() {
+    void findByEmailOrCelularReturnsNullwhenCelularIsNull() {
         assertThrows(RuntimeException.class, () -> usuarioService
                 .findByEmailOrCelular("email@mail.com", null));
     }
 
     @Test
-    void findByEmailOrCelular_ReturnsNull_whenEmailIsNull() {
+    void findByEmailOrCelularReturnsNullwhenEmailIsNull() {
         assertThrows(RuntimeException.class, () -> usuarioService
                 .findByEmailOrCelular(null, "123456789"));
     }
 
 
     @Test
-    void findById_ReturnsNull_WhenUsuarioNotFound() {
+    void findByIdReturnsNullWhenUsuarioNotFound() {
         UsuarioDTO result = usuarioService.findById(1L);
     }
 
     @Test
-    void update_ReturnsUpdatedUsuarioDTO() {
+    void updateReturnsUpdatedUsuarioDTO() {
         var dto = getRandom(UsuarioDTO.class);
         dto.setNome("Nome inicial");
         var saved = usuarioService.save(dto);
@@ -102,12 +102,12 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void update_ThrowsRuntimeException_WhenUsuarioNotFound() {
+    void updateThrowsRuntimeExceptionWhenUsuarioNotFound() {
         assertThrows(RuntimeException.class, () -> usuarioService.update(1L, null));
     }
 
     @Test
-    void update_ThrowsRuntimeException_WhenEmailOrCelularAlreadyExists() {
+    void updateThrowsRuntimeExceptionWhenEmailOrCelularAlreadyExists() {
         assertThrows(RuntimeException.class, () -> usuarioService.update(1L, null));
     }
 
@@ -120,7 +120,7 @@ class UsuarioServiceIT extends BaseUnitTest {
     }
 
     @Test
-    void delete_ThrowsRuntimeException_WhenUsuarioNotFound() {
+    void deleteThrowsRuntimeExceptionWhenUsuarioNotFound() {
         assertThrows(RuntimeException.class, () -> usuarioService.delete(1L));
     }
 }

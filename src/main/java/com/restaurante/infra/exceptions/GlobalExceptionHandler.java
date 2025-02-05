@@ -65,23 +65,23 @@ public class GlobalExceptionHandler {
                                 .build())
                 .collect(Collectors.toList());
 
-        ListErrorResponse ListErrorResponse = new ListErrorResponse(
+        ListErrorResponse listErrorResponse = new ListErrorResponse(
                 errorMessages,
                 HttpStatus.BAD_REQUEST.value()
         );
-        return new ResponseEntity<>(ListErrorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(listErrorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<ListErrorResponse> handleObjectNotFoundException(ObjectNotFoundException e) {
-        ListErrorResponse ListErrorResponse = new ListErrorResponse(
+        ListErrorResponse listErrorResponse = new ListErrorResponse(
                 List.of(MessageErrorDTO.builder()
                         .detalhe(e.getMessage())
                         .erro("O objeto solicitado não foi encontrado no sistema")
                         .build()),
                 HttpStatus.NOT_FOUND.value()
         );
-        return new ResponseEntity<>(ListErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(listErrorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RecordAlreadyExistsException.class)
@@ -134,14 +134,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ListErrorResponse> handleErrorSaveObjectException(Exception e) {
-        ListErrorResponse ListErrorResponse = new ListErrorResponse(
+        ListErrorResponse listErrorResponse = new ListErrorResponse(
                 List.of(MessageErrorDTO.builder()
                         .detalhe(e.getMessage())
                         .erro("Erro no sistema")
                         .build()),
                 HttpStatus.INTERNAL_SERVER_ERROR.value()
         );
-        return new ResponseEntity<>(ListErrorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(listErrorResponse, HttpStatus.NOT_FOUND);
     }
 
 

@@ -30,7 +30,8 @@ public class MesaEntity implements Serializable {
     private Long id;
 
     @Column(name = "nome_mesa", nullable = false, length = 100)
-    @NotNull(message = "O nome da mesa não pode ser nulo. Por favor, forneça um valor para o nome da mesa, exemplo: Mesa 1.")
+    @NotNull(message = "O nome da mesa não pode ser nulo. Por favor, forneça um valor para o " +
+            "nome da mesa, exemplo: Mesa 1.")
     private String nomeMesa;
 
     @Column(name = "restaurante_id", nullable = false)

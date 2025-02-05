@@ -63,7 +63,7 @@ class ReservaServiceTest {
     }
 
     @Test
-    void save_ReturnsReservaDTO() {
+    void saveReturnsReservaDTO() {
         when(reservaRepository.save(any(ReservaEntity.class))).thenReturn(reservaEntity);
         ReservaDTO result = reservaService.save(reservaDTO);
         assertNotNull(result);
@@ -71,7 +71,7 @@ class ReservaServiceTest {
     }
 
     @Test
-    void findAll_ReturnsReservaDTOList() {
+    void findAllReturnsReservaDTOList() {
         when(reservaRepository.findAll()).thenReturn(List.of(reservaEntity));
         List<ReservaDTO> result = reservaService.findAll();
         assertNotNull(result);
@@ -79,7 +79,7 @@ class ReservaServiceTest {
     }
 
     @Test
-    void findById_ReturnsReservaDTO() {
+    void findByIdReturnsReservaDTO() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reservaEntity));
         ReservaDTO result = reservaService.findById(1L);
         assertNotNull(result);
@@ -87,14 +87,14 @@ class ReservaServiceTest {
     }
 
     @Test
-    void findById_ReturnsNull_WhenReservaNotFound() {
+    void findByIdReturnsNullWhenReservaNotFound() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
         ReservaDTO result = reservaService.findById(1L);
         assertNull(result);
     }
 
     @Test
-    void update_ReturnsUpdatedReservaDTO() {
+    void updateReturnsUpdatedReservaDTO() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.of(reservaEntity));
         when(reservaRepository.save(any(ReservaEntity.class))).thenReturn(reservaEntity);
         ReservaDTO result = reservaService.update(1L, reservaDTO);
@@ -103,7 +103,7 @@ class ReservaServiceTest {
     }
 
     @Test
-    void update_ThrowsRuntimeException_WhenReservaNotFound() {
+    void updateThrowsRuntimeExceptionWhenReservaNotFound() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
         RuntimeException thrown = assertThrows(RuntimeException.class,
                 () -> reservaService.update(1L, reservaDTO));
@@ -118,14 +118,14 @@ class ReservaServiceTest {
     }
 
     @Test
-    void delete_ThrowsRuntimeException_WhenReservaNotFound() {
+    void deleteThrowsRuntimeExceptionWhenReservaNotFound() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> reservaService.delete(1L));
         assertEquals("Reserva com ID: 1, não encontrada.", thrown.getMessage());
     }
 
     @Test
-    void buscar_ThrowsFieldNotFoundException_WhenDataDaReservaIsNull() {
+    void buscarThrowsFieldNotFoundExceptionWhenDataDaReservaIsNull() {
         reservaDTO.setDataDaReserva(null);
         FieldNotFoundException thrown = assertThrows(FieldNotFoundException.class,
                 () -> reservaService.buscar(1L, reservaDTO));
@@ -133,7 +133,7 @@ class ReservaServiceTest {
     }
 
     @Test
-    void buscar_ReturnsReservaDTOList() {
+    void buscarReturnsReservaDTOList() {
         when(reservaRepository.findAllByFilter(anyLong(), any(), any(), any()))
                 .thenReturn(List.of(reservaEntity));
 

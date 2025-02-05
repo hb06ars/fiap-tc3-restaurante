@@ -55,7 +55,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void save_ReturnsRestauranteDTO() {
+    void saveReturnsRestauranteDTO() {
         when(restauranteRepository.save(any(RestauranteEntity.class))).thenReturn(restauranteEntity);
 
         RestauranteDTO result = restauranteService.save(restauranteDTO);
@@ -66,7 +66,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void findAll_ReturnsRestauranteDTOList() {
+    void findAllReturnsRestauranteDTOList() {
         when(restauranteRepository.findAll()).thenReturn(List.of(restauranteEntity));
 
         List<RestauranteDTO> result = restauranteService.findAll();
@@ -77,7 +77,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void findById_ReturnsRestauranteDTO() {
+    void findByIdReturnsRestauranteDTO() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(restauranteEntity));
 
         RestauranteDTO result = restauranteService.findById(1L);
@@ -87,7 +87,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void findById_ReturnsNull_WhenRestauranteNotFound() {
+    void findByIdReturnsNullWhenRestauranteNotFound() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.empty());
 
         RestauranteDTO result = restauranteService.findById(1L);
@@ -96,7 +96,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void update_ReturnsUpdatedRestauranteDTO() {
+    void updateReturnsUpdatedRestauranteDTO() {
         when(restauranteRepository.save(any(RestauranteEntity.class))).thenReturn(restauranteEntity);
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(restauranteEntity));
 
@@ -111,7 +111,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void update_ThrowsObjectNotFoundException_WhenRestauranteNotFound() {
+    void updateThrowsObjectNotFoundExceptionWhenRestauranteNotFound() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.empty());
 
         ObjectNotFoundException thrown = assertThrows(ObjectNotFoundException.class,
@@ -130,7 +130,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void delete_ThrowsRuntimeException_WhenRestauranteNotFound() {
+    void deleteThrowsRuntimeExceptionWhenRestauranteNotFound() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.empty());
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> restauranteService.delete(1L));
@@ -139,7 +139,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void buscarRestaurantes_ReturnsRestauranteDTOList() {
+    void buscarRestaurantesReturnsRestauranteDTOList() {
         when(restauranteRepository.buscarRestaurantes(anyString(), anyString(), anyString()))
                 .thenReturn(List.of(restauranteEntity));
 
@@ -151,7 +151,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void restauranteJaExiste_ReturnsTrue_WhenRestaurantExists() {
+    void restauranteJaExisteReturnsTrueWhenRestaurantExists() {
         Mockito.when(restauranteRepository
                         .buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
                 .thenReturn(List.of(restauranteEntity));
@@ -162,7 +162,7 @@ class RestauranteServiceTest {
     }
 
     @Test
-    void restauranteJaExiste_ReturnsFalse_WhenRestaurantDoesNotExist() {
+    void restauranteJaExisteReturnsFalseWhenRestaurantDoesNotExist() {
         Mockito.when(restauranteRepository
                         .buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
                 .thenReturn(List.of());

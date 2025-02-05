@@ -71,7 +71,7 @@ class RestauranteControllerTest {
     }
 
     @Test
-    void cadastrar_DeveRetornarRestauranteDTO() throws Exception {
+    void cadastrarDeveRetornarRestauranteDTO() throws Exception {
         RestauranteRequest request = new RestauranteRequest();
         request.setNome("Restaurante Teste");
         request.setLocalizacao("São Paulo");
@@ -91,7 +91,7 @@ class RestauranteControllerTest {
     }
 
     @Test
-    void atualizar_DeveRetornarRestauranteDTOAtualizado() throws Exception {
+    void atualizarDeveRetornarRestauranteDTOAtualizado() throws Exception {
         Long id = 1L;
         RestauranteRequest request = new RestauranteRequest();
         request.setNome("Restaurante Atualizado");
@@ -112,7 +112,7 @@ class RestauranteControllerTest {
     }
 
     @Test
-    void buscar_DeveRetornarListaDeRestaurantes() throws Exception {
+    void buscarDeveRetornarListaDeRestaurantes() throws Exception {
         RestauranteDTO restaurante1 = new RestauranteDTO();
         restaurante1.setNome("Restaurante 1");
         RestauranteDTO restaurante2 = new RestauranteDTO();
@@ -134,7 +134,7 @@ class RestauranteControllerTest {
     }
 
     @Test
-    void deletar_DeveRetornarMensagemDeSucesso() throws Exception {
+    void deletarDeveRetornarMensagemDeSucesso() throws Exception {
         Long id = 1L;
 
         mockMvc.perform(delete("/restaurante/{id}", id))

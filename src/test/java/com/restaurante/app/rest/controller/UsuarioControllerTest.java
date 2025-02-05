@@ -57,7 +57,7 @@ class UsuarioControllerTest {
     }
 
     @Test
-    void cadastro_DeveRetornarUsuarioDTO() throws Exception {
+    void cadastroDeveRetornarUsuarioDTO() throws Exception {
         UsuarioRequest request = new UsuarioRequest();
         request.setCelular("11888888888");
         request.setEmail("email@email.com");
@@ -76,7 +76,7 @@ class UsuarioControllerTest {
     }
 
     @Test
-    void atualizar_DeveRetornarUsuarioDTOAtualizado() throws Exception {
+    void atualizarDeveRetornarUsuarioDTOAtualizado() throws Exception {
         Long id = 1L;
         UsuarioRequest request = new UsuarioRequest();
         request.setCelular("11888888888");

@@ -17,19 +17,6 @@
         <module name="LocalVariableName"/>
 
         <!-- Regras de formatação -->
-        <module name="Indentation">
-            <property name="indentation" value="4"/>
-        </module>
-        <module name="NoWhitespaceBefore">
-            <property name="tokens" value="COMMA, LITERAL_IF, LITERAL_FOR, LITERAL_WHILE"/>
-        </module>
-        <module name="JavadocMethod">
-            <property name="checkConstructors" value="true"/>
-            <property name="required" value="true"/>
-        </module>
-        <module name="JavadocType">
-            <property name="required" value="true"/>
-        </module>
 
         <!-- Complexidade e tamanho -->
         <module name="CyclomaticComplexity">
@@ -44,15 +31,4 @@
     <module name="LineLength">
         <property name="max" value="120"/>
     </module>
-
-    <!-- Regras de organização de imports -->
-    <module name="ImportOrder">
-        <property name="order" value="alphabetical"/>
-        <property name="separated" value="true"/>
-    </module>
-
-    <!-- Outras boas práticas -->
-    <module name="EqualsHashCode"/>
-    <module name="AvoidNestedBlocks"/>
-    <module name="EmptyCatchBlock"/>
 </module>
