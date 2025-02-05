@@ -26,7 +26,7 @@ public class ValidarDataUseCaseImpl implements ValidarDataUseCase {
     public void execute(Long restauranteId, LocalDateTime dataReserva, LocalDate diaSelecionado) {
         var funcionamentoDisponivel = funcionamentoService.validarDataFuncionamento(restauranteId,
                 dataReserva, buscaDiaDaSemana(diaSelecionado));
-        if (funcionamentoDisponivel == null || funcionamentoDisponivel.isEmpty())
+        if (funcionamentoDisponivel == null)
             throw new ReservaException("A data e horário estão inválidos. Verifique o horário de funcionamento" +
                     " e se há data de funcionamento cadastrado.");
     }
