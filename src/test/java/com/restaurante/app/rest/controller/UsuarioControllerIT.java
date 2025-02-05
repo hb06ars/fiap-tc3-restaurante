@@ -110,6 +110,27 @@ class UsuarioControllerIT extends BaseUnitTest {
                 .body("message[0].detalhe", equalTo("Usuário 9 não encontrado."));
     }
 
+    @Test
+    void deveRetornarUsuario() {
+        var request = getUsuarioEntity();
+        request.setCelular("11988887777");
+        request.setEmail("email@email.com");
+        request.setNome("Usuário");
+        usuarioRepository.save(request);
+
+        given()
+                .filter(new AllureRestAssured())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/usuario?celular=11988887777")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("$", hasKey("id"))
+                .body("$", hasKey("nome"))
+                .body("$", hasKey("email"))
+                .body("$", hasKey("celular"));
+    }
+
 
     private UsuarioEntity getUsuarioEntity() {
         UsuarioEntity usuarioEntity = getRandom(UsuarioEntity.class);

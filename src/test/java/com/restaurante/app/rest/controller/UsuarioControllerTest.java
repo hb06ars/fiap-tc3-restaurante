@@ -17,9 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -94,4 +96,23 @@ class UsuarioControllerTest {
 
         verify(usuarioService, times(1)).update(id, dto);
     }
+
+    @Test
+    void deveRetornarUsuario() throws Exception {
+        UsuarioRequest request = new UsuarioRequest();
+        request.setCelular("11988887777");
+        request.setEmail("email@email.com");
+        request.setNome("Usuário");
+        var dto = new UsuarioDTO(request);
+
+        when(usuarioService.save(dto)).thenReturn(dto);
+
+        mockMvc.perform(get("/usuario?celular=11988887777")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(usuarioService, times(1)).findByEmailOrCelular(any(), any());
+    }
+
+
 }
