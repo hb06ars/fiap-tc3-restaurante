@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, Object>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
+    public ResponseEntity<Map<String, Object>> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("erro", "Erro de formatação no JSON");
         response.put("detalhe", "Erro ao tentar ler o JSON: " + ex.getMessage());

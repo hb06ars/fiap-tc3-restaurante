@@ -33,7 +33,8 @@ public class ReservaFilter {
     public ReservaFilter(ReservaDTO dto) {
         this.id = dto.getId();
         this.dataDaReserva = dto.getDataDaReserva() != null ? dto.getDataDaReserva() : LocalDateTime.now();
-        this.statusPagamento = dto.getStatusPagamento() != null ? dto.getStatusPagamento() : StatusPagamentoEnum.PENDENTE;
+        this.statusPagamento = dto.getStatusPagamento() != null ? dto.getStatusPagamento()
+                : StatusPagamentoEnum.PENDENTE;
         this.statusReserva = dto.getStatusReserva() != null ? dto.getStatusReserva() : StatusReservaEnum.OCUPADO;
     }
 

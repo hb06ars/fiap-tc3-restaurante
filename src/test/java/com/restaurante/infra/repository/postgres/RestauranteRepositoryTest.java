@@ -61,13 +61,15 @@ class RestauranteRepositoryTest {
         when(restauranteRepository.buscarRestaurantes("Bistrô", "São Paulo", "Francesa"))
                 .thenReturn(restaurantes);
 
-        List<RestauranteEntity> resultado = restauranteRepository.buscarRestaurantes("Bistrô", "São Paulo", "Francesa");
+        List<RestauranteEntity> resultado = restauranteRepository.buscarRestaurantes("Bistrô",
+                "São Paulo", "Francesa");
 
         assertFalse(resultado.isEmpty());
         assertEquals(2, resultado.size());
         assertEquals("Bistrô Gourmet", resultado.get(0).getNome());
         assertEquals("Pizzaria Bella", resultado.get(1).getNome());
-        verify(restauranteRepository, times(1)).buscarRestaurantes("Bistrô", "São Paulo", "Francesa");
+        verify(restauranteRepository, times(1)).buscarRestaurantes("Bistrô",
+                "São Paulo", "Francesa");
     }
 
     @Test

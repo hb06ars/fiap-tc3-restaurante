@@ -76,7 +76,8 @@ public class MesaService {
     }
 
     public List<MesaDisponivelDTO> buscarMesas(Long id) {
-        return MesaDisponivelMapper.convert(repository.buscarMesasDisponiveis(id, DataFormat.truncate(LocalDateTime.now())));
+        return MesaDisponivelMapper.convert(repository
+                .buscarMesasDisponiveis(id, DataFormat.truncate(LocalDateTime.now())));
     }
 
     public List<MesaDTO> salvarTodasMesas(List<MesaEntity> novasMesasAdicionadas) {

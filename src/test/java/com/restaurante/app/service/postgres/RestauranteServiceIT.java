@@ -110,7 +110,8 @@ class RestauranteServiceIT extends BaseUnitTest {
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);
 
-        var result = restauranteService.buscarRestaurantes(restauranteSaved.getNome(), restauranteSaved.getLocalizacao(), restauranteSaved.getTipoCozinha().name());
+        var result = restauranteService.buscarRestaurantes(restauranteSaved.getNome(),
+                restauranteSaved.getLocalizacao(), restauranteSaved.getTipoCozinha().name());
 
         assertNotNull(result);
         assertThat(result.size()).isPositive();
@@ -122,14 +123,16 @@ class RestauranteServiceIT extends BaseUnitTest {
         restauranteDTO.setCapacidade(5);
         RestauranteDTO restauranteSaved = restauranteService.save(restauranteDTO);
 
-        boolean resultado = restauranteService.restauranteJaExiste(restauranteSaved.getNome(), restauranteSaved.getLocalizacao());
+        boolean resultado = restauranteService.restauranteJaExiste(restauranteSaved.getNome(),
+                restauranteSaved.getLocalizacao());
 
         assertTrue(resultado);
     }
 
     @Test
     void restauranteJaExiste_ReturnsFalse_WhenRestaurantDoesNotExist() {
-        boolean resultado = restauranteService.restauranteJaExiste("Restaurante Teste", "Localização Teste");
+        boolean resultado = restauranteService
+                .restauranteJaExiste("Restaurante Teste", "Localização Teste");
 
         assertFalse(resultado);
     }

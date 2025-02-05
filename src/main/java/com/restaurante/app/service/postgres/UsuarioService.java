@@ -25,7 +25,8 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTO save(UsuarioDTO dto) {
-        UsuarioEntity usuarioExiste = repository.findByEmailOrCelular(dto.getEmail(), AjustesString.removerCaracteresCel(dto.getCelular()));
+        UsuarioEntity usuarioExiste = repository.findByEmailOrCelular(dto.getEmail(),
+                AjustesString.removerCaracteresCel(dto.getCelular()));
         if (usuarioExiste == null)
             return new UsuarioDTO(repository.save(new UsuarioEntity(dto)));
         throw new RecordAlreadyExistsException("O email ou celular já existem no sistema.");
@@ -45,8 +46,10 @@ public class UsuarioService {
     @Transactional
     public UsuarioDTO update(Long id, UsuarioDTO usuarioSalvar) {
         UsuarioEntity usuarioExistente = repository.findById(id).orElse(null);
-        var registroRepetido = repository.findByEmailOrCelular(usuarioSalvar.getEmail(), AjustesString.removerCaracteresCel(usuarioSalvar.getCelular()));
-        if (usuarioExistente != null && (registroRepetido == null || registroRepetido.getId().equals(Objects.requireNonNull(usuarioExistente).getId()))) {
+        var registroRepetido = repository.findByEmailOrCelular(usuarioSalvar.getEmail(),
+                AjustesString.removerCaracteresCel(usuarioSalvar.getCelular()));
+        if (usuarioExistente != null && (registroRepetido == null ||
+                registroRepetido.getId().equals(Objects.requireNonNull(usuarioExistente).getId()))) {
             usuarioExistente.setNome(usuarioSalvar.getNome());
             usuarioExistente.setEmail(usuarioSalvar.getEmail());
             usuarioExistente.setCelular(usuarioSalvar.getCelular());

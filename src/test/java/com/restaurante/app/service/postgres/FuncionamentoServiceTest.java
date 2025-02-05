@@ -144,7 +144,8 @@ class FuncionamentoServiceTest {
         FuncionamentoEntity funcionamentoEntity = new FuncionamentoEntity(funcionamentoDTO);
         when(funcionamentoRepository.validarData(any(), any(), any())).thenReturn(List.of(funcionamentoEntity));
 
-        List<FuncionamentoDTO> funcionamentoList = funcionamentoService.validarDataFuncionamento(1L, LocalDateTime.now(), DiaEnum.SEGUNDA);
+        List<FuncionamentoDTO> funcionamentoList = funcionamentoService
+                .validarDataFuncionamento(1L, LocalDateTime.now(), DiaEnum.SEGUNDA);
 
         assertNotNull(funcionamentoList);
         assertEquals(1, funcionamentoList.size());

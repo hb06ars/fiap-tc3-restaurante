@@ -40,7 +40,8 @@ class ReservarMesaUseCaseImplTest {
     @BeforeEach
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
-        reservarMesaUseCase = new ReservarMesaUseCaseImpl(toleranciaMesa, validarReservaUseCase, validaDataUseCase, reservaService);
+        reservarMesaUseCase = new ReservarMesaUseCaseImpl(toleranciaMesa, validarReservaUseCase,
+                validaDataUseCase, reservaService);
     }
 
     @AfterEach

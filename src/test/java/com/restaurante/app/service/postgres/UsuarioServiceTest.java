@@ -65,7 +65,8 @@ class UsuarioServiceTest {
     void save_ThrowsRecordAlreadyExistsException_WhenEmailOrCelularExists() {
         when(usuarioRepository.findByEmailOrCelular(anyString(), anyString())).thenReturn(usuarioEntity);
 
-        RecordAlreadyExistsException thrown = assertThrows(RecordAlreadyExistsException.class, () -> usuarioService.save(usuarioDTO));
+        RecordAlreadyExistsException thrown = assertThrows(RecordAlreadyExistsException.class,
+                () -> usuarioService.save(usuarioDTO));
 
         assertEquals("O email ou celular já existem no sistema.", thrown.getMessage());
     }
@@ -103,12 +104,14 @@ class UsuarioServiceTest {
 
     @Test
     void findByEmailOrCelular_ReturnsNull_whenCelularIsNull() {
-        assertThrows(RuntimeException.class, () -> usuarioService.findByEmailOrCelular("email@mail.com", null));
+        assertThrows(RuntimeException.class, () -> usuarioService
+                .findByEmailOrCelular("email@mail.com", null));
     }
 
     @Test
     void findByEmailOrCelular_ReturnsNull_whenEmailIsNull() {
-        assertThrows(RuntimeException.class, () -> usuarioService.findByEmailOrCelular(null, "123456789"));
+        assertThrows(RuntimeException.class, () -> usuarioService
+                .findByEmailOrCelular(null, "123456789"));
     }
 
     @Test
@@ -125,7 +128,8 @@ class UsuarioServiceTest {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenReturn(usuarioEntity);
 
-        UsuarioDTO updatedDTO = new UsuarioDTO(1L, "Usuário A", "usuarioA@email.com", "987654321");
+        UsuarioDTO updatedDTO = new UsuarioDTO(1L, "Usuário A",
+                "usuarioA@email.com", "987654321");
         UsuarioDTO result = usuarioService.update(1L, updatedDTO);
 
         assertNotNull(result);
@@ -137,17 +141,20 @@ class UsuarioServiceTest {
     void update_ThrowsRuntimeException_WhenUsuarioNotFound() {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> usuarioService.update(1L, usuarioDTO));
+        RuntimeException thrown = assertThrows(RuntimeException.class,
+                () -> usuarioService.update(1L, usuarioDTO));
 
         assertEquals("Usuário 1 não encontrado.", thrown.getMessage());
     }
 
     @Test
     void update_ThrowsRuntimeException_WhenEmailOrCelularAlreadyExists() {
-        UsuarioDTO updatedDTO = new UsuarioDTO(1L, "Usuário A", "usuarioA@email.com", "987654321");
+        UsuarioDTO updatedDTO = new UsuarioDTO(1L, "Usuário A",
+                "usuarioA@email.com", "987654321");
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuarioEntity));
-        when(usuarioRepository.findByEmailOrCelular(anyString(), anyString())).thenReturn(new UsuarioEntity(updatedDTO));
+        when(usuarioRepository.findByEmailOrCelular(anyString(), anyString()))
+                .thenReturn(new UsuarioEntity(updatedDTO));
 
         assertThrows(RuntimeException.class, () -> usuarioService.update(1L, updatedDTO));
 

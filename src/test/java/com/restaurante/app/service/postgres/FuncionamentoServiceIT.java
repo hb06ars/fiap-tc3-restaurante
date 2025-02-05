@@ -112,7 +112,8 @@ class FuncionamentoServiceIT extends BaseUnitTest {
         dto.setRestauranteId(restauranteSaved.getId());
         FuncionamentoDTO result = funcionamentoService.save(dto);
 
-        List<FuncionamentoDTO> funcionamentoList = funcionamentoService.validarDataFuncionamento(result.getRestauranteId(), LocalDateTime.now(), DiaEnum.SEGUNDA);
+        List<FuncionamentoDTO> funcionamentoList = funcionamentoService
+                .validarDataFuncionamento(result.getRestauranteId(), LocalDateTime.now(), DiaEnum.SEGUNDA);
         assertNotNull(funcionamentoList);
         assertThat(funcionamentoList.size()).isPositive();
     }
@@ -124,7 +125,8 @@ class FuncionamentoServiceIT extends BaseUnitTest {
         FuncionamentoDTO dto = getRandom(FuncionamentoDTO.class);
         dto.setRestauranteId(restauranteSaved.getId());
         FuncionamentoDTO result = funcionamentoService.save(dto);
-        List<FuncionamentoDTO> funcionamentoList = funcionamentoService.buscarPorRestaurante(result.getRestauranteId());
+        List<FuncionamentoDTO> funcionamentoList = funcionamentoService
+                .buscarPorRestaurante(result.getRestauranteId());
         assertNotNull(funcionamentoList);
     }
 

@@ -11,10 +11,12 @@ import lombok.Setter;
 public class MesaRequest {
     private Long id;
 
-    @NotNull(message = "O nome da mesa não pode ser nulo. Por favor, forneça um valor para o nome da mesa, exemplo: Mesa 1.")
+    @NotNull(message = "O nome da mesa não pode ser nulo. Por favor, forneça um valor " +
+            "para o nome da mesa, exemplo: Mesa 1.")
     private String nomeMesa;
 
-    @NotNull(message = "O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante.")
+    @NotNull(message = "O restaurante não pode ser nulo. Por favor, forneça um valor " +
+            "para o restaurante.")
     private Long restauranteId;
 
 }

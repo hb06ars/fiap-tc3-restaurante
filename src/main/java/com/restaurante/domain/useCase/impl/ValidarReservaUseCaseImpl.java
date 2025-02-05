@@ -19,7 +19,8 @@ public class ValidarReservaUseCaseImpl implements ValidarReservaUseCase {
 
     @Override
     public void execute(ReservaDTO dto) {
-        MesaDisponivelDTO mesaDisponivelDTO = buscarMesaDisponivelUseCase.execute(dto.getRestauranteId(), dto.getDataDaReserva());
+        MesaDisponivelDTO mesaDisponivelDTO = buscarMesaDisponivelUseCase.execute(dto.getRestauranteId(),
+                dto.getDataDaReserva());
         dto.setMesaId(mesaDisponivelDTO.getMesaId());
     }
 }

@@ -18,7 +18,8 @@ public class RestauranteService {
     private final RestauranteRepository repository;
 
     @Autowired
-    public RestauranteService(RestauranteRepository repository, InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
+    public RestauranteService(RestauranteRepository repository,
+                              InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
         this.repository = repository;
     }
 

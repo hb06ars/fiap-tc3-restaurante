@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,7 @@ public class MesaController {
     @Operation(summary = "Atualizar Mesa",
             description = "Atualizar a Mesa do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
-    @PostMapping("/atualizar/{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<MesaDTO> atualizar(@PathVariable(name = "id") Long id,
                                              @Valid @RequestBody MesaRequest request) {
         log.info("requisição para atualizar mesa foi efetuada");
@@ -62,7 +63,8 @@ public class MesaController {
             description = "Buscar a Mesas por Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping(("/listaporrestaurante/{idRestaurante}"))
-    public ResponseEntity<List<MesaDTO>> buscarMesasPorRestaurante(@PathVariable(name = "idRestaurante") Long idRestaurante) {
+    public ResponseEntity<List<MesaDTO>> buscarMesasPorRestaurante(
+            @PathVariable(name = "idRestaurante") Long idRestaurante) {
         log.info("requisição para buscar mesa pelo idRestaurante foi efetuada");
         return ResponseEntity.ok(service.findAllByIdRestaurante(idRestaurante));
     }

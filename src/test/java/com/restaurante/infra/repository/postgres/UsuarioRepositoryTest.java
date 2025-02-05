@@ -46,7 +46,8 @@ class UsuarioRepositoryTest {
 
     @Test
     void testBuscarPorEmailOuCelular() {
-        when(usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999")).thenReturn(usuario);
+        when(usuarioRepository.findByEmailOrCelular("joao@email.com",
+                "11999999999")).thenReturn(usuario);
 
         UsuarioEntity foundUsuario = usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999");
 
@@ -54,7 +55,8 @@ class UsuarioRepositoryTest {
         assertEquals("João Silva", foundUsuario.getNome());
         assertEquals("joao@email.com", foundUsuario.getEmail());
 
-        verify(usuarioRepository, times(1)).findByEmailOrCelular("joao@email.com", "11999999999");
+        verify(usuarioRepository, times(1)).findByEmailOrCelular("joao@email.com",
+                "11999999999");
     }
 
     @Test

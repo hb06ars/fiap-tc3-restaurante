@@ -61,7 +61,8 @@ class InsercaoRemocaoDasMesasUseCaseImplIT {
         var resultado = restauranteRepository.save(entity);
 
         resultado.setCapacidade(capacidadeAtualizada);
-        assertThrows(CapacidadeException.class, () -> useCase.execute(resultado.getId(), capacidadeOriginal, capacidadeAtualizada));
+        assertThrows(CapacidadeException.class, () -> useCase.execute(resultado.getId(), capacidadeOriginal,
+                capacidadeAtualizada));
     }
 
 

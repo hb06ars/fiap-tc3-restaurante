@@ -64,9 +64,11 @@ class ValidaDataUseCaseImplTest {
         LocalDate diaSelecionado = LocalDate.of(2025, 1, 30);
         when(funcionamentoService.validarDataFuncionamento(anyLong(), any(), any())).thenReturn(null);
 
-        assertThrows(ReservaException.class, () -> validaDataUseCase.execute(1L, dataReserva, diaSelecionado));
+        assertThrows(ReservaException.class, () -> validaDataUseCase
+                .execute(1L, dataReserva, diaSelecionado));
 
-        verify(funcionamentoService, times(1)).validarDataFuncionamento(anyLong(), any(), any());
+        verify(funcionamentoService, times(1))
+                .validarDataFuncionamento(anyLong(), any(), any());
     }
 
     @Test

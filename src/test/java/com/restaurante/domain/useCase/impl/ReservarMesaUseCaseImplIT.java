@@ -67,8 +67,10 @@ class ReservarMesaUseCaseImplIT extends BaseUnitTest {
         dto.setRestauranteId(restauranteSaved.getId());
         dto.setMesaId(mesaSaved.getId());
         dto.setUsuarioId(usuarioSaved.getId());
-        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
-        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
+        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
+        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
 
         var result = reservarMesaUseCase.salvar(dto);
         assertThat(result.getId()).isPositive();
@@ -96,8 +98,10 @@ class ReservarMesaUseCaseImplIT extends BaseUnitTest {
         dto.setRestauranteId(restauranteSaved.getId());
         dto.setMesaId(mesaSaved.getId());
         dto.setUsuarioId(usuarioSaved.getId());
-        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
-        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
+        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
+        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
 
         var result = reservarMesaUseCase.salvar(dto);
         var registroAtualizado = reservaRepository.findById(result.getId()).orElse(null);
@@ -129,8 +133,10 @@ class ReservarMesaUseCaseImplIT extends BaseUnitTest {
         dto.setRestauranteId(restauranteSaved.getId());
         dto.setMesaId(mesaSaved.getId());
         dto.setUsuarioId(usuarioSaved.getId());
-        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
-        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
+        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
+        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
 
         reservarMesaUseCase.salvar(dto);
         assertEquals(dto.getDataDaReserva().plusHours(2), dto.getDataFimReserva());

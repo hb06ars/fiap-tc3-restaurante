@@ -63,17 +63,20 @@ class ReservaRepositoryTest {
 
         List<ReservaEntity> reservas = Arrays.asList(reserva, reserva2);
 
-        when(reservaRepository.findAllByFilter(1L, StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva))
+        when(reservaRepository.findAllByFilter(1L, StatusReservaEnum.RESERVADO,
+                StatusPagamentoEnum.PAGO, dataReserva))
                 .thenReturn(reservas);
 
-        List<ReservaEntity> resultado = reservaRepository.findAllByFilter(1L, StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
+        List<ReservaEntity> resultado = reservaRepository.findAllByFilter(1L,
+                StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
 
         assertFalse(resultado.isEmpty());
         assertEquals(2, resultado.size());
         assertEquals(StatusReservaEnum.OCUPADO, resultado.get(0).getStatusReserva());
         assertEquals(StatusReservaEnum.RESERVADO, resultado.get(1).getStatusReserva());
 
-        verify(reservaRepository, times(1)).findAllByFilter(1L, StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
+        verify(reservaRepository, times(1)).findAllByFilter(1L,
+                StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
     }
 
     @Test

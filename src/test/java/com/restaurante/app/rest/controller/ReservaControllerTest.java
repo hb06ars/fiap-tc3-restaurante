@@ -1,5 +1,7 @@
 package com.restaurante.app.rest.controller;
 
+import com.callibrity.logging.test.LogTracker;
+import com.callibrity.logging.test.LogTrackerStub;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.restaurante.app.service.postgres.ReservaService;
@@ -7,9 +9,11 @@ import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
 import com.restaurante.domain.useCase.ReservarMesaUseCase;
+import com.restaurante.infra.exceptions.GlobalExceptionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
@@ -34,6 +38,10 @@ class ReservaControllerTest {
     AutoCloseable mock;
 
     private MockMvc mockMvc;
+
+    @RegisterExtension
+    LogTrackerStub logTracker = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
+            .recordForType(ReservaController.class);
 
     @Mock
     private ReservaService reservaService;
@@ -63,7 +71,10 @@ class ReservaControllerTest {
                 .build();
 
         ReservaController controller = new ReservaController(reservarMesaUseCase, reservaService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @AfterEach
@@ -77,48 +88,48 @@ class ReservaControllerTest {
 
         mockMvc.perform(post("/reserva")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaDTO))) 
-                .andExpect(status().isOk())  
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  
-                .andExpect(jsonPath("$.usuarioId").value(1L))  
-                .andExpect(jsonPath("$.mesaId").value(1L))  
-                .andExpect(jsonPath("$.restauranteId").value(1L))  
-                .andExpect(jsonPath("$.dataDaReserva").exists())  
-                .andExpect(jsonPath("$.dataFimReserva").exists())  
-                .andExpect(jsonPath("$.valorReserva").value(200))  
-                .andExpect(jsonPath("$.statusPagamento").value(StatusPagamentoEnum.PENDENTE.name()))  
-                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));  
+                        .content(objectMapper.writeValueAsString(reservaDTO)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.usuarioId").value(1L))
+                .andExpect(jsonPath("$.mesaId").value(1L))
+                .andExpect(jsonPath("$.restauranteId").value(1L))
+                .andExpect(jsonPath("$.dataDaReserva").exists())
+                .andExpect(jsonPath("$.dataFimReserva").exists())
+                .andExpect(jsonPath("$.valorReserva").value(200))
+                .andExpect(jsonPath("$.statusPagamento").value(StatusPagamentoEnum.PENDENTE.name()))
+                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));
     }
 
     @Test
     void testAtualizarReserva() throws Exception {
-        
+
         when(reservarMesaUseCase.atualizar(any(Long.class), any(ReservaDTO.class))).thenReturn(reservaDTO);
 
         mockMvc.perform(put("/reserva/{id}", reservaDTO.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaDTO))) 
-                .andExpect(status().isOk())  
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  
-                .andExpect(jsonPath("$.usuarioId").value(1L))  
-                .andExpect(jsonPath("$.mesaId").value(1L))  
-                .andExpect(jsonPath("$.restauranteId").value(1L))  
-                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));  
+                        .content(objectMapper.writeValueAsString(reservaDTO)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.usuarioId").value(1L))
+                .andExpect(jsonPath("$.mesaId").value(1L))
+                .andExpect(jsonPath("$.restauranteId").value(1L))
+                .andExpect(jsonPath("$.statusReserva").value(StatusReservaEnum.RESERVADO.name()));
     }
 
     @Test
     void testBuscarReservas() throws Exception {
-        
+
         when(reservaService.buscar(any(Long.class), any(ReservaDTO.class))).thenReturn(List.of(reservaDTO));
 
         mockMvc.perform(get("/reserva/{idrestaurante}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaDTO))) 
-                .andExpect(status().isOk())  
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))  
-                .andExpect(jsonPath("$[0].usuarioId").value(1L))  
-                .andExpect(jsonPath("$[0].mesaId").value(1L))  
-                .andExpect(jsonPath("$[0].restauranteId").value(1L))  
-                .andExpect(jsonPath("$[0].statusReserva").value(StatusReservaEnum.RESERVADO.name()));  
+                        .content(objectMapper.writeValueAsString(reservaDTO)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].usuarioId").value(1L))
+                .andExpect(jsonPath("$[0].mesaId").value(1L))
+                .andExpect(jsonPath("$[0].restauranteId").value(1L))
+                .andExpect(jsonPath("$[0].statusReserva").value(StatusReservaEnum.RESERVADO.name()));
     }
 }

@@ -105,7 +105,8 @@ class ReservaServiceTest {
     @Test
     void update_ThrowsRuntimeException_WhenReservaNotFound() {
         when(reservaRepository.findById(1L)).thenReturn(Optional.empty());
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> reservaService.update(1L, reservaDTO));
+        RuntimeException thrown = assertThrows(RuntimeException.class,
+                () -> reservaService.update(1L, reservaDTO));
         assertEquals("Reserva 1 não encontrada.", thrown.getMessage());
     }
 
@@ -126,7 +127,8 @@ class ReservaServiceTest {
     @Test
     void buscar_ThrowsFieldNotFoundException_WhenDataDaReservaIsNull() {
         reservaDTO.setDataDaReserva(null);
-        FieldNotFoundException thrown = assertThrows(FieldNotFoundException.class, () -> reservaService.buscar(1L, reservaDTO));
+        FieldNotFoundException thrown = assertThrows(FieldNotFoundException.class,
+                () -> reservaService.buscar(1L, reservaDTO));
         assertEquals("Informe a data.", thrown.getMessage());
     }
 

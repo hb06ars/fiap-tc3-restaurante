@@ -1,12 +1,17 @@
 package com.restaurante.app.rest.controller;
 
+import com.callibrity.logging.test.LogTracker;
+import com.callibrity.logging.test.LogTrackerStub;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.app.service.postgres.MesaService;
 import com.restaurante.domain.dto.MesaDTO;
 import com.restaurante.domain.dto.MesaDisponivelDTO;
+import com.restaurante.infra.exceptions.GlobalExceptionHandler;
+import com.restaurante.utils.BaseUnitTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -22,15 +27,21 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MesaControllerTest {
+class MesaControllerTest extends BaseUnitTest {
 
     AutoCloseable mock;
 
     private MockMvc mockMvc;
+
+    @RegisterExtension
+    LogTrackerStub logTracker = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
+            .recordForType(MesaController.class);
+
 
     @Mock
     private MesaService mesaService;
@@ -55,7 +66,10 @@ class MesaControllerTest {
         mesaDisponivelDTO.setStatusMesa("Disponível");
 
         MesaController controller = new MesaController(mesaService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @AfterEach
@@ -80,10 +94,23 @@ class MesaControllerTest {
     }
 
     @Test
+    void testCadastrarExcecaoQuandoJsonInvalido() throws Exception {
+        var mesa = getRandom(MesaDTO.class);
+        mesa.setRestauranteId(null);
+
+        mockMvc.perform(post("/mesa/cadastrar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(mesa)))
+                .andExpect(status().isBadRequest());
+
+        Mockito.verify(mesaService, Mockito.times(0)).save(any(MesaDTO.class));
+    }
+
+    @Test
     void testAtualizarMesa() throws Exception {
         when(mesaService.update(eq(1L), any(MesaDTO.class))).thenReturn(mesaDTO);
 
-        mockMvc.perform(post("/mesa/atualizar/1")
+        mockMvc.perform(put("/mesa/atualizar/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(mesaDTO)))
                 .andExpect(status().isOk())

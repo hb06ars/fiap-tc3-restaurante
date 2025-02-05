@@ -70,7 +70,8 @@ class ValidaDataUseCaseImplIT extends BaseUnitTest {
     void testExecute_DataInvalida() {
         LocalDateTime dataReserva = LocalDate.now().atTime(9, 0);
         LocalDate diaSelecionado = LocalDate.now();
-        assertThrows(ReservaException.class, () -> validaDataUseCase.execute(1L, dataReserva, diaSelecionado));
+        assertThrows(ReservaException.class, () -> validaDataUseCase
+                .execute(1L, dataReserva, diaSelecionado));
     }
 
     @Test

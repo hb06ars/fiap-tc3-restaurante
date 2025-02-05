@@ -44,7 +44,8 @@ class RestauranteServiceTest {
     @BeforeEach
     void setUp() {
         openMocks = MockitoAnnotations.openMocks(this);
-        restauranteDTO = new RestauranteDTO(1L, "Restaurante A", "Local A", TipoCozinhaEnum.BRASILEIRA, 50);
+        restauranteDTO = new RestauranteDTO(1L, "Restaurante A", "Local A",
+                TipoCozinhaEnum.BRASILEIRA, 50);
         restauranteEntity = new RestauranteEntity(restauranteDTO);
     }
 
@@ -99,7 +100,8 @@ class RestauranteServiceTest {
         when(restauranteRepository.save(any(RestauranteEntity.class))).thenReturn(restauranteEntity);
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(restauranteEntity));
 
-        RestauranteDTO updatedDTO = new RestauranteDTO(1L, "Restaurante A", "Local A", TipoCozinhaEnum.BRASILEIRA, 60);
+        RestauranteDTO updatedDTO = new RestauranteDTO(1L, "Restaurante A", "Local A",
+                TipoCozinhaEnum.BRASILEIRA, 60);
         RestauranteDTO result = restauranteService.update(1L, updatedDTO);
 
         assertNotNull(result);
@@ -112,7 +114,8 @@ class RestauranteServiceTest {
     void update_ThrowsObjectNotFoundException_WhenRestauranteNotFound() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.empty());
 
-        ObjectNotFoundException thrown = assertThrows(ObjectNotFoundException.class, () -> restauranteService.update(1L, restauranteDTO));
+        ObjectNotFoundException thrown = assertThrows(ObjectNotFoundException.class,
+                () -> restauranteService.update(1L, restauranteDTO));
 
         assertEquals("Restaurante não encontrado no sistema!", thrown.getMessage());
     }
@@ -140,7 +143,8 @@ class RestauranteServiceTest {
         when(restauranteRepository.buscarRestaurantes(anyString(), anyString(), anyString()))
                 .thenReturn(List.of(restauranteEntity));
 
-        List<RestauranteDTO> result = restauranteService.buscarRestaurantes("Restaurante A", "Local A", "Comida Brasileira");
+        List<RestauranteDTO> result = restauranteService
+                .buscarRestaurantes("Restaurante A", "Local A", "Comida Brasileira");
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -148,19 +152,23 @@ class RestauranteServiceTest {
 
     @Test
     void restauranteJaExiste_ReturnsTrue_WhenRestaurantExists() {
-        Mockito.when(restauranteRepository.buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
+        Mockito.when(restauranteRepository
+                        .buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
                 .thenReturn(List.of(restauranteEntity));
 
-        boolean resultado = restauranteService.restauranteJaExiste("Restaurante Teste", "Localização Teste");
+        boolean resultado = restauranteService
+                .restauranteJaExiste("Restaurante Teste", "Localização Teste");
         assertTrue(resultado);
     }
 
     @Test
     void restauranteJaExiste_ReturnsFalse_WhenRestaurantDoesNotExist() {
-        Mockito.when(restauranteRepository.buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
+        Mockito.when(restauranteRepository
+                        .buscarRestaurantes("Restaurante Teste", "Localização Teste", null))
                 .thenReturn(List.of());
 
-        boolean resultado = restauranteService.restauranteJaExiste("Restaurante Teste", "Localização Teste");
+        boolean resultado = restauranteService
+                .restauranteJaExiste("Restaurante Teste", "Localização Teste");
         assertFalse(resultado);
     }
 

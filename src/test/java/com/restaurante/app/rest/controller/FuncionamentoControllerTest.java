@@ -142,8 +142,10 @@ class FuncionamentoControllerTest extends BaseUnitTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message[0].erro").value("O objeto solicitado não foi encontrado no sistema"))
-                .andExpect(jsonPath("$.message[0].detalhe").value("Funcionamento 999 não encontrado."));
+                .andExpect(jsonPath("$.message[0].erro")
+                        .value("O objeto solicitado não foi encontrado no sistema"))
+                .andExpect(jsonPath("$.message[0].detalhe")
+                        .value("Funcionamento 999 não encontrado."));
     }
 
     @Test

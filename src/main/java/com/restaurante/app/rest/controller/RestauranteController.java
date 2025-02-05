@@ -33,7 +33,8 @@ public class RestauranteController {
     private final CadastrarRestauranteUseCase cadastrarRestauranteUseCase;
     private final AtualizarRestauranteUseCase atualizarRestauranteUseCase;
 
-    public RestauranteController(RestauranteService service, CadastrarRestauranteUseCase cadastrarRestauranteUseCase, AtualizarRestauranteUseCase atualizarRestauranteUseCase) {
+    public RestauranteController(RestauranteService service, CadastrarRestauranteUseCase cadastrarRestauranteUseCase,
+                                 AtualizarRestauranteUseCase atualizarRestauranteUseCase) {
         this.service = service;
         this.cadastrarRestauranteUseCase = cadastrarRestauranteUseCase;
         this.atualizarRestauranteUseCase = atualizarRestauranteUseCase;

@@ -56,8 +56,10 @@ class ValidarReservaUseCaseImplIT extends BaseUnitTest {
         dto.setRestauranteId(restauranteSaved.getId());
         dto.setMesaId(mesaSaved.getId());
         dto.setUsuarioId(usuarioSaved.getId());
-        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
-        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(), LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
+        dto.setDataDaReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 10, 0, 0));
+        dto.setDataFimReserva(LocalDateTime.of(LocalDateTime.now().getYear(), LocalDateTime.now().getMonth(),
+                LocalDateTime.now().getDayOfMonth(), 12, 0, 0));
 
         validarReservaUseCase.execute(dto);
     }

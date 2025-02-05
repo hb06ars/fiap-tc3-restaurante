@@ -97,7 +97,8 @@ class MesaServiceTest {
     @Test
     void save_CapacidadeExcedida_ThrowsCapacidadeException() {
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(new RestauranteEntity()));
-        when(mesaRepository.findAllByRestauranteId(1L)).thenReturn(Collections.singletonList(new MesaEntity()));
+        when(mesaRepository.findAllByRestauranteId(1L))
+                .thenReturn(Collections.singletonList(new MesaEntity()));
 
         assertThrows(CapacidadeException.class, () -> mesaService.save(mesaDTO));
     }
@@ -189,7 +190,8 @@ class MesaServiceTest {
 
     @Test
     void findAllByIdRestaurante_ReturnsMesaDTOList() {
-        when(mesaRepository.findAllByRestauranteId(1L)).thenReturn(Collections.singletonList(mesaEntity));
+        when(mesaRepository.findAllByRestauranteId(1L))
+                .thenReturn(Collections.singletonList(mesaEntity));
 
         List<MesaDTO> mesas = mesaService.findAllByIdRestaurante(1L);
 

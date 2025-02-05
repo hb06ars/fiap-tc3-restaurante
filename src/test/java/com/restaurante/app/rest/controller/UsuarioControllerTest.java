@@ -1,12 +1,16 @@
 package com.restaurante.app.rest.controller;
 
+import com.callibrity.logging.test.LogTracker;
+import com.callibrity.logging.test.LogTrackerStub;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.app.rest.request.UsuarioRequest;
 import com.restaurante.app.service.postgres.UsuarioService;
 import com.restaurante.domain.dto.UsuarioDTO;
+import com.restaurante.infra.exceptions.GlobalExceptionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
@@ -27,6 +31,10 @@ class UsuarioControllerTest {
 
     private MockMvc mockMvc;
 
+    @RegisterExtension
+    LogTrackerStub logTracker = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
+            .recordForType(UsuarioController.class);
+
     @Mock
     private UsuarioService usuarioService;
 
@@ -36,8 +44,11 @@ class UsuarioControllerTest {
     void setUp() {
         mock = MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
-        UsuarioController usuarioController = new UsuarioController(usuarioService);
-        mockMvc = MockMvcBuilders.standaloneSetup(usuarioController).build();
+        UsuarioController controller = new UsuarioController(usuarioService);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @AfterEach

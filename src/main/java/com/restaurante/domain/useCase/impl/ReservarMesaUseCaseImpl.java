@@ -18,7 +18,9 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     private final ValidarDataUseCase validaDataUseCase;
     private final ReservaService service;
 
-    public ReservarMesaUseCaseImpl(@Value("${tolerancia-mesa}") Integer toleranciaMesa, ValidarReservaUseCase validarReservaUseCase, ValidarDataUseCase validaDataUseCase, ReservaService service) {
+    public ReservarMesaUseCaseImpl(@Value("${tolerancia-mesa}") Integer toleranciaMesa,
+                                   ValidarReservaUseCase validarReservaUseCase, ValidarDataUseCase validaDataUseCase,
+                                   ReservaService service) {
         this.toleranciaMesa = toleranciaMesa;
         this.validarReservaUseCase = validarReservaUseCase;
         this.validaDataUseCase = validaDataUseCase;
@@ -46,7 +48,8 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     }
 
     private void validacoes(ReservaDTO dto) {
-        validaDataUseCase.execute(dto.getRestauranteId(), dto.getDataDaReserva(), dto.getDataDaReserva().toLocalDate());
+        validaDataUseCase.execute(dto.getRestauranteId(), dto.getDataDaReserva(),
+                dto.getDataDaReserva().toLocalDate());
         validarReservaUseCase.execute(dto);
         preencherHorarioDeSaida(dto);
     }

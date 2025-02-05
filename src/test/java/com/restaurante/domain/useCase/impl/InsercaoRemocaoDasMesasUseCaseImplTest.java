@@ -85,7 +85,8 @@ class InsercaoRemocaoDasMesasUseCaseImplTest {
         int capacidadeOriginal = 5;
         int capacidadeAtualizada = 0;
 
-        assertThrows(CapacidadeException.class, () -> useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada));
+        assertThrows(CapacidadeException.class, () -> useCase.execute(idRestaurante, capacidadeOriginal,
+                capacidadeAtualizada));
 
         verify(mesaService, never()).delete(anyLong());
         verify(mesaService, never()).salvarTodasMesas(anyList());

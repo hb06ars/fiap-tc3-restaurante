@@ -107,10 +107,12 @@ class AvaliacaoControllerTest extends BaseUnitTest {
 
         mockMvc.perform(post("/avaliacao")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nota\": 8, \"comentario\": \"Adorei! Atendimento excelente!\", \"usuarioId\": 1}"))
+                        .content("{\"nota\": 8, \"comentario\": \"Adorei! Atendimento excelente!\"," +
+                                " \"usuarioId\": 1}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.erro").value("Erro na validação de dados"))
-                .andExpect(jsonPath("$.detalhe").value("O restaurante não pode ser nulo. Por favor, forneça um valor para o restaurante."))
+                .andExpect(jsonPath("$.detalhe").value("O restaurante não pode ser nulo. " +
+                        "Por favor, forneça um valor para o restaurante."))
                 .andExpect(jsonPath("$.campo").value("restauranteId"))
                 .andExpect(jsonPath("$.statusCode").value(400));
         verify(avaliacaoService, never()).save(any(AvaliacaoDTO.class));

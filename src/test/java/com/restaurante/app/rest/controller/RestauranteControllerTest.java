@@ -1,5 +1,7 @@
 package com.restaurante.app.rest.controller;
 
+import com.callibrity.logging.test.LogTracker;
+import com.callibrity.logging.test.LogTrackerStub;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restaurante.app.rest.request.RestauranteRequest;
 import com.restaurante.app.service.postgres.RestauranteService;
@@ -7,9 +9,11 @@ import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.enums.TipoCozinhaEnum;
 import com.restaurante.domain.useCase.AtualizarRestauranteUseCase;
 import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
+import com.restaurante.infra.exceptions.GlobalExceptionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
@@ -34,6 +38,10 @@ class RestauranteControllerTest {
 
     private MockMvc mockMvc;
 
+    @RegisterExtension
+    LogTrackerStub logTracker = LogTrackerStub.create().recordForLevel(LogTracker.LogLevel.INFO)
+            .recordForType(RestauranteController.class);
+
     @Mock
     private RestauranteService restauranteService;
 
@@ -49,8 +57,12 @@ class RestauranteControllerTest {
     void setUp() {
         mock = MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
-        RestauranteController restauranteController = new RestauranteController(restauranteService, cadastrarRestauranteUseCase, atualizarRestauranteUseCase);
-        mockMvc = MockMvcBuilders.standaloneSetup(restauranteController).build();
+        RestauranteController controller = new RestauranteController(restauranteService, cadastrarRestauranteUseCase,
+                atualizarRestauranteUseCase);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @AfterEach
@@ -106,7 +118,8 @@ class RestauranteControllerTest {
         RestauranteDTO restaurante2 = new RestauranteDTO();
         restaurante2.setNome("Restaurante 2");
 
-        when(restauranteService.buscarRestaurantes("Restaurante 1", "São Paulo", TipoCozinhaEnum.BRASILEIRA.name())).thenReturn(List.of(restaurante1, restaurante2));
+        when(restauranteService.buscarRestaurantes("Restaurante 1", "São Paulo",
+                TipoCozinhaEnum.BRASILEIRA.name())).thenReturn(List.of(restaurante1, restaurante2));
 
         mockMvc.perform(get("/restaurante")
                         .param("nome", "Restaurante 1")
@@ -116,7 +129,8 @@ class RestauranteControllerTest {
                 .andExpect(jsonPath("$[0].nome").value("Restaurante 1"))
                 .andExpect(jsonPath("$[1].nome").value("Restaurante 2"));
 
-        verify(restauranteService, times(1)).buscarRestaurantes("Restaurante 1", "São Paulo", TipoCozinhaEnum.BRASILEIRA.name());
+        verify(restauranteService, times(1)).buscarRestaurantes("Restaurante 1",
+                "São Paulo", TipoCozinhaEnum.BRASILEIRA.name());
     }
 
     @Test

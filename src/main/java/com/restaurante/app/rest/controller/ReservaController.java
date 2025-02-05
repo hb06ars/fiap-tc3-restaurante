@@ -47,7 +47,8 @@ public class ReservaController {
             description = "Atualizar a Reserva do cliente, exemplo: Concluir, Cancelar, Alterar a reserva.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Atualizção realizada com sucesso.")
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaDTO> atualizacao(@PathVariable(name = "id") Long id, @Valid @RequestBody ReservaRequest request) {
+    public ResponseEntity<ReservaDTO> atualizacao(@PathVariable(name = "id") Long id,
+                                                  @Valid @RequestBody ReservaRequest request) {
         log.info("requisição para atualizar reserva foi efetuada");
         return ResponseEntity.ok(reservarMesaUseCase.atualizar(id, new ReservaDTO(request)));
     }
