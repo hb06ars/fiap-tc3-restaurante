@@ -64,6 +64,7 @@ class RestauranteServiceIT extends BaseUnitTest {
     @Test
     void findByIdReturnsNullWhenRestauranteNotFound() {
         RestauranteDTO result = restauranteService.findById(1L);
+        assertNull(result);
     }
 
     @Test

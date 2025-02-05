@@ -86,6 +86,7 @@ class UsuarioServiceIT extends BaseUnitTest {
     @Test
     void findByIdReturnsNullWhenUsuarioNotFound() {
         UsuarioDTO result = usuarioService.findById(1L);
+        assertNull(result);
     }
 
     @Test
