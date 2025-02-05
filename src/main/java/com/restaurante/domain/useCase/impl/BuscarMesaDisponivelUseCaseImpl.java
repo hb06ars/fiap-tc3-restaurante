@@ -26,7 +26,7 @@ public class BuscarMesaDisponivelUseCaseImpl implements BuscarMesaDisponivelUseC
     public MesaDisponivelDTO execute(Long id, LocalDateTime dataReserva) {
         List<Object[]> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva));
         List<MesaDisponivelDTO> mesasDisponivelDTO = MesaDisponivelMapper.convert(mesasDisponiveis);
-        if (mesasDisponivelDTO != null && !mesasDisponivelDTO.isEmpty()) {
+        if (!mesasDisponivelDTO.isEmpty()) {
             return mesasDisponivelDTO.get(0);
         }
         throw new ReservaException("Não há mesas disponíveis no momento");

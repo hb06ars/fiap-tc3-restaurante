@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MesaDisponivelMapper {
     public static List<MesaDisponivelDTO> convert(List<Object[]> mesasDisponiveis) {
-        if (mesasDisponiveis != null && !mesasDisponiveis.isEmpty()) {
+        if (!mesasDisponiveis.isEmpty()) {
             return mesasDisponiveis.stream()
                     .map(result -> new MesaDisponivelDTO(
                             Long.parseLong(result[0].toString()),
@@ -14,6 +14,6 @@ public class MesaDisponivelMapper {
                             (String) result[2]
                     )).toList();
         }
-        return null;
+        return List.of();
     }
 }
