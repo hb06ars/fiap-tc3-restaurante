@@ -217,7 +217,7 @@ class MesaServiceTest {
     }
 
     @Test
-    void findAllByRestauranteReturnsEmptyListWhenRestauranteHasNoMesas() {
+    void findAllByRestauranteEmptyWhenRestauranteHasNoMesas() {
         Mockito.when(mesaRepository.findAllByRestauranteId(any())).thenReturn(List.of());
         List<MesaDTO> mesasDTO = mesaService.findAllByRestaurante(1L);
 

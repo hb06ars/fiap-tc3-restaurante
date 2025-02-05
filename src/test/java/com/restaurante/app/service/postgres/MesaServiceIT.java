@@ -161,18 +161,4 @@ class MesaServiceIT extends BaseUnitTest {
         assertThat(mesasDTO.get(0).getId()).isPositive();
     }
 
-    @Test
-    void findAllByRestauranteReturnsEmptyListWhenRestauranteHasNoMesas() {
-        var restauranteEntity = getRandom(RestauranteEntity.class);
-        restauranteEntity.setCapacidade(10);
-        var restauranteSaved = restauranteRepository.save(restauranteEntity);
-        MesaDTO mesaDTO = getRandom(MesaDTO.class);
-        mesaDTO.setRestauranteId(restauranteSaved.getId());
-        List<MesaDTO> result = mesaService.salvarTodasMesas(List.of(new MesaEntity(mesaDTO)));
-        List<MesaDTO> mesasDTO = mesaService.findAllByRestaurante(result.get(0).getRestauranteId());
-
-        assertNotNull(mesasDTO);
-        assertThat(mesasDTO.get(0).getId()).isPositive();
-    }
-
 }
