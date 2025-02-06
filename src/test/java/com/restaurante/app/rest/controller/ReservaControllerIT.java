@@ -17,17 +17,22 @@ import com.restaurante.infra.repository.postgres.UsuarioRepository;
 import com.restaurante.utils.BaseUnitTest;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -37,11 +42,12 @@ import static org.hamcrest.Matchers.hasKey;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ReservaControllerIT extends BaseUnitTest {
 
     @LocalServerPort
     private int port;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     MesaRepository mesaRepository;
@@ -55,7 +61,6 @@ class ReservaControllerIT extends BaseUnitTest {
     ReservaRepository reservaRepository;
     int diaSemanaAtual;
 
-
     @BeforeEach
     public void setup() {
         diaSemanaAtual = LocalDate.now().getDayOfWeek().getValue();
@@ -63,91 +68,108 @@ class ReservaControllerIT extends BaseUnitTest {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
-    @Test
-    void testCadastrarReserva() {
-        var request = getReservaEntity();
+    @AfterEach
+    public void limparBancoDeDados() throws IOException {
+        String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/clean.sql")));
+        jdbcTemplate.execute(sql);
+    }
 
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when()
-                .post("/reserva")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("$", hasKey("id"))
-                .body("$", hasKey("usuarioId"))
-                .body("$", hasKey("mesaId"))
-                .body("$", hasKey("restauranteId"));
+    @Nested
+    class CadastrarReservaControllerIT {
+        @Test
+        void testCadastrarReserva() {
+            var request = getReservaEntity();
+
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .body(request)
+                    .when()
+                    .post("/reserva")
+                    .then()
+                    .statusCode(HttpStatus.OK.value())
+                    .body("$", hasKey("id"))
+                    .body("$", hasKey("usuarioId"))
+                    .body("$", hasKey("mesaId"))
+                    .body("$", hasKey("restauranteId"));
+        }
     }
 
 
-    @Test
-    void testAtualizarReserva() {
-        var reservaEntity = getReservaEntity();
-        var reservaSaved = reservaRepository.save(reservaEntity);
+    @Nested
+    class atualizarReservaControllerIT {
+        @Test
+        void testAtualizarReserva() {
+            var reservaEntity = getReservaEntity();
+            var reservaSaved = reservaRepository.save(reservaEntity);
 
-        reservaSaved.setStatusReserva(StatusReservaEnum.RESERVADO);
+            reservaSaved.setStatusReserva(StatusReservaEnum.RESERVADO);
 
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(reservaSaved)
-                .when()
-                .put("/reserva/1")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("$", hasKey("id"))
-                .body("$", hasKey("usuarioId"))
-                .body("$", hasKey("mesaId"))
-                .body("$", hasKey("restauranteId"));
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .body(reservaSaved)
+                    .when()
+                    .put("/reserva/1")
+                    .then()
+                    .statusCode(HttpStatus.OK.value())
+                    .body("$", hasKey("id"))
+                    .body("$", hasKey("usuarioId"))
+                    .body("$", hasKey("mesaId"))
+                    .body("$", hasKey("restauranteId"));
+        }
+
+        @Test
+        void testAtualizarExcecaoQuandoIdNaoEncontrado() {
+            ReservaEntity reservaEntity = getRandom(ReservaEntity.class);
+            reservaEntity.setRestauranteId(1L);
+            reservaEntity.setUsuarioId(1L);
+            reservaEntity.setMesaId(1L);
+
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .body(reservaEntity)
+                    .when()
+                    .put("/reserva/9")
+                    .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value())
+                    .body("message[0].erro", equalTo("Erro no sistema"));
+        }
     }
 
-    @Test
-    void testBuscarReservas() {
-        var reservaEntity = getReservaEntity();
-        reservaRepository.save(reservaEntity);
-        ReservaDTO bodyStr = new ReservaDTO();
-        bodyStr.setDataDaReserva(LocalDate.now().atTime(10, 0));
-        bodyStr.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
-        bodyStr.setStatusReserva(StatusReservaEnum.OCUPADO);
+    @Nested
+    class BuscarReservaControllerIT{
+        @Test
+        void testBuscarReservas() {
+            var reservaEntity = getReservaEntity();
+            reservaRepository.save(reservaEntity);
+            ReservaDTO bodyStr = new ReservaDTO();
+            bodyStr.setDataDaReserva(LocalDate.now().atTime(10, 0));
+            bodyStr.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
+            bodyStr.setStatusReserva(StatusReservaEnum.OCUPADO);
 
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .body(bodyStr)
-                .get("/reserva/1")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("[0]", hasKey("id"))
-                .body("[0]", hasKey("usuarioId"))
-                .body("[0]", hasKey("mesaId"))
-                .body("[0]", hasKey("restauranteId"))
-                .body("[0]", hasKey("dataDaReserva"))
-                .body("[0]", hasKey("dataFimReserva"))
-                .body("[0]", hasKey("valorReserva"))
-                .body("[0]", hasKey("statusPagamento"))
-                .body("[0]", hasKey("statusReserva"));
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when()
+                    .body(bodyStr)
+                    .get("/reserva/1")
+                    .then()
+                    .statusCode(HttpStatus.OK.value())
+                    .body("[0]", hasKey("id"))
+                    .body("[0]", hasKey("usuarioId"))
+                    .body("[0]", hasKey("mesaId"))
+                    .body("[0]", hasKey("restauranteId"))
+                    .body("[0]", hasKey("dataDaReserva"))
+                    .body("[0]", hasKey("dataFimReserva"))
+                    .body("[0]", hasKey("valorReserva"))
+                    .body("[0]", hasKey("statusPagamento"))
+                    .body("[0]", hasKey("statusReserva"));
+        }
     }
 
-    @Test
-    void testAtualizarExcecaoQuandoIdNaoEncontrado() {
-        ReservaEntity reservaEntity = getRandom(ReservaEntity.class);
-        reservaEntity.setRestauranteId(1L);
-        reservaEntity.setUsuarioId(1L);
-        reservaEntity.setMesaId(1L);
 
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(reservaEntity)
-                .when()
-                .put("/reserva/9")
-                .then()
-                .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message[0].erro", equalTo("Erro no sistema"));
-    }
 
     private ReservaEntity getReservaEntity() {
         RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
