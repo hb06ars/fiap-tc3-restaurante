@@ -11,6 +11,7 @@ import com.restaurante.utils.BaseUnitTest;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,89 +47,93 @@ class AvaliacaoControllerIT extends BaseUnitTest {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
-    @Test
-    void testAvaliar() {
-        UsuarioEntity usuarioEntity = usuarioRepository.save(getRandom(UsuarioEntity.class));
-        RestauranteEntity restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
+    @Nested
+    class Avaliar {
+        @Test
+        void testAvaliar() {
+            UsuarioEntity usuarioEntity = usuarioRepository.save(getRandom(UsuarioEntity.class));
+            RestauranteEntity restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
 
-        AvaliacaoDTO request = getRandom(AvaliacaoDTO.class);
-        request.setNota(5);
-        request.setUsuarioId(usuarioEntity.getId());
-        request.setRestauranteId(restauranteEntity.getId());
-        request.setComentario("Ótima comida!");
+            AvaliacaoDTO request = getRandom(AvaliacaoDTO.class);
+            request.setNota(5);
+            request.setUsuarioId(usuarioEntity.getId());
+            request.setRestauranteId(restauranteEntity.getId());
+            request.setComentario("Ótima comida!");
 
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when()
-                .post("/avaliacao")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("$", hasKey("id"))
-                .body("$", hasKey("restauranteId"))
-                .body("$", hasKey("usuarioId"))
-                .body("$", hasKey("nota"))
-                .body("$", hasKey("comentario"));
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .body(request)
+                    .when()
+                    .post("/avaliacao")
+                    .then()
+                    .statusCode(HttpStatus.OK.value())
+                    .body("$", hasKey("id"))
+                    .body("$", hasKey("restauranteId"))
+                    .body("$", hasKey("usuarioId"))
+                    .body("$", hasKey("nota"))
+                    .body("$", hasKey("comentario"));
+        }
+
+        @Test
+        void testAvaliarExcecaoQuandoJsonInvalido() {
+            AvaliacaoDTO request = getRandom(AvaliacaoDTO.class);
+            request.setNota(5);
+            request.setUsuarioId(null);
+
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .body(request)
+                    .when()
+                    .post("/avaliacao")
+                    .then()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .body("erro", equalTo("Erro na validação de dados"))
+                    .body("detalhe", equalTo("O usuário não pode ser nulo. Por favor, " +
+                            "forneça um valor para o usuário."))
+                    .body("campo", equalTo("usuarioId"))
+                    .body("statusCode", equalTo(400));
+        }
     }
 
 
-    @Test
-    void testAvaliarExcecaoQuandoJsonInvalido() {
-        AvaliacaoDTO request = getRandom(AvaliacaoDTO.class);
-        request.setNota(5);
-        request.setUsuarioId(null);
+    @Nested
+    class BuscarAvaliacao {
+        @Test
+        void testBuscarAvaliacaoPorRestaurante() {
+            UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
+            RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
+            RestauranteEntity restauranteSaved = restauranteRepository.save(restauranteEntity);
 
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when()
-                .post("/avaliacao")
-                .then()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("erro", equalTo("Erro na validação de dados"))
-                .body("detalhe", equalTo("O usuário não pode ser nulo. Por favor, " +
-                        "forneça um valor para o usuário."))
-                .body("campo", equalTo("usuarioId"))
-                .body("statusCode", equalTo(400));
+            AvaliacaoEntity entity = getRandom(AvaliacaoEntity.class);
+            entity.setNota(5);
+            entity.setUsuarioId(usuarioSaved.getId());
+            entity.setRestauranteId(restauranteSaved.getId());
+            entity.setComentario("Ótima comida!");
+            var request = avaliacaoRepository.save(entity);
+
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when()
+                    .get("/avaliacao/" + request.getRestauranteId())
+                    .then()
+                    .statusCode(HttpStatus.OK.value())
+                    .body("id", hasItem(1))
+                    .body("nota", hasItem(5))
+                    .body("comentario", hasItem("Ótima comida!"));
+        }
+
+        @Test
+        void testBuscarAvaliacaoPorRestauranteQuandoRestauranteNaoEncontrado() {
+            given()
+                    .filter(new AllureRestAssured())
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when()
+                    .get("/avaliacao/1")
+                    .then()
+                    .statusCode(HttpStatus.OK.value());
+        }
     }
-
-
-    @Test
-    void testBuscarAvaliacaoPorRestaurante() {
-        UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
-        RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
-        RestauranteEntity restauranteSaved = restauranteRepository.save(restauranteEntity);
-
-        AvaliacaoEntity entity = getRandom(AvaliacaoEntity.class);
-        entity.setNota(5);
-        entity.setUsuarioId(usuarioSaved.getId());
-        entity.setRestauranteId(restauranteSaved.getId());
-        entity.setComentario("Ótima comida!");
-        var request = avaliacaoRepository.save(entity);
-
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .get("/avaliacao/" + request.getRestauranteId())
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("id", hasItem(1))
-                .body("nota", hasItem(5))
-                .body("comentario", hasItem("Ótima comida!"));
-    }
-
-    @Test
-    void testBuscarAvaliacaoPorRestauranteQuandoRestauranteNaoEncontrado() {
-        given()
-                .filter(new AllureRestAssured())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .get("/avaliacao/1")
-                .then()
-                .statusCode(HttpStatus.OK.value());
-    }
-
 }
