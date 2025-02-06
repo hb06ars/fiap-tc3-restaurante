@@ -5,6 +5,13 @@
 - Em seguida, apontar o Enviroments Variables para o arquivo: [variaveis.env](env%2Fvariaveis.env)
 - Por fim, aguarde subir a imagem e assim iniciar a aplicação.
 
+### TESTES
+- Testes unitários:
+    mvn test
+
+- Testes integrados:
+  mvn test -P integration-test
+
 ### REGRAS
 - Definindo regras de negócio aqui
 
