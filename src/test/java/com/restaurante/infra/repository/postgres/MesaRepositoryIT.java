@@ -2,13 +2,20 @@ package com.restaurante.infra.repository.postgres;
 
 import com.restaurante.domain.entity.MesaEntity;
 import com.restaurante.domain.entity.RestauranteEntity;
-import jakarta.transaction.Transactional;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -18,90 +25,111 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureTestDatabase
-@Transactional
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MesaRepositoryIT {
+    @LocalServerPort
+    private int port;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private MesaRepository mesaRepository;
     @Autowired
     private RestauranteRepository restauranteRepository;
 
-    @Test
-    void testBuscarMesasDisponiveis() {
-        var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restaurante.getId());
-        mesaRepository.save(mesaEntity);
-
-        mesaRepository.buscarMesasDisponiveis(mesaEntity.getId(), LocalDateTime.now());
-
+    @BeforeEach
+    public void setup() {
+        RestAssured.port = port > 0 ? port : 8080;
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
-    @Test
-    void testBuscarTodasPorRestauranteId() {
-        var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restaurante.getId());
-
-        var result = mesaRepository.save(mesaEntity);
-        var mesa = mesaRepository.findAllByRestauranteId(result.getRestauranteId());
-
-        assertThat(mesa.size()).isPositive();
-        assertThat(mesa.get(0).getRestauranteId()).isEqualTo(restaurante.getId());
+    @AfterEach
+    public void limparBancoDeDados() throws IOException {
+        String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/clean.sql")));
+        jdbcTemplate.execute(sql);
     }
 
-    @Test
-    void testSalvarMesa() {
-        var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restaurante.getId());
-        MesaEntity savedMesa = mesaRepository.save(mesaEntity);
+    @Nested
+    class BuscarMesaRepositoryIT {
+        @Test
+        void testBuscarMesasDisponiveis() {
+            var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restaurante.getId());
+            mesaRepository.save(mesaEntity);
+            var mesas = mesaRepository.buscarMesasDisponiveis(mesaEntity.getId(), LocalDateTime.now());
+            assertNotNull(mesas);
+        }
 
-        assertNotNull(savedMesa);
-        assertThat(savedMesa.getId()).isPositive();
+        @Test
+        void testBuscarTodasPorRestauranteId() {
+            var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restaurante.getId());
+
+            var result = mesaRepository.save(mesaEntity);
+            var mesa = mesaRepository.findAllByRestauranteId(result.getRestauranteId());
+
+            assertThat(mesa.size()).isPositive();
+            assertThat(mesa.get(0).getRestauranteId()).isEqualTo(restaurante.getId());
+        }
+
+        @Test
+        void testBuscarPorId() {
+            var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restaurante.getId());
+            MesaEntity savedMesa = mesaRepository.save(mesaEntity);
+
+            Optional<MesaEntity> foundMesa = mesaRepository.findById(savedMesa.getId());
+
+            assertTrue(foundMesa.isPresent());
+            assertThat(foundMesa.get().getId()).isPositive();
+        }
     }
 
-    @Test
-    void testBuscarPorId() {
-        var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        MesaEntity mesaAtualizada = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restaurante.getId());
-        MesaEntity savedMesa = mesaRepository.save(mesaEntity);
+    @Nested
+    class SalvarMesaRepositoryIT {
+        @Test
+        void testSalvarMesa() {
+            var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restaurante.getId());
+            MesaEntity savedMesa = mesaRepository.save(mesaEntity);
 
-        Optional<MesaEntity> foundMesa = mesaRepository.findById(savedMesa.getId());
+            assertNotNull(savedMesa);
+            assertThat(savedMesa.getId()).isPositive();
+        }
 
-        assertTrue(foundMesa.isPresent());
-        assertThat(foundMesa.get().getId()).isPositive();
+
+        @Test
+        void testAtualizarMesa() {
+            var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restaurante.getId());
+            MesaEntity savedMesa = mesaRepository.save(mesaEntity);
+            savedMesa.setId(savedMesa.getId());
+            savedMesa.setNomeMesa("Mesa atualizada");
+            savedMesa = mesaRepository.save(savedMesa);
+
+            assertNotNull(savedMesa);
+            assertThat(savedMesa.getNomeMesa()).isNotEqualTo(mesaEntity.getNomeMesa());
+        }
     }
 
-    @Test
-    void testAtualizarMesa() {
-        var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        MesaEntity mesaAtualizada = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restaurante.getId());
-        MesaEntity savedMesa = mesaRepository.save(mesaEntity);
-        mesaAtualizada.setId(savedMesa.getId());
-        mesaAtualizada.setNomeMesa("Mesa atualizada");
-        mesaAtualizada = mesaRepository.save(mesaAtualizada);
+    @Nested
+    class DeletarMEsaRepositoryIT {
+        @Test
+        void testDeletarMesa() {
+            var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restaurante.getId());
+            MesaEntity savedMesa = mesaRepository.save(mesaEntity);
 
-        assertNotNull(mesaAtualizada);
-        assertThat(mesaAtualizada.getNomeMesa()).isNotEqualTo(mesaEntity.getNomeMesa());
-    }
+            mesaRepository.deleteById(savedMesa.getId());
+            var mesa = mesaRepository.findById(savedMesa.getId());
 
-    @Test
-    void testDeletarMesa() {
-        var restaurante = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restaurante.getId());
-        MesaEntity savedMesa = mesaRepository.save(mesaEntity);
-
-        mesaRepository.deleteById(savedMesa.getId());
-        var mesa = mesaRepository.findById(savedMesa.getId());
-
-        assertTrue(mesa.isEmpty());
+            assertTrue(mesa.isEmpty());
+        }
     }
 }

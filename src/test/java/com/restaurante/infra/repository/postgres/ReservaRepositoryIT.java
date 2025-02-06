@@ -7,14 +7,20 @@ import com.restaurante.domain.entity.UsuarioEntity;
 import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
 import com.restaurante.domain.util.DataFormat;
-import jakarta.transaction.Transactional;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,11 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
-@SpringBootTest
-@AutoConfigureTestDatabase
-@Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ReservaRepositoryIT {
+    @LocalServerPort
+    private int port;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private ReservaRepository reservaRepository;
@@ -39,92 +46,111 @@ class ReservaRepositoryIT {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
-    @Test
-    void testBuscarReservasPorFiltro() {
-        var agora = LocalDateTime.now();
-        UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
-        RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restauranteSaved.getId());
-        MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
-        ReservaEntity reservaEntity = getRandom(ReservaEntity.class);
+    @BeforeEach
+    public void setup() {
+        RestAssured.port = port > 0 ? port : 8080;
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+    }
 
-        reservaEntity.setUsuarioId(usuarioSaved.getId());
-        reservaEntity.setMesaId(mesaSaved.getId());
-        reservaEntity.setRestauranteId(restauranteSaved.getId());
-        reservaEntity.setDataDaReserva(agora);
-        reservaEntity.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
-        reservaEntity.setStatusReserva(StatusReservaEnum.OCUPADO);
-        reservaEntity.setDataFimReserva(agora.plusHours(2));
+    @AfterEach
+    public void limparBancoDeDados() throws IOException {
+        String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/clean.sql")));
+        jdbcTemplate.execute(sql);
+    }
 
-        var reservaSaved = reservaRepository.save(reservaEntity);
+    @Nested
+    class BuscarReservaRepositoryIT {
+        @Test
+        void testBuscarReservasPorFiltro() {
+            var agora = LocalDateTime.now();
+            UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
+            RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restauranteSaved.getId());
+            MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
+            ReservaEntity reservaEntity = getRandom(ReservaEntity.class);
 
-        List<ReservaEntity> resultado = reservaRepository.findAllByFilter(
-                reservaSaved.getRestauranteId(),
-                reservaSaved.getStatusReserva(),
-                reservaSaved.getStatusPagamento(),
-                DataFormat.truncate(reservaSaved.getDataDaReserva().plusMinutes(10)));
+            reservaEntity.setUsuarioId(usuarioSaved.getId());
+            reservaEntity.setMesaId(mesaSaved.getId());
+            reservaEntity.setRestauranteId(restauranteSaved.getId());
+            reservaEntity.setDataDaReserva(agora);
+            reservaEntity.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
+            reservaEntity.setStatusReserva(StatusReservaEnum.OCUPADO);
+            reservaEntity.setDataFimReserva(agora.plusHours(2));
 
-        assertNotNull(resultado);
-        assertThat(resultado.size()).isPositive();
+            var reservaSaved = reservaRepository.save(reservaEntity);
 
+            List<ReservaEntity> resultado = reservaRepository.findAllByFilter(
+                    reservaSaved.getRestauranteId(),
+                    reservaSaved.getStatusReserva(),
+                    reservaSaved.getStatusPagamento(),
+                    DataFormat.truncate(reservaSaved.getDataDaReserva().plusMinutes(10)));
+
+            assertNotNull(resultado);
+            assertThat(resultado.size()).isPositive();
+        }
+
+        @Test
+        void testBuscarPorId() {
+            UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
+            RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restauranteSaved.getId());
+            MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
+            ReservaEntity reservaSaved = getRandom(ReservaEntity.class);
+
+            reservaSaved.setUsuarioId(usuarioSaved.getId());
+            reservaSaved.setMesaId(mesaSaved.getId());
+            reservaSaved.setRestauranteId(restauranteSaved.getId());
+            reservaSaved.setDataDaReserva(LocalDateTime.now());
+            reservaSaved.setDataFimReserva(LocalDateTime.now().plusHours(2));
+
+            assertNotNull(reservaSaved);
+            assertThat(reservaSaved.getId()).isPositive();
+
+        }
     }
 
 
-    @Test
-    void testSalvarReserva() {
-        UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
-        RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restauranteSaved.getId());
-        MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
-        ReservaEntity reservaEntity = getRandom(ReservaEntity.class);
+    @Nested
+    class SalvarReservaRepositoryIT {
+        @Test
+        void testSalvarReserva() {
+            UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
+            RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restauranteSaved.getId());
+            MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
+            ReservaEntity reservaEntity = getRandom(ReservaEntity.class);
 
-        reservaEntity.setUsuarioId(usuarioSaved.getId());
-        reservaEntity.setMesaId(mesaSaved.getId());
-        reservaEntity.setRestauranteId(restauranteSaved.getId());
+            reservaEntity.setUsuarioId(usuarioSaved.getId());
+            reservaEntity.setMesaId(mesaSaved.getId());
+            reservaEntity.setRestauranteId(restauranteSaved.getId());
 
-        var reservaSaved = reservaRepository.save(reservaEntity);
-        assertNotNull(reservaSaved);
-        assertThat(reservaSaved.getId()).isPositive();
-
+            var reservaSaved = reservaRepository.save(reservaEntity);
+            assertNotNull(reservaSaved);
+            assertThat(reservaSaved.getId()).isPositive();
+        }
     }
 
-    @Test
-    void testBuscarPorId() {
-        UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
-        RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restauranteSaved.getId());
-        MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
-        ReservaEntity reservaSaved = getRandom(ReservaEntity.class);
+    @Nested
+    class DeletarReservaRepositoryIT {
+        @Test
+        void testDeletarReserva() {
+            UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
+            RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
+            MesaEntity mesaEntity = getRandom(MesaEntity.class);
+            mesaEntity.setRestauranteId(restauranteSaved.getId());
+            MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
+            ReservaEntity entity = getRandom(ReservaEntity.class);
+            entity.setUsuarioId(usuarioSaved.getId());
+            entity.setMesaId(mesaSaved.getId());
+            entity.setRestauranteId(restauranteSaved.getId());
+            var reservaSaved = reservaRepository.save(entity);
 
-        reservaSaved.setUsuarioId(usuarioSaved.getId());
-        reservaSaved.setMesaId(mesaSaved.getId());
-        reservaSaved.setRestauranteId(restauranteSaved.getId());
-        reservaSaved.setDataDaReserva(LocalDateTime.now());
-        reservaSaved.setDataFimReserva(LocalDateTime.now().plusHours(2));
-
-        assertNotNull(reservaSaved);
-        assertThat(reservaSaved.getId()).isPositive();
-
-    }
-
-    @Test
-    void testDeletarReserva() {
-        UsuarioEntity usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));
-        RestauranteEntity restauranteSaved = restauranteRepository.save(getRandom(RestauranteEntity.class));
-        MesaEntity mesaEntity = getRandom(MesaEntity.class);
-        mesaEntity.setRestauranteId(restauranteSaved.getId());
-        MesaEntity mesaSaved = mesaRepository.save(mesaEntity);
-        ReservaEntity entity = getRandom(ReservaEntity.class);
-        entity.setUsuarioId(usuarioSaved.getId());
-        entity.setMesaId(mesaSaved.getId());
-        entity.setRestauranteId(restauranteSaved.getId());
-        var reservaSaved = reservaRepository.save(entity);
-
-        reservaRepository.deleteById(1L);
-        var result = reservaRepository.findById(reservaSaved.getId());
-        assertFalse(result.isPresent());
+            reservaRepository.deleteById(1L);
+            var result = reservaRepository.findById(reservaSaved.getId());
+            assertFalse(result.isPresent());
+        }
     }
 }
