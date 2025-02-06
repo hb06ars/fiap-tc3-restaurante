@@ -5,6 +5,7 @@ import com.restaurante.domain.dto.ReservaDTO;
 import com.restaurante.domain.useCase.BuscarMesaDisponivelUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,20 +40,23 @@ class ValidarReservaUseCaseImplTest {
         openMocks.close();
     }
 
-    @Test
-    void testExecuteSuccess() {
-        ReservaDTO reservaDTO = new ReservaDTO();
-        reservaDTO.setRestauranteId(1L);
-        reservaDTO.setDataDaReserva(LocalDateTime.now());
+    @Nested
+    class ValidarReservaUseCaseTest{
+        @Test
+        void testExecuteSuccess() {
+            ReservaDTO reservaDTO = new ReservaDTO();
+            reservaDTO.setRestauranteId(1L);
+            reservaDTO.setDataDaReserva(LocalDateTime.now());
 
-        MesaDisponivelDTO mesaDisponivelDTO = new MesaDisponivelDTO();
-        mesaDisponivelDTO.setMesaId(10L);
+            MesaDisponivelDTO mesaDisponivelDTO = new MesaDisponivelDTO();
+            mesaDisponivelDTO.setMesaId(10L);
 
-        when(buscarMesaDisponivelUseCase.execute(anyLong(), any())).thenReturn(mesaDisponivelDTO);
+            when(buscarMesaDisponivelUseCase.execute(anyLong(), any())).thenReturn(mesaDisponivelDTO);
 
-        validarReservaUseCase.execute(reservaDTO);
+            validarReservaUseCase.execute(reservaDTO);
 
-        assertEquals(10L, reservaDTO.getMesaId());
-        verify(buscarMesaDisponivelUseCase, times(1)).execute(anyLong(), any());
+            assertEquals(10L, reservaDTO.getMesaId());
+            verify(buscarMesaDisponivelUseCase, times(1)).execute(anyLong(), any());
+        }
     }
 }

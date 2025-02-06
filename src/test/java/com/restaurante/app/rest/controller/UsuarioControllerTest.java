@@ -9,6 +9,7 @@ import com.restaurante.domain.dto.UsuarioDTO;
 import com.restaurante.infra.exceptions.GlobalExceptionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
@@ -58,60 +59,69 @@ class UsuarioControllerTest {
         mock.close();
     }
 
-    @Test
-    void cadastroDeveRetornarUsuarioDTO() throws Exception {
-        UsuarioRequest request = new UsuarioRequest();
-        request.setCelular("11888888888");
-        request.setEmail("email@email.com");
-        request.setNome("Usuário");
-        var dto = new UsuarioDTO(request);
+    @Nested
+    class CadastroUsuarioControllerTest{
+        @Test
+        void cadastroDeveRetornarUsuarioDTO() throws Exception {
+            UsuarioRequest request = new UsuarioRequest();
+            request.setCelular("11888888888");
+            request.setEmail("email@email.com");
+            request.setNome("Usuário");
+            var dto = new UsuarioDTO(request);
 
-        when(usuarioService.save(dto)).thenReturn(dto);
+            when(usuarioService.save(dto)).thenReturn(dto);
 
-        mockMvc.perform(post("/usuario/cadastrar")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Usuário"));
+            mockMvc.perform(post("/usuario/cadastrar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.nome").value("Usuário"));
 
-        verify(usuarioService, times(1)).save(dto);
+            verify(usuarioService, times(1)).save(dto);
+        }
     }
 
-    @Test
-    void atualizarDeveRetornarUsuarioDTOAtualizado() throws Exception {
-        Long id = 1L;
-        UsuarioRequest request = new UsuarioRequest();
-        request.setCelular("11888888888");
-        request.setEmail("email@email.com");
-        request.setNome("Usuário Atualizado");
-        var dto = new UsuarioDTO(request);
+    @Nested
+    class AtualizacaoUsuarioControllerTest{
+        @Test
+        void atualizarDeveRetornarUsuarioDTOAtualizado() throws Exception {
+            Long id = 1L;
+            UsuarioRequest request = new UsuarioRequest();
+            request.setCelular("11888888888");
+            request.setEmail("email@email.com");
+            request.setNome("Usuário Atualizado");
+            var dto = new UsuarioDTO(request);
 
-        when(usuarioService.update(id, dto)).thenReturn(dto);
+            when(usuarioService.update(id, dto)).thenReturn(dto);
 
-        mockMvc.perform(put("/usuario/atualizar/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Usuário Atualizado"));
+            mockMvc.perform(put("/usuario/atualizar/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.nome").value("Usuário Atualizado"));
 
-        verify(usuarioService, times(1)).update(id, dto);
+            verify(usuarioService, times(1)).update(id, dto);
+        }
     }
 
-    @Test
-    void deveRetornarUsuario() throws Exception {
-        UsuarioRequest request = new UsuarioRequest();
-        request.setCelular("11988887777");
-        request.setEmail("email@email.com");
-        request.setNome("Usuário");
-        var dto = new UsuarioDTO(request);
+    @Nested
+    class BuscaUsuarioControllerTest{
+        @Test
+        void deveRetornarUsuario() throws Exception {
+            UsuarioRequest request = new UsuarioRequest();
+            request.setCelular("11988887777");
+            request.setEmail("email@email.com");
+            request.setNome("Usuário");
+            var dto = new UsuarioDTO(request);
 
-        when(usuarioService.save(dto)).thenReturn(dto);
+            when(usuarioService.save(dto)).thenReturn(dto);
 
-        mockMvc.perform(get("/usuario?celular=11988887777")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+            mockMvc.perform(get("/usuario?celular=11988887777")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
 
-        verify(usuarioService, times(1)).findByEmailOrCelular(any(), any());
+            verify(usuarioService, times(1)).findByEmailOrCelular(any(), any());
+        }
     }
 
 

@@ -3,6 +3,7 @@ package com.restaurante.infra.repository.postgres;
 import com.restaurante.domain.entity.UsuarioEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -44,69 +45,82 @@ class UsuarioRepositoryTest {
         openMocks.close();
     }
 
-    @Test
-    void testBuscarPorEmailOuCelular() {
-        when(usuarioRepository.findByEmailOrCelular("joao@email.com",
-                "11999999999")).thenReturn(usuario);
+    @Nested
+    class BuscarUsuarioRespositoryTest {
+        @Test
+        void testBuscarPorEmailOuCelular() {
+            when(usuarioRepository.findByEmailOrCelular("joao@email.com",
+                    "11999999999")).thenReturn(usuario);
 
-        UsuarioEntity foundUsuario = usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999");
+            UsuarioEntity foundUsuario = usuarioRepository.findByEmailOrCelular("joao@email.com", "11999999999");
 
-        assertNotNull(foundUsuario);
-        assertEquals("João Silva", foundUsuario.getNome());
-        assertEquals("joao@email.com", foundUsuario.getEmail());
+            assertNotNull(foundUsuario);
+            assertEquals("João Silva", foundUsuario.getNome());
+            assertEquals("joao@email.com", foundUsuario.getEmail());
 
-        verify(usuarioRepository, times(1)).findByEmailOrCelular("joao@email.com",
-                "11999999999");
+            verify(usuarioRepository, times(1)).findByEmailOrCelular("joao@email.com",
+                    "11999999999");
+        }
+
+        @Test
+        void testBuscarPorId() {
+            when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+
+            Optional<UsuarioEntity> foundUsuario = usuarioRepository.findById(1L);
+
+            assertTrue(foundUsuario.isPresent());
+            assertEquals(1L, foundUsuario.get().getId());
+
+            verify(usuarioRepository, times(1)).findById(1L);
+        }
     }
 
-    @Test
-    void testSalvarUsuario() {
-        when(usuarioRepository.save(usuario)).thenReturn(usuario);
+    @Nested
+    class SalvarUsuarioRepositoryTest {
+        @Test
+        void testSalvarUsuario() {
+            when(usuarioRepository.save(usuario)).thenReturn(usuario);
 
-        UsuarioEntity savedUsuario = usuarioRepository.save(usuario);
+            UsuarioEntity savedUsuario = usuarioRepository.save(usuario);
 
-        assertNotNull(savedUsuario);
-        assertEquals(1L, savedUsuario.getId());
-        assertEquals("João Silva", savedUsuario.getNome());
-        assertEquals("joao@email.com", savedUsuario.getEmail());
+            assertNotNull(savedUsuario);
+            assertEquals(1L, savedUsuario.getId());
+            assertEquals("João Silva", savedUsuario.getNome());
+            assertEquals("joao@email.com", savedUsuario.getEmail());
 
-        verify(usuarioRepository, times(1)).save(usuario);
+            verify(usuarioRepository, times(1)).save(usuario);
+        }
     }
 
-    @Test
-    void testBuscarPorId() {
-        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+    @Nested
+    class AtualizarUsuarioRepositoryTest {
+        @Test
+        void testAtualizarUsuario() {
+            UsuarioEntity usuarioAtualizado = new UsuarioEntity();
+            usuarioAtualizado.setId(1L);
+            usuarioAtualizado.setNome("João Pedro");
+            usuarioAtualizado.setEmail("joaopedro@email.com");
+            usuarioAtualizado.setCelular("11988888888");
 
-        Optional<UsuarioEntity> foundUsuario = usuarioRepository.findById(1L);
+            when(usuarioRepository.save(usuarioAtualizado)).thenReturn(usuarioAtualizado);
 
-        assertTrue(foundUsuario.isPresent());
-        assertEquals(1L, foundUsuario.get().getId());
+            UsuarioEntity updatedUsuario = usuarioRepository.save(usuarioAtualizado);
 
-        verify(usuarioRepository, times(1)).findById(1L);
+            assertEquals("João Pedro", updatedUsuario.getNome());
+            assertEquals("joaopedro@email.com", updatedUsuario.getEmail());
+
+            verify(usuarioRepository, times(1)).save(usuarioAtualizado);
+        }
     }
 
-    @Test
-    void testAtualizarUsuario() {
-        UsuarioEntity usuarioAtualizado = new UsuarioEntity();
-        usuarioAtualizado.setId(1L);
-        usuarioAtualizado.setNome("João Pedro");
-        usuarioAtualizado.setEmail("joaopedro@email.com");
-        usuarioAtualizado.setCelular("11988888888");
 
-        when(usuarioRepository.save(usuarioAtualizado)).thenReturn(usuarioAtualizado);
-
-        UsuarioEntity updatedUsuario = usuarioRepository.save(usuarioAtualizado);
-
-        assertEquals("João Pedro", updatedUsuario.getNome());
-        assertEquals("joaopedro@email.com", updatedUsuario.getEmail());
-
-        verify(usuarioRepository, times(1)).save(usuarioAtualizado);
-    }
-
-    @Test
-    void testDeletarUsuario() {
-        doNothing().when(usuarioRepository).deleteById(1L);
-        usuarioRepository.deleteById(1L);
-        verify(usuarioRepository, times(1)).deleteById(1L);
+    @Nested
+    class DeletarUsuarioRepositoryTest {
+        @Test
+        void testDeletarUsuario() {
+            doNothing().when(usuarioRepository).deleteById(1L);
+            usuarioRepository.deleteById(1L);
+            verify(usuarioRepository, times(1)).deleteById(1L);
+        }
     }
 }

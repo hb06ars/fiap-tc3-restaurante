@@ -59,7 +59,7 @@ class AvaliacaoRepositoryIT extends BaseUnitTest {
     }
 
     @Nested
-    class BuscarAvaliacaoRepositoryIT{
+    class BuscarAvaliacaoRepositoryIT {
         @Test
         void testFindAllByRestauranteId() {
             var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
@@ -96,7 +96,7 @@ class AvaliacaoRepositoryIT extends BaseUnitTest {
     }
 
     @Nested
-    class SalvarAvaliacaoRepositoryIT{
+    class SalvarAvaliacaoRepositoryIT {
         @Test
         void testSalvarAvaliacao() {
             var avaliacaoEntity = getRandom(AvaliacaoEntity.class);
@@ -131,7 +131,7 @@ class AvaliacaoRepositoryIT extends BaseUnitTest {
     }
 
     @Nested
-    class DeeltarAvaliacaoRepositoryIT{
+    class DeletarAvaliacaoRepositoryIT {
         @Test
         void testDeletarAvaliacao() {
             var avaliacaoEntity = getRandom(AvaliacaoEntity.class);

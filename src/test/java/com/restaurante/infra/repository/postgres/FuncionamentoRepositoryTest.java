@@ -5,6 +5,7 @@ import com.restaurante.domain.dto.FuncionamentoDTO;
 import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.enums.DiaEnum;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -43,109 +44,120 @@ class FuncionamentoRepositoryTest {
         funcionamento.setFechamento(LocalTime.of(22, 0));
     }
 
-    @Test
-    void testValidarData() {
-        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 12, 0);
-        List<FuncionamentoEntity> funcionamentoList = List.of(funcionamento);
+    @Nested
+    class SalvarFuncionamentoRepositoryTest {
+        @Test
+        void testSalvarFuncionamento() {
+            when(funcionamentoRepository.save(funcionamento)).thenReturn(funcionamento);
 
-        when(funcionamentoRepository.validarData(1L, dataReserva, DiaEnum.SEGUNDA.name()))
-                .thenReturn(funcionamentoList);
+            FuncionamentoEntity savedFuncionamento = funcionamentoRepository.save(funcionamento);
 
-        List<FuncionamentoEntity> resultado = funcionamentoRepository
-                .validarData(1L, dataReserva, "SEGUNDA");
+            assertNotNull(savedFuncionamento);
+            assertEquals(1L, savedFuncionamento.getId());
+            assertEquals(1L, savedFuncionamento.getRestauranteId());
+            assertEquals(DiaEnum.SEGUNDA, savedFuncionamento.getDiaEnum());
 
-        assertFalse(resultado.isEmpty());
-        assertEquals(1, resultado.size());
-        assertEquals(1L, resultado.get(0).getRestauranteId());
-
-        verify(funcionamentoRepository, times(1))
-                .validarData(1L, dataReserva, "SEGUNDA");
+            verify(funcionamentoRepository, times(1)).save(funcionamento);
+        }
     }
 
-    @Test
-    void testBuscarTodosFUncionamentosPorRestauranteId() {
-        FuncionamentoEntity entity1 = FuncionamentoEntity.builder()
-                .id(1L)
-                .diaEnum(DiaEnum.SEGUNDA)
-                .abertura(LocalTime.of(8, 0))
-                .fechamento(LocalTime.of(22, 0))
-                .restauranteId(2L)
-                .build();
+    @Nested
+    class BuscarFuncionamentoRepositoryTest {
+        @Test
+        void testBuscarPorId() {
+            when(funcionamentoRepository.findById(1L)).thenReturn(Optional.of(funcionamento));
 
-        FuncionamentoEntity entity2 = FuncionamentoEntity.builder()
-                .id(1L)
-                .diaEnum(DiaEnum.TERCA)
-                .abertura(LocalTime.of(8, 0))
-                .fechamento(LocalTime.of(22, 0))
-                .restauranteId(2L)
-                .build();
+            Optional<FuncionamentoEntity> foundFuncionamento = funcionamentoRepository.findById(1L);
 
-        List<FuncionamentoEntity> lista = Arrays.asList(entity1, entity2);
+            assertTrue(foundFuncionamento.isPresent());
+            assertEquals(1L, foundFuncionamento.get().getId());
 
-        when(funcionamentoRepository.findAllByRestauranteId(1L)).thenReturn(lista);
+            verify(funcionamentoRepository, times(1)).findById(1L);
+        }
 
-        List<FuncionamentoDTO> resultado = funcionamentoRepository
-                .findAllByRestauranteId(1L)
-                .stream()
-                .map(FuncionamentoDTO::new).toList();
+        @Test
+        void testValidarData() {
+            LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 12, 0);
+            List<FuncionamentoEntity> funcionamentoList = List.of(funcionamento);
 
-        assertEquals(2, resultado.size());
-        assertEquals(DiaEnum.SEGUNDA, resultado.get(0).getDiaEnum());
-        assertEquals(DiaEnum.TERCA, resultado.get(1).getDiaEnum());
+            when(funcionamentoRepository.validarData(1L, dataReserva, DiaEnum.SEGUNDA.name()))
+                    .thenReturn(funcionamentoList);
 
-        verify(funcionamentoRepository, times(1)).findAllByRestauranteId(1L);
+            List<FuncionamentoEntity> resultado = funcionamentoRepository
+                    .validarData(1L, dataReserva, "SEGUNDA");
+
+            assertFalse(resultado.isEmpty());
+            assertEquals(1, resultado.size());
+            assertEquals(1L, resultado.get(0).getRestauranteId());
+
+            verify(funcionamentoRepository, times(1))
+                    .validarData(1L, dataReserva, "SEGUNDA");
+        }
+
+        @Test
+        void testBuscarTodosFUncionamentosPorRestauranteId() {
+            FuncionamentoEntity entity1 = FuncionamentoEntity.builder()
+                    .id(1L)
+                    .diaEnum(DiaEnum.SEGUNDA)
+                    .abertura(LocalTime.of(8, 0))
+                    .fechamento(LocalTime.of(22, 0))
+                    .restauranteId(2L)
+                    .build();
+
+            FuncionamentoEntity entity2 = FuncionamentoEntity.builder()
+                    .id(1L)
+                    .diaEnum(DiaEnum.TERCA)
+                    .abertura(LocalTime.of(8, 0))
+                    .fechamento(LocalTime.of(22, 0))
+                    .restauranteId(2L)
+                    .build();
+
+            List<FuncionamentoEntity> lista = Arrays.asList(entity1, entity2);
+
+            when(funcionamentoRepository.findAllByRestauranteId(1L)).thenReturn(lista);
+
+            List<FuncionamentoDTO> resultado = funcionamentoRepository
+                    .findAllByRestauranteId(1L)
+                    .stream()
+                    .map(FuncionamentoDTO::new).toList();
+
+            assertEquals(2, resultado.size());
+            assertEquals(DiaEnum.SEGUNDA, resultado.get(0).getDiaEnum());
+            assertEquals(DiaEnum.TERCA, resultado.get(1).getDiaEnum());
+
+            verify(funcionamentoRepository, times(1)).findAllByRestauranteId(1L);
+        }
     }
 
+    @Nested
+    class AtualizarFuncionamentoRepositoryTest {
+        @Test
+        void testAtualizarFuncionamento() {
+            FuncionamentoEntity funcionamentoAtualizado = new FuncionamentoEntity();
+            funcionamentoAtualizado.setId(1L);
+            funcionamentoAtualizado.setRestauranteId(1L);
+            funcionamentoAtualizado.setDiaEnum(DiaEnum.SEGUNDA);
+            funcionamentoAtualizado.setAbertura(LocalTime.of(9, 0));
+            funcionamentoAtualizado.setFechamento(LocalTime.of(21, 0));
 
-    @Test
-    void testSalvarFuncionamento() {
-        when(funcionamentoRepository.save(funcionamento)).thenReturn(funcionamento);
+            when(funcionamentoRepository.save(funcionamentoAtualizado)).thenReturn(funcionamentoAtualizado);
+            FuncionamentoEntity updatedFuncionamento = funcionamentoRepository.save(funcionamentoAtualizado);
 
-        FuncionamentoEntity savedFuncionamento = funcionamentoRepository.save(funcionamento);
+            assertEquals(LocalTime.of(9, 0), updatedFuncionamento.getAbertura());
+            assertEquals(LocalTime.of(21, 0), updatedFuncionamento.getFechamento());
 
-        assertNotNull(savedFuncionamento);
-        assertEquals(1L, savedFuncionamento.getId());
-        assertEquals(1L, savedFuncionamento.getRestauranteId());
-        assertEquals(DiaEnum.SEGUNDA, savedFuncionamento.getDiaEnum());
-
-        verify(funcionamentoRepository, times(1)).save(funcionamento);
+            verify(funcionamentoRepository, times(1)).save(funcionamentoAtualizado);
+        }
     }
 
-    @Test
-    void testBuscarPorId() {
-        when(funcionamentoRepository.findById(1L)).thenReturn(Optional.of(funcionamento));
-
-        Optional<FuncionamentoEntity> foundFuncionamento = funcionamentoRepository.findById(1L);
-
-        assertTrue(foundFuncionamento.isPresent());
-        assertEquals(1L, foundFuncionamento.get().getId());
-
-        verify(funcionamentoRepository, times(1)).findById(1L);
+    @Nested
+    class DeletarFuncionamentoRepositoryTest {
+        @Test
+        void testDeletarFuncionamento() {
+            doNothing().when(funcionamentoRepository).deleteById(1L);
+            funcionamentoRepository.deleteById(1L);
+            verify(funcionamentoRepository, times(1)).deleteById(1L);
+        }
     }
 
-
-    @Test
-    void testAtualizarFuncionamento() {
-        FuncionamentoEntity funcionamentoAtualizado = new FuncionamentoEntity();
-        funcionamentoAtualizado.setId(1L);
-        funcionamentoAtualizado.setRestauranteId(1L);
-        funcionamentoAtualizado.setDiaEnum(DiaEnum.SEGUNDA);
-        funcionamentoAtualizado.setAbertura(LocalTime.of(9, 0));
-        funcionamentoAtualizado.setFechamento(LocalTime.of(21, 0));
-
-        when(funcionamentoRepository.save(funcionamentoAtualizado)).thenReturn(funcionamentoAtualizado);
-        FuncionamentoEntity updatedFuncionamento = funcionamentoRepository.save(funcionamentoAtualizado);
-
-        assertEquals(LocalTime.of(9, 0), updatedFuncionamento.getAbertura());
-        assertEquals(LocalTime.of(21, 0), updatedFuncionamento.getFechamento());
-
-        verify(funcionamentoRepository, times(1)).save(funcionamentoAtualizado);
-    }
-
-    @Test
-    void testDeletarFuncionamento() {
-        doNothing().when(funcionamentoRepository).deleteById(1L);
-        funcionamentoRepository.deleteById(1L);
-        verify(funcionamentoRepository, times(1)).deleteById(1L);
-    }
 }

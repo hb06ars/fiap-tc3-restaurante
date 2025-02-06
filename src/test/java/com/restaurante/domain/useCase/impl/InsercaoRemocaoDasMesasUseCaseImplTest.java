@@ -6,6 +6,7 @@ import com.restaurante.infra.exceptions.CapacidadeException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -42,76 +43,79 @@ class InsercaoRemocaoDasMesasUseCaseImplTest {
         openMocks.close();
     }
 
-    @Test
-    @DisplayName("Teste para executar use case com capacidade original diferente da atualizada")
-    void testExecuteCapacidadeDiferente() {
-        Long idRestaurante = 1L;
-        int capacidadeOriginal = 5;
-        int capacidadeAtualizada = 10;
+    @Nested
+    class InsercaoRemocaoMesasUseCaseTet{
+        @Test
+        @DisplayName("Teste para executar use case com capacidade original diferente da atualizada")
+        void testExecuteCapacidadeDiferente() {
+            Long idRestaurante = 1L;
+            int capacidadeOriginal = 5;
+            int capacidadeAtualizada = 10;
 
-        List<MesaDTO> mesaDTOs = new ArrayList<>();
-        for (int i = 1; i <= capacidadeOriginal; i++) {
-            MesaDTO mesaDTO = new MesaDTO();
-            mesaDTO.setId((long) i);
-            mesaDTO.setNomeMesa("MESA " + i);
-            mesaDTOs.add(mesaDTO);
+            List<MesaDTO> mesaDTOs = new ArrayList<>();
+            for (int i = 1; i <= capacidadeOriginal; i++) {
+                MesaDTO mesaDTO = new MesaDTO();
+                mesaDTO.setId((long) i);
+                mesaDTO.setNomeMesa("MESA " + i);
+                mesaDTOs.add(mesaDTO);
+            }
+
+            when(mesaService.findAllByIdRestaurante(idRestaurante)).thenReturn(mesaDTOs);
+
+            useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada);
+
+            verify(mesaService, times(0)).delete(anyLong());
+            verify(mesaService, times(1)).salvarTodasMesas(anyList());
         }
 
-        when(mesaService.findAllByIdRestaurante(idRestaurante)).thenReturn(mesaDTOs);
+        @Test
+        @DisplayName("Teste para executar use case com capacidade atualizada igual à original")
+        void testExecuteCapacidadeIgual() {
+            Long idRestaurante = 1L;
+            int capacidadeOriginal = 5;
+            int capacidadeAtualizada = 5;
 
-        useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada);
+            useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada);
 
-        verify(mesaService, times(0)).delete(anyLong());
-        verify(mesaService, times(1)).salvarTodasMesas(anyList());
-    }
-
-    @Test
-    @DisplayName("Teste para executar use case com capacidade atualizada igual à original")
-    void testExecuteCapacidadeIgual() {
-        Long idRestaurante = 1L;
-        int capacidadeOriginal = 5;
-        int capacidadeAtualizada = 5;
-
-        useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada);
-
-        verify(mesaService, never()).delete(anyLong());
-        verify(mesaService, never()).salvarTodasMesas(anyList());
-    }
-
-    @Test
-    @DisplayName("Teste para exceção quando capacidade atualizada é menor ou igual a zero")
-    void testExecuteCapacidadeInvalida() {
-        Long idRestaurante = 1L;
-        int capacidadeOriginal = 5;
-        int capacidadeAtualizada = 0;
-
-        assertThrows(CapacidadeException.class, () -> useCase.execute(idRestaurante, capacidadeOriginal,
-                capacidadeAtualizada));
-
-        verify(mesaService, never()).delete(anyLong());
-        verify(mesaService, never()).salvarTodasMesas(anyList());
-    }
-
-
-    @Test
-    @DisplayName("Teste para executar use case com capacidade maior que a capacidade original")
-    void testExecuteCapacidadeMaiorQueOriginalDiferente() {
-        Long idRestaurante = 1L;
-        int capacidadeOriginal = 10;
-        int capacidadeAtualizada = 5;
-
-        List<MesaDTO> mesaDTOs = new ArrayList<>();
-        for (int i = 1; i <= capacidadeOriginal; i++) {
-            MesaDTO mesaDTO = new MesaDTO();
-            mesaDTO.setId((long) i);
-            mesaDTO.setNomeMesa("MESA " + i);
-            mesaDTOs.add(mesaDTO);
+            verify(mesaService, never()).delete(anyLong());
+            verify(mesaService, never()).salvarTodasMesas(anyList());
         }
 
-        when(mesaService.findAllByIdRestaurante(idRestaurante)).thenReturn(mesaDTOs);
-        useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada);
+        @Test
+        @DisplayName("Teste para exceção quando capacidade atualizada é menor ou igual a zero")
+        void testExecuteCapacidadeInvalida() {
+            Long idRestaurante = 1L;
+            int capacidadeOriginal = 5;
+            int capacidadeAtualizada = 0;
 
-        verify(mesaService, times(5)).delete(anyLong());
-        verify(mesaService, never()).salvarTodasMesas(anyList());
+            assertThrows(CapacidadeException.class, () -> useCase.execute(idRestaurante, capacidadeOriginal,
+                    capacidadeAtualizada));
+
+            verify(mesaService, never()).delete(anyLong());
+            verify(mesaService, never()).salvarTodasMesas(anyList());
+        }
+
+
+        @Test
+        @DisplayName("Teste para executar use case com capacidade maior que a capacidade original")
+        void testExecuteCapacidadeMaiorQueOriginalDiferente() {
+            Long idRestaurante = 1L;
+            int capacidadeOriginal = 10;
+            int capacidadeAtualizada = 5;
+
+            List<MesaDTO> mesaDTOs = new ArrayList<>();
+            for (int i = 1; i <= capacidadeOriginal; i++) {
+                MesaDTO mesaDTO = new MesaDTO();
+                mesaDTO.setId((long) i);
+                mesaDTO.setNomeMesa("MESA " + i);
+                mesaDTOs.add(mesaDTO);
+            }
+
+            when(mesaService.findAllByIdRestaurante(idRestaurante)).thenReturn(mesaDTOs);
+            useCase.execute(idRestaurante, capacidadeOriginal, capacidadeAtualizada);
+
+            verify(mesaService, times(5)).delete(anyLong());
+            verify(mesaService, never()).salvarTodasMesas(anyList());
+        }
     }
 }

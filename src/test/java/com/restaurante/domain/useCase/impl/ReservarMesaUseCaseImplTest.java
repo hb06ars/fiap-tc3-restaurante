@@ -6,6 +6,7 @@ import com.restaurante.domain.useCase.ValidarDataUseCase;
 import com.restaurante.domain.useCase.ValidarReservaUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -49,57 +50,66 @@ class ReservarMesaUseCaseImplTest {
         openMocks.close();
     }
 
-    @Test
-    void salvarDeveChamarValidacoesESalvarReserva() {
-        ReservaDTO reservaDTO = new ReservaDTO();
-        reservaDTO.setRestauranteId(1L);
-        reservaDTO.setDataDaReserva(LocalDateTime.now());
-        when(reservaService.save(any(ReservaDTO.class))).thenReturn(reservaDTO);
+    @Nested
+    class SalvarReservaMesaUseCaseTest {
+        @Test
+        void salvarDeveChamarValidacoesESalvarReserva() {
+            ReservaDTO reservaDTO = new ReservaDTO();
+            reservaDTO.setRestauranteId(1L);
+            reservaDTO.setDataDaReserva(LocalDateTime.now());
+            when(reservaService.save(any(ReservaDTO.class))).thenReturn(reservaDTO);
 
-        ReservaDTO resultado = reservarMesaUseCase.salvar(reservaDTO);
+            ReservaDTO resultado = reservarMesaUseCase.salvar(reservaDTO);
 
-        assertNotNull(resultado);
-        verify(validarReservaUseCase).execute(reservaDTO);
-        verify(validaDataUseCase).execute(any(), any(), any());
-        verify(reservaService).save(reservaDTO);
+            assertNotNull(resultado);
+            verify(validarReservaUseCase).execute(reservaDTO);
+            verify(validaDataUseCase).execute(any(), any(), any());
+            verify(reservaService).save(reservaDTO);
 
-        assertEquals(reservaDTO.getDataDaReserva().plusHours(toleranciaMesa), reservaDTO.getDataFimReserva());
+            assertEquals(reservaDTO.getDataDaReserva().plusHours(toleranciaMesa), reservaDTO.getDataFimReserva());
+        }
     }
 
-    @Test
-    void atualizarDeveAtualizarDadosDaReservaExistente() {
-        Long id = 1L;
-        ReservaDTO reservaOriginal = new ReservaDTO();
-        reservaOriginal.setRestauranteId(1L);
-        reservaOriginal.setDataDaReserva(LocalDateTime.now());
-        reservaOriginal.setMesaId(1L);
+    @Nested
+    class AtualizarReservarMesaUseCaseTest {
+        @Test
+        void atualizarDeveAtualizarDadosDaReservaExistente() {
+            Long id = 1L;
+            ReservaDTO reservaOriginal = new ReservaDTO();
+            reservaOriginal.setRestauranteId(1L);
+            reservaOriginal.setDataDaReserva(LocalDateTime.now());
+            reservaOriginal.setMesaId(1L);
 
-        ReservaDTO reservaAtualizada = new ReservaDTO();
-        reservaAtualizada.setRestauranteId(2L);
-        reservaAtualizada.setDataDaReserva(LocalDateTime.now().plusDays(1));
-        reservaAtualizada.setMesaId(2L);
+            ReservaDTO reservaAtualizada = new ReservaDTO();
+            reservaAtualizada.setRestauranteId(2L);
+            reservaAtualizada.setDataDaReserva(LocalDateTime.now().plusDays(1));
+            reservaAtualizada.setMesaId(2L);
 
-        when(reservaService.findById(anyLong())).thenReturn(reservaOriginal);
-        when(reservaService.save(any(ReservaDTO.class))).thenReturn(reservaAtualizada);
+            when(reservaService.findById(anyLong())).thenReturn(reservaOriginal);
+            when(reservaService.save(any(ReservaDTO.class))).thenReturn(reservaAtualizada);
 
-        ReservaDTO resultado = reservarMesaUseCase.atualizar(id, reservaAtualizada);
+            ReservaDTO resultado = reservarMesaUseCase.atualizar(id, reservaAtualizada);
 
-        assertNotNull(resultado);
-        verify(reservaService).findById(id);
-        verify(validarReservaUseCase).execute(reservaAtualizada);
-        verify(validaDataUseCase).execute(any(), any(), any());
-        verify(reservaService).save(reservaOriginal);
+            assertNotNull(resultado);
+            verify(reservaService).findById(id);
+            verify(validarReservaUseCase).execute(reservaAtualizada);
+            verify(validaDataUseCase).execute(any(), any(), any());
+            verify(reservaService).save(reservaOriginal);
 
-        assertNotEquals(reservaAtualizada.getMesaId(), reservaOriginal.getMesaId());
-        assertNotEquals(reservaAtualizada.getRestauranteId(), reservaOriginal.getRestauranteId());
-        assertEquals(reservaAtualizada.getDataDaReserva(), reservaOriginal.getDataDaReserva());
+            assertNotEquals(reservaAtualizada.getMesaId(), reservaOriginal.getMesaId());
+            assertNotEquals(reservaAtualizada.getRestauranteId(), reservaOriginal.getRestauranteId());
+            assertEquals(reservaAtualizada.getDataDaReserva(), reservaOriginal.getDataDaReserva());
+        }
     }
 
-    @Test
-    void preencherHorarioDeSaidaDeveDefinirHorarioDeSaidaCorreto() {
-        ReservaDTO reservaDTO = new ReservaDTO();
-        reservaDTO.setDataDaReserva(LocalDateTime.now());
-        reservarMesaUseCase.salvar(reservaDTO);
-        assertEquals(reservaDTO.getDataDaReserva().plusHours(toleranciaMesa), reservaDTO.getDataFimReserva());
+    @Nested
+    class PreencherHorario {
+        @Test
+        void preencherHorarioDeSaidaDeveDefinirHorarioDeSaidaCorreto() {
+            ReservaDTO reservaDTO = new ReservaDTO();
+            reservaDTO.setDataDaReserva(LocalDateTime.now());
+            reservarMesaUseCase.salvar(reservaDTO);
+            assertEquals(reservaDTO.getDataDaReserva().plusHours(toleranciaMesa), reservaDTO.getDataFimReserva());
+        }
     }
 }

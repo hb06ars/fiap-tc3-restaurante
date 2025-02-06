@@ -5,6 +5,7 @@ import com.restaurante.domain.enums.StatusPagamentoEnum;
 import com.restaurante.domain.enums.StatusReservaEnum;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -49,84 +50,96 @@ class ReservaRepositoryTest {
         openMocks.close();
     }
 
-    @Test
-    void testBuscarReservasPorFiltro() {
-        LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 19, 0);
+    @Nested
+    class SalvarReservaRepository {
+        @Test
+        void testSalvarReserva() {
+            when(reservaRepository.save(reserva)).thenReturn(reserva);
 
-        ReservaEntity reserva2 = new ReservaEntity();
-        reserva2.setId(2L);
-        reserva2.setRestauranteId(1L);
-        reserva2.setStatusReserva(StatusReservaEnum.RESERVADO);
-        reserva2.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
-        reserva2.setDataDaReserva(LocalDateTime.of(2025, 2, 1, 20, 0));
-        reserva2.setDataFimReserva(LocalDateTime.of(2025, 2, 1, 22, 0));
+            ReservaEntity savedReserva = reservaRepository.save(reserva);
 
-        List<ReservaEntity> reservas = Arrays.asList(reserva, reserva2);
+            assertNotNull(savedReserva);
+            assertEquals(1L, savedReserva.getId());
+            assertEquals(1L, savedReserva.getRestauranteId());
+            assertEquals(StatusReservaEnum.OCUPADO, savedReserva.getStatusReserva());
 
-        when(reservaRepository.findAllByFilter(1L, StatusReservaEnum.RESERVADO,
-                StatusPagamentoEnum.PAGO, dataReserva))
-                .thenReturn(reservas);
-
-        List<ReservaEntity> resultado = reservaRepository.findAllByFilter(1L,
-                StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
-
-        assertFalse(resultado.isEmpty());
-        assertEquals(2, resultado.size());
-        assertEquals(StatusReservaEnum.OCUPADO, resultado.get(0).getStatusReserva());
-        assertEquals(StatusReservaEnum.RESERVADO, resultado.get(1).getStatusReserva());
-
-        verify(reservaRepository, times(1)).findAllByFilter(1L,
-                StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
+            verify(reservaRepository, times(1)).save(reserva);
+        }
     }
 
-    @Test
-    void testSalvarReserva() {
-        when(reservaRepository.save(reserva)).thenReturn(reserva);
+    @Nested
+    class BuscaReservaRepositoryTest {
+        @Test
+        void testBuscarPorId() {
+            when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
 
-        ReservaEntity savedReserva = reservaRepository.save(reserva);
+            Optional<ReservaEntity> foundReserva = reservaRepository.findById(1L);
 
-        assertNotNull(savedReserva);
-        assertEquals(1L, savedReserva.getId());
-        assertEquals(1L, savedReserva.getRestauranteId());
-        assertEquals(StatusReservaEnum.OCUPADO, savedReserva.getStatusReserva());
+            assertTrue(foundReserva.isPresent());
+            assertEquals(1L, foundReserva.get().getId());
 
-        verify(reservaRepository, times(1)).save(reserva);
+            verify(reservaRepository, times(1)).findById(1L);
+        }
+
+        @Test
+        void testBuscarReservasPorFiltro() {
+            LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 19, 0);
+
+            ReservaEntity reserva2 = new ReservaEntity();
+            reserva2.setId(2L);
+            reserva2.setRestauranteId(1L);
+            reserva2.setStatusReserva(StatusReservaEnum.RESERVADO);
+            reserva2.setStatusPagamento(StatusPagamentoEnum.PENDENTE);
+            reserva2.setDataDaReserva(LocalDateTime.of(2025, 2, 1, 20, 0));
+            reserva2.setDataFimReserva(LocalDateTime.of(2025, 2, 1, 22, 0));
+
+            List<ReservaEntity> reservas = Arrays.asList(reserva, reserva2);
+
+            when(reservaRepository.findAllByFilter(1L, StatusReservaEnum.RESERVADO,
+                    StatusPagamentoEnum.PAGO, dataReserva))
+                    .thenReturn(reservas);
+
+            List<ReservaEntity> resultado = reservaRepository.findAllByFilter(1L,
+                    StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
+
+            assertFalse(resultado.isEmpty());
+            assertEquals(2, resultado.size());
+            assertEquals(StatusReservaEnum.OCUPADO, resultado.get(0).getStatusReserva());
+            assertEquals(StatusReservaEnum.RESERVADO, resultado.get(1).getStatusReserva());
+
+            verify(reservaRepository, times(1)).findAllByFilter(1L,
+                    StatusReservaEnum.RESERVADO, StatusPagamentoEnum.PAGO, dataReserva);
+        }
     }
 
-    @Test
-    void testBuscarPorId() {
-        when(reservaRepository.findById(1L)).thenReturn(Optional.of(reserva));
+    @Nested
+    class AtualizarReservaRepositoryTest {
+        @Test
+        void testAtualizarReserva() {
+            ReservaEntity reservaAtualizada = new ReservaEntity();
+            reservaAtualizada.setId(1L);
+            reservaAtualizada.setRestauranteId(1L);
+            reservaAtualizada.setStatusReserva(StatusReservaEnum.CANCELADO);
+            reservaAtualizada.setStatusPagamento(StatusPagamentoEnum.CANCELADO);
+            reservaAtualizada.setDataDaReserva(reserva.getDataDaReserva());
+            reservaAtualizada.setDataFimReserva(reserva.getDataFimReserva());
 
-        Optional<ReservaEntity> foundReserva = reservaRepository.findById(1L);
+            when(reservaRepository.save(reservaAtualizada)).thenReturn(reservaAtualizada);
+            ReservaEntity updatedReserva = reservaRepository.save(reservaAtualizada);
 
-        assertTrue(foundReserva.isPresent());
-        assertEquals(1L, foundReserva.get().getId());
-
-        verify(reservaRepository, times(1)).findById(1L);
+            assertEquals(StatusReservaEnum.CANCELADO, updatedReserva.getStatusReserva());
+            assertEquals(StatusPagamentoEnum.CANCELADO, updatedReserva.getStatusPagamento());
+            verify(reservaRepository, times(1)).save(reservaAtualizada);
+        }
     }
 
-    @Test
-    void testAtualizarReserva() {
-        ReservaEntity reservaAtualizada = new ReservaEntity();
-        reservaAtualizada.setId(1L);
-        reservaAtualizada.setRestauranteId(1L);
-        reservaAtualizada.setStatusReserva(StatusReservaEnum.CANCELADO);
-        reservaAtualizada.setStatusPagamento(StatusPagamentoEnum.CANCELADO);
-        reservaAtualizada.setDataDaReserva(reserva.getDataDaReserva());
-        reservaAtualizada.setDataFimReserva(reserva.getDataFimReserva());
-
-        when(reservaRepository.save(reservaAtualizada)).thenReturn(reservaAtualizada);
-        ReservaEntity updatedReserva = reservaRepository.save(reservaAtualizada);
-
-        assertEquals(StatusReservaEnum.CANCELADO, updatedReserva.getStatusReserva());
-        assertEquals(StatusPagamentoEnum.CANCELADO, updatedReserva.getStatusPagamento());
-        verify(reservaRepository, times(1)).save(reservaAtualizada);
-    }
-
-    @Test
-    void testDeletarReserva() {
-        doNothing().when(reservaRepository).deleteById(1L);
-        reservaRepository.deleteById(1L);
-        verify(reservaRepository, times(1)).deleteById(1L);
+    @Nested
+    class DeletarReservaRepositoryTest {
+        @Test
+        void testDeletarReserva() {
+            doNothing().when(reservaRepository).deleteById(1L);
+            reservaRepository.deleteById(1L);
+            verify(reservaRepository, times(1)).deleteById(1L);
+        }
     }
 }

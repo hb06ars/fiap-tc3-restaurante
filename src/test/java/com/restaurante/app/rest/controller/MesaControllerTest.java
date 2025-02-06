@@ -10,6 +10,7 @@ import com.restaurante.infra.exceptions.GlobalExceptionHandler;
 import com.restaurante.utils.BaseUnitTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
@@ -77,84 +78,94 @@ class MesaControllerTest extends BaseUnitTest {
         mock.close();
     }
 
-    @Test
-    void testCadastrarMesa() throws Exception {
-        when(mesaService.save(any(MesaDTO.class))).thenReturn(mesaDTO);
+    @Nested
+    class CadastrarMesaControllerTest {
+        @Test
+        void testCadastrarMesa() throws Exception {
+            when(mesaService.save(any(MesaDTO.class))).thenReturn(mesaDTO);
 
-        mockMvc.perform(post("/mesa/cadastrar")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mesaDTO)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.nomeMesa").value("Mesa 1"))
-                .andExpect(jsonPath("$.restauranteId").value(10L));
+            mockMvc.perform(post("/mesa/cadastrar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(mesaDTO)))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$.id").value(1L))
+                    .andExpect(jsonPath("$.nomeMesa").value("Mesa 1"))
+                    .andExpect(jsonPath("$.restauranteId").value(10L));
 
-        Mockito.verify(mesaService, Mockito.times(1)).save(any(MesaDTO.class));
+            Mockito.verify(mesaService, Mockito.times(1)).save(any(MesaDTO.class));
+        }
+
+        @Test
+        void testCadastrarExcecaoQuandoJsonInvalido() throws Exception {
+            var mesa = getRandom(MesaDTO.class);
+            mesa.setRestauranteId(null);
+
+            mockMvc.perform(post("/mesa/cadastrar")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(mesa)))
+                    .andExpect(status().isBadRequest());
+
+            Mockito.verify(mesaService, Mockito.times(0)).save(any(MesaDTO.class));
+        }
     }
 
-    @Test
-    void testCadastrarExcecaoQuandoJsonInvalido() throws Exception {
-        var mesa = getRandom(MesaDTO.class);
-        mesa.setRestauranteId(null);
+    @Nested
+    class AtualizarMesaControllerTest {
+        @Test
+        void testAtualizarMesa() throws Exception {
+            when(mesaService.update(eq(1L), any(MesaDTO.class))).thenReturn(mesaDTO);
 
-        mockMvc.perform(post("/mesa/cadastrar")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mesa)))
-                .andExpect(status().isBadRequest());
+            mockMvc.perform(put("/mesa/atualizar/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(mesaDTO)))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$.id").value(1L))
+                    .andExpect(jsonPath("$.nomeMesa").value("Mesa 1"))
+                    .andExpect(jsonPath("$.restauranteId").value(10L));
 
-        Mockito.verify(mesaService, Mockito.times(0)).save(any(MesaDTO.class));
+            Mockito.verify(mesaService, Mockito.times(1)).update(eq(1L), any(MesaDTO.class));
+        }
     }
 
-    @Test
-    void testAtualizarMesa() throws Exception {
-        when(mesaService.update(eq(1L), any(MesaDTO.class))).thenReturn(mesaDTO);
+    @Nested
+    class BuscarMesaControllerTest {
+        @Test
+        void testBuscarMesaPorId() throws Exception {
+            List<MesaDisponivelDTO> mesas = Arrays.asList(mesaDisponivelDTO);
 
-        mockMvc.perform(put("/mesa/atualizar/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(mesaDTO)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.nomeMesa").value("Mesa 1"))
-                .andExpect(jsonPath("$.restauranteId").value(10L));
+            when(mesaService.buscarMesas(1L)).thenReturn(mesas);
 
-        Mockito.verify(mesaService, Mockito.times(1)).update(eq(1L), any(MesaDTO.class));
+            mockMvc.perform(get("/mesa/1")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$.size()").value(1))
+                    .andExpect(jsonPath("$[0].mesaId").value(1L))
+                    .andExpect(jsonPath("$[0].mesaNome").value("Mesa 1"))
+                    .andExpect(jsonPath("$[0].statusMesa").value("Disponível"));
+
+            Mockito.verify(mesaService, Mockito.times(1)).buscarMesas(1L);
+        }
+
+        @Test
+        void testBuscarMesasPorRestaurante() throws Exception {
+            List<MesaDTO> mesas = Arrays.asList(mesaDTO);
+
+            when(mesaService.findAllByIdRestaurante(10L)).thenReturn(mesas);
+
+            mockMvc.perform(get("/mesa/listaporrestaurante/10")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$.size()").value(1))
+                    .andExpect(jsonPath("$[0].id").value(1L))
+                    .andExpect(jsonPath("$[0].nomeMesa").value("Mesa 1"))
+                    .andExpect(jsonPath("$[0].restauranteId").value(10L));
+
+            Mockito.verify(mesaService, Mockito.times(1)).findAllByIdRestaurante(10L);
+        }
     }
 
-    @Test
-    void testBuscarMesaPorId() throws Exception {
-        List<MesaDisponivelDTO> mesas = Arrays.asList(mesaDisponivelDTO);
-
-        when(mesaService.buscarMesas(1L)).thenReturn(mesas);
-
-        mockMvc.perform(get("/mesa/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(jsonPath("$[0].mesaId").value(1L))
-                .andExpect(jsonPath("$[0].mesaNome").value("Mesa 1"))
-                .andExpect(jsonPath("$[0].statusMesa").value("Disponível"));
-
-        Mockito.verify(mesaService, Mockito.times(1)).buscarMesas(1L);
-    }
-
-    @Test
-    void testBuscarMesasPorRestaurante() throws Exception {
-        List<MesaDTO> mesas = Arrays.asList(mesaDTO);
-
-        when(mesaService.findAllByIdRestaurante(10L)).thenReturn(mesas);
-
-        mockMvc.perform(get("/mesa/listaporrestaurante/10")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].nomeMesa").value("Mesa 1"))
-                .andExpect(jsonPath("$[0].restauranteId").value(10L));
-
-        Mockito.verify(mesaService, Mockito.times(1)).findAllByIdRestaurante(10L);
-    }
 }

@@ -12,6 +12,7 @@ import com.restaurante.domain.useCase.CadastrarRestauranteUseCase;
 import com.restaurante.infra.exceptions.GlobalExceptionHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.mockito.Mock;
@@ -70,77 +71,90 @@ class RestauranteControllerTest {
         mock.close();
     }
 
-    @Test
-    void cadastrarDeveRetornarRestauranteDTO() throws Exception {
-        RestauranteRequest request = new RestauranteRequest();
-        request.setNome("Restaurante Teste");
-        request.setLocalizacao("São Paulo");
-        request.setCapacidade(10);
-        request.setTipoCozinha(TipoCozinhaEnum.BRASILEIRA);
-        RestauranteDTO dto = new RestauranteDTO(request);
+    @Nested
+    class CadastrarRestauranteControllerTest {
+        @Test
+        void cadastrarDeveRetornarRestauranteDTO() throws Exception {
+            RestauranteRequest request = new RestauranteRequest();
+            request.setNome("Restaurante Teste");
+            request.setLocalizacao("São Paulo");
+            request.setCapacidade(10);
+            request.setTipoCozinha(TipoCozinhaEnum.BRASILEIRA);
+            RestauranteDTO dto = new RestauranteDTO(request);
 
-        when(cadastrarRestauranteUseCase.execute(dto)).thenReturn(dto);
+            when(cadastrarRestauranteUseCase.execute(dto)).thenReturn(dto);
 
-        mockMvc.perform(post("/restaurante")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Restaurante Teste"));
+            mockMvc.perform(post("/restaurante")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.nome").value("Restaurante Teste"));
 
-        verify(cadastrarRestauranteUseCase, times(1)).execute(dto);
+            verify(cadastrarRestauranteUseCase, times(1)).execute(dto);
+        }
     }
 
-    @Test
-    void atualizarDeveRetornarRestauranteDTOAtualizado() throws Exception {
-        Long id = 1L;
-        RestauranteRequest request = new RestauranteRequest();
-        request.setNome("Restaurante Atualizado");
-        request.setLocalizacao("São Paulo");
-        request.setCapacidade(10);
-        request.setTipoCozinha(TipoCozinhaEnum.BRASILEIRA);
-        var dto = new RestauranteDTO(request);
+    @Nested
+    class AtualizarRestauranteControllerTest {
+        @Test
+        void atualizarDeveRetornarRestauranteDTOAtualizado() throws Exception {
+            Long id = 1L;
+            RestauranteRequest request = new RestauranteRequest();
+            request.setNome("Restaurante Atualizado");
+            request.setLocalizacao("São Paulo");
+            request.setCapacidade(10);
+            request.setTipoCozinha(TipoCozinhaEnum.BRASILEIRA);
+            var dto = new RestauranteDTO(request);
 
-        when(atualizarRestauranteUseCase.execute(id, dto)).thenReturn(dto);
+            when(atualizarRestauranteUseCase.execute(id, dto)).thenReturn(dto);
 
-        mockMvc.perform(put("/restaurante/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Restaurante Atualizado"));
+            mockMvc.perform(put("/restaurante/{id}", id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.nome").value("Restaurante Atualizado"));
 
-        verify(atualizarRestauranteUseCase, times(1)).execute(id, dto);
+            verify(atualizarRestauranteUseCase, times(1)).execute(id, dto);
+        }
     }
 
-    @Test
-    void buscarDeveRetornarListaDeRestaurantes() throws Exception {
-        RestauranteDTO restaurante1 = new RestauranteDTO();
-        restaurante1.setNome("Restaurante 1");
-        RestauranteDTO restaurante2 = new RestauranteDTO();
-        restaurante2.setNome("Restaurante 2");
+    @Nested
+    class BuscarRestauranteControllerTest {
+        @Test
+        void buscarDeveRetornarListaDeRestaurantes() throws Exception {
+            RestauranteDTO restaurante1 = new RestauranteDTO();
+            restaurante1.setNome("Restaurante 1");
+            RestauranteDTO restaurante2 = new RestauranteDTO();
+            restaurante2.setNome("Restaurante 2");
 
-        when(restauranteService.buscarRestaurantes("Restaurante 1", "São Paulo",
-                TipoCozinhaEnum.BRASILEIRA.name())).thenReturn(List.of(restaurante1, restaurante2));
+            when(restauranteService.buscarRestaurantes("Restaurante 1", "São Paulo",
+                    TipoCozinhaEnum.BRASILEIRA.name())).thenReturn(List.of(restaurante1, restaurante2));
 
-        mockMvc.perform(get("/restaurante")
-                        .param("nome", "Restaurante 1")
-                        .param("localizacao", "São Paulo")
-                        .param("tipoCozinha", TipoCozinhaEnum.BRASILEIRA.name()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nome").value("Restaurante 1"))
-                .andExpect(jsonPath("$[1].nome").value("Restaurante 2"));
+            mockMvc.perform(get("/restaurante")
+                            .param("nome", "Restaurante 1")
+                            .param("localizacao", "São Paulo")
+                            .param("tipoCozinha", TipoCozinhaEnum.BRASILEIRA.name()))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].nome").value("Restaurante 1"))
+                    .andExpect(jsonPath("$[1].nome").value("Restaurante 2"));
 
-        verify(restauranteService, times(1)).buscarRestaurantes("Restaurante 1",
-                "São Paulo", TipoCozinhaEnum.BRASILEIRA.name());
+            verify(restauranteService, times(1)).buscarRestaurantes("Restaurante 1",
+                    "São Paulo", TipoCozinhaEnum.BRASILEIRA.name());
+        }
     }
 
-    @Test
-    void deletarDeveRetornarMensagemDeSucesso() throws Exception {
-        Long id = 1L;
+    @Nested
+    class DeletarRestauranteControllerTest {
+        @Test
+        void deletarDeveRetornarMensagemDeSucesso() throws Exception {
+            Long id = 1L;
 
-        mockMvc.perform(delete("/restaurante/{id}", id))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.mensagem").value("Registro deletado com sucesso."));
+            mockMvc.perform(delete("/restaurante/{id}", id))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.mensagem").value("Registro deletado com sucesso."));
 
-        verify(restauranteService, times(1)).delete(id);
+            verify(restauranteService, times(1)).delete(id);
+        }
     }
+
 }

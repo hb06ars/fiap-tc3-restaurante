@@ -6,6 +6,7 @@ import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -59,26 +60,29 @@ class AtualizarRestauranteUseCaseImplTest {
     }
 
 
-    @Test
-    void testExecuteSuccess() {
-        when(restauranteService.findById(id)).thenReturn(restOriginal);
-        when(restauranteService.update(id, restauranteDTO)).thenReturn(restauranteDTO);
+    @Nested
+    class AtualizarRestauranteUseCaseTest {
+        @Test
+        void testExecuteSuccess() {
+            when(restauranteService.findById(id)).thenReturn(restOriginal);
+            when(restauranteService.update(id, restauranteDTO)).thenReturn(restauranteDTO);
 
-        RestauranteDTO result = atualizarRestauranteUseCase.execute(id, restauranteDTO);
+            RestauranteDTO result = atualizarRestauranteUseCase.execute(id, restauranteDTO);
 
-        assertNotNull(result);
-        assertEquals(restauranteDTO.getNome(), result.getNome());
-        assertEquals(restauranteDTO.getCapacidade(), result.getCapacidade());
+            assertNotNull(result);
+            assertEquals(restauranteDTO.getNome(), result.getNome());
+            assertEquals(restauranteDTO.getCapacidade(), result.getCapacidade());
 
-        verify(insercaoRemocaoDasMesasUseCase, times(1))
-                .execute(restOriginal.getId(), restOriginal.getCapacidade(), restauranteDTO.getCapacidade());
-        verify(restauranteService, times(1)).update(id, restauranteDTO);
-    }
+            verify(insercaoRemocaoDasMesasUseCase, times(1))
+                    .execute(restOriginal.getId(), restOriginal.getCapacidade(), restauranteDTO.getCapacidade());
+            verify(restauranteService, times(1)).update(id, restauranteDTO);
+        }
 
-    @Test
-    void testExecuteRestauranteNotFound() {
-        when(restauranteService.findById(id)).thenReturn(null);
-        assertThrows(ObjectNotFoundException.class, () -> atualizarRestauranteUseCase.execute(id, restauranteDTO));
-        verify(restauranteService, never()).update(anyLong(), any());
+        @Test
+        void testExecuteRestauranteNotFound() {
+            when(restauranteService.findById(id)).thenReturn(null);
+            assertThrows(ObjectNotFoundException.class, () -> atualizarRestauranteUseCase.execute(id, restauranteDTO));
+            verify(restauranteService, never()).update(anyLong(), any());
+        }
     }
 }

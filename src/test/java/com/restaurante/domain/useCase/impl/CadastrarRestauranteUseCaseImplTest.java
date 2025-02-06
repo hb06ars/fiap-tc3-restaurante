@@ -6,6 +6,7 @@ import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -47,43 +48,46 @@ class CadastrarRestauranteUseCaseImplTest {
         openMocks.close();
     }
 
-    @Test
-    void executeDeveCadastrarRestauranteQuandoNaoExistir() {
-        RestauranteDTO restauranteDTO = new RestauranteDTO();
-        restauranteDTO.setNome("Restaurante Teste");
-        restauranteDTO.setLocalizacao("Rua A");
-        restauranteDTO.setCapacidade(50);
+    @Nested
+    class CadastrarRestauranteUseCaseTest{
+        @Test
+        void executeDeveCadastrarRestauranteQuandoNaoExistir() {
+            RestauranteDTO restauranteDTO = new RestauranteDTO();
+            restauranteDTO.setNome("Restaurante Teste");
+            restauranteDTO.setLocalizacao("Rua A");
+            restauranteDTO.setCapacidade(50);
 
-        when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao()))
-                .thenReturn(false);
-        when(restauranteService.save(restauranteDTO)).thenReturn(restauranteDTO);
+            when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao()))
+                    .thenReturn(false);
+            when(restauranteService.save(restauranteDTO)).thenReturn(restauranteDTO);
 
-        RestauranteDTO resultado = cadastrarRestauranteUseCase.execute(restauranteDTO);
+            RestauranteDTO resultado = cadastrarRestauranteUseCase.execute(restauranteDTO);
 
-        assertNotNull(resultado);
-        verify(restauranteService).restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao());
-        verify(restauranteService).save(restauranteDTO);
-        verify(insercaoRemocaoDasMesasUseCase).execute(resultado.getId(),
-                0, resultado.getCapacidade());
-        verify(funcionamentoService).inserirDataFuncionamentoInicial(resultado.getId());
-    }
+            assertNotNull(resultado);
+            verify(restauranteService).restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao());
+            verify(restauranteService).save(restauranteDTO);
+            verify(insercaoRemocaoDasMesasUseCase).execute(resultado.getId(),
+                    0, resultado.getCapacidade());
+            verify(funcionamentoService).inserirDataFuncionamentoInicial(resultado.getId());
+        }
 
-    @Test
-    void executeDeveLancarExcecaoQuandoRestauranteJaExistir() {
-        RestauranteDTO restauranteDTO = new RestauranteDTO();
-        restauranteDTO.setNome("Restaurante Teste");
-        restauranteDTO.setLocalizacao("Rua A");
+        @Test
+        void executeDeveLancarExcecaoQuandoRestauranteJaExistir() {
+            RestauranteDTO restauranteDTO = new RestauranteDTO();
+            restauranteDTO.setNome("Restaurante Teste");
+            restauranteDTO.setLocalizacao("Rua A");
 
-        when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(),
-                restauranteDTO.getLocalizacao())).thenReturn(true);
+            when(restauranteService.restauranteJaExiste(restauranteDTO.getNome(),
+                    restauranteDTO.getLocalizacao())).thenReturn(true);
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> cadastrarRestauranteUseCase.execute(restauranteDTO));
+            RuntimeException exception = assertThrows(RuntimeException.class,
+                    () -> cadastrarRestauranteUseCase.execute(restauranteDTO));
 
-        assertEquals("O Restaurante já existe, tente atualizar o mesmo!", exception.getMessage());
-        verify(restauranteService).restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao());
-        verify(restauranteService, never()).save(any());
-        verify(insercaoRemocaoDasMesasUseCase, never()).execute(anyLong(), anyInt(), anyInt());
-        verify(funcionamentoService, never()).inserirDataFuncionamentoInicial(anyLong());
+            assertEquals("O Restaurante já existe, tente atualizar o mesmo!", exception.getMessage());
+            verify(restauranteService).restauranteJaExiste(restauranteDTO.getNome(), restauranteDTO.getLocalizacao());
+            verify(restauranteService, never()).save(any());
+            verify(insercaoRemocaoDasMesasUseCase, never()).execute(anyLong(), anyInt(), anyInt());
+            verify(funcionamentoService, never()).inserirDataFuncionamentoInicial(anyLong());
+        }
     }
 }

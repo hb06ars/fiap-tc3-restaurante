@@ -6,6 +6,7 @@ import com.restaurante.infra.exceptions.ReservaException;
 import com.restaurante.infra.repository.postgres.MesaRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -41,33 +42,36 @@ class BuscarMesaDisponivelUseCaseImplTest {
     }
 
 
-    @Test
-    void executeDeveRetornarMesaDisponivelDTO() {
-        Long id = 1L;
-        LocalDateTime dataReserva = LocalDateTime.now();
+    @Nested
+    class BuscarMesaDisponivelUseCaseTest {
+        @Test
+        void executeDeveRetornarMesaDisponivelDTO() {
+            Long id = 1L;
+            LocalDateTime dataReserva = LocalDateTime.now();
 
-        List<Object[]> mesasDisponiveis = new ArrayList<>();
-        mesasDisponiveis.add(new Object[]{1L, "Mesa 1", "Reservado"});
+            List<Object[]> mesasDisponiveis = new ArrayList<>();
+            mesasDisponiveis.add(new Object[]{1L, "Mesa 1", "Reservado"});
 
-        when(mesaRepository.buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva))).thenReturn(mesasDisponiveis);
+            when(mesaRepository.buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva))).thenReturn(mesasDisponiveis);
 
-        MesaDisponivelDTO resultado = buscarMesaDisponivelUseCase.execute(id, dataReserva);
+            MesaDisponivelDTO resultado = buscarMesaDisponivelUseCase.execute(id, dataReserva);
 
-        assertNotNull(resultado);
-        assertEquals(1L, resultado.getMesaId());
-        assertEquals("Mesa 1", resultado.getMesaNome());
-        assertEquals("Reservado", resultado.getStatusMesa());
-        verify(mesaRepository).buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva));
-    }
+            assertNotNull(resultado);
+            assertEquals(1L, resultado.getMesaId());
+            assertEquals("Mesa 1", resultado.getMesaNome());
+            assertEquals("Reservado", resultado.getStatusMesa());
+            verify(mesaRepository).buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva));
+        }
 
-    @Test
-    void executeDeveLancarReservaExceptionQuandoNaoHouverMesasDisponiveis() {
-        Long id = 1L;
-        LocalDateTime dataReserva = LocalDateTime.now();
+        @Test
+        void executeDeveLancarReservaExceptionQuandoNaoHouverMesasDisponiveis() {
+            Long id = 1L;
+            LocalDateTime dataReserva = LocalDateTime.now();
 
-        when(mesaRepository.buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva))).thenReturn(new ArrayList<>());
+            when(mesaRepository.buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva))).thenReturn(new ArrayList<>());
 
-        assertThrows(ReservaException.class, () -> buscarMesaDisponivelUseCase.execute(id, dataReserva));
-        verify(mesaRepository).buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva));
+            assertThrows(ReservaException.class, () -> buscarMesaDisponivelUseCase.execute(id, dataReserva));
+            verify(mesaRepository).buscarMesasDisponiveis(id, DataFormat.truncate(dataReserva));
+        }
     }
 }
