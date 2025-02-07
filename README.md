@@ -1,18 +1,24 @@
 # RESTAURANTE
 
-### SUBIR APLICAÇÃO
-- Deve ser executado: [docker-compose.yaml](docker-compose.yaml)
-- Em seguida, apontar o Enviroments Variables para o arquivo: [variaveis.env](env%2Fvariaveis.env)
+### SUBIR APLICAÇÃO EM DEV (POSTGRES)
+- No arquivo src/resources/application.yml altere o profile para dev
+- Deve ser executado o arquivo na raíz: /docker-compose.yaml
+- Em seguida, apontar o Enviroments Variables para o arquivo: /env/variaveis.env
 - Por fim, aguarde subir a imagem e assim iniciar a aplicação.
+
+### SUBIR APLICAÇÃO EM DEV (H2)
+- No arquivo src/main/resources/application.yml altere o profile para test
+- Em seguida, apontar o Enviroments Variables para o arquivo: /env/variaveis-test.env
+- Por fim, aguarde iniciar a aplicação.
 
 ### TESTES
 - Testes unitários:
   > mvn test
 
-- Testes integrados:
+- Testes integrados (a aplicação deve estar iniciada):
   > mvn test -P integration-test -Dspring.profiles.active=test
 
-- Testes de Sistema:
+- Testes de Sistema (a aplicação deve estar iniciada):
   > mvn test -P system-test -Dspring.profiles.active=test
 
 - Cucumber:
@@ -41,7 +47,7 @@
 
 ### FLUXO
 - Abra o postman 
-- importe a Collection: [Restaurante.postman_collection.json](collections%2FRestaurante.postman_collection.json)
+- importe a Collection: /collections/Restaurante.postman_collection.json
 - Para alguns cadastros, precisamos de alguns dados no sistemas já existentes, por exemplo:
 - Não dá pra cadastrar uma reserva sem ao menos existir um restaurante e um usuário.
 - Podemos cadastrar dados iniciais na seguinte ordem:
@@ -52,10 +58,10 @@
 
 ### INSTALAÇÃO
 - Como dito acima, para iniciar a execução do microserviço de restaurante, precisamos ter configurado o Docker.
-- Configurar o arquivo [checkstyle.xml](checkstyle.xml) usando Plugin CheckStyle-IDEA.
+- Configurar o arquivo na raíz checkstyle.xml usando Plugin CheckStyle-IDEA.
 - Instalar o Postman para testar as requisições.
-- Deve ser executado: [docker-compose.yaml](docker-compose.yaml)
-- Em seguida, apontar o Enviroments Variables para o arquivo: [variaveis.env](env%2Fvariaveis.env)
+- Deve ser executado na raíz: /docker-compose.yaml
+- Em seguida, apontar o Enviroments Variables para o arquivo: /env/variaveis.env
 
 ### DOCKER COMPOSE
 - Para subir a imagem basta executar o docker-compose.yaml

@@ -1,26 +1,3 @@
-server:
-  port: ${PORT:8080}
 spring:
-  datasource:
-    url: ${POSTGRES_URL}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASS}
-    driver-class-name: org.postgresql.Driver
-    initialization-mode: always
-  sql:
-    init:
-      mode: always
-
-sonar:
-  token: ${SONAR_TOKEN}
-  host:
-    url: http://localhost:9000
-  projectKey: restaurante
-  projectName: restaurante
-  projectVersion: 1.0
-  sources: src/main/java
-  tests: src/test/java
-  jacoco:
-    reportPath: target/jacoco.exec
-
-tolerancia-mesa: ${TOLERANCIA_MESA:2}
+  profiles:
+    active: test

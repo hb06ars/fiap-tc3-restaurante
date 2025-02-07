@@ -1,0 +1,33 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  datasource:
+    url: ${H2_URL:jdbc:h2:mem:testdb}
+    driver-class-name: org.h2.Driver
+    username: ${H2_USER:sa}
+    password: ${H2_PASS:}
+  h2:
+    console:
+      enabled: false
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    initialization-mode: always
+  sql:
+    init:
+      mode: always
+
+sonar:
+  token: ${SONAR_TOKEN}
+  host:
+    url: http://localhost:9000
+  projectKey: restaurante
+  projectName: restaurante
+  projectVersion: 1.0
+  sources: src/main/java
+  tests: src/test/java
+  jacoco:
+    reportPath: target/jacoco.exec
+
+tolerancia-mesa: ${TOLERANCIA_MESA:2}

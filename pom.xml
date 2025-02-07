@@ -160,7 +160,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
         <!-- relatorio de testes -->
         <dependency>
@@ -318,7 +318,12 @@
                 </plugins>
             </build>
         </profile>
-
+        <profile>
+            <id>test</id>
+            <properties>
+                <spring-boot.run.profiles>test</spring-boot.run.profiles>
+            </properties>
+        </profile>
     </profiles>
 
 </project>
