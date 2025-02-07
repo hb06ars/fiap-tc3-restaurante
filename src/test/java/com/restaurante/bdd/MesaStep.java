@@ -1,11 +1,17 @@
 package com.restaurante.bdd;
 
 import com.restaurante.app.rest.request.MesaRequest;
+import com.restaurante.domain.dto.MesaDTO;
 import com.restaurante.utils.BaseUnitTest;
 import io.cucumber.java.it.Quando;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
 import io.restassured.response.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
+import static io.restassured.RestAssured.given;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 public class MesaStep extends BaseUnitTest {
 
@@ -16,15 +22,20 @@ public class MesaStep extends BaseUnitTest {
     private final String ENDPOINT = "http://localhost:8080/mesa";
 
     @Quando("submeter uma nova Mesa")
-    public void submeterUmaNovaMesa() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public MesaDTO submeterUmaNovaMesa() {
+        MesaRequest request = gerarNovaMesa();
+        response = given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(request)
+                .when().post(ENDPOINT + "/cadastrar");
+        return response.then().extract().as(MesaDTO.class);
     }
 
     @Então("a Mesa é salva com sucesso")
     public void aMesaSalvaComSucesso() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        response.then()
+                .statusCode(HttpStatus.OK.value())
+                .body(matchesJsonSchemaInClasspath("./schemas/mesa.json"));
     }
 
 
@@ -84,5 +95,10 @@ public class MesaStep extends BaseUnitTest {
         throw new io.cucumber.java.PendingException();
     }
 
-
+    private MesaRequest gerarNovaMesa() {
+        MesaRequest requestRandom = new MesaRequest();
+        requestRandom.setNomeMesa("MESA 1");
+        requestRandom.setRestauranteId(1L);
+        return requestRandom;
+    }
 }

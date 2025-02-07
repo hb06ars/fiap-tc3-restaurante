@@ -39,14 +39,6 @@ public class UsuarioStep extends BaseUnitTest {
         return response.then().extract().as(UsuarioDTO.class);
     }
 
-    private UsuarioRequest gerarNovoUsuario() {
-        UsuarioRequest requestRandom = new UsuarioRequest();
-        requestRandom.setEmail(RandomStringUtils.randomAlphabetic(12) + "@teste.com");
-        requestRandom.setCelular(RandomStringUtils.randomNumeric(11));
-        requestRandom.setNome(RandomStringUtils.randomAlphabetic(12));
-        return requestRandom;
-    }
-
     @Então("o Usuário é salvo com sucesso")
     public void oUsuarioSalvoComSucesso() {
         response.then()
@@ -98,5 +90,11 @@ public class UsuarioStep extends BaseUnitTest {
                 .body(matchesJsonSchemaInClasspath("./schemas/usuario.json"));
     }
 
-
+    private UsuarioRequest gerarNovoUsuario() {
+        UsuarioRequest requestRandom = new UsuarioRequest();
+        requestRandom.setEmail(RandomStringUtils.randomAlphabetic(12) + "@teste.com");
+        requestRandom.setCelular(RandomStringUtils.randomNumeric(11));
+        requestRandom.setNome(RandomStringUtils.randomAlphabetic(12));
+        return requestRandom;
+    }
 }

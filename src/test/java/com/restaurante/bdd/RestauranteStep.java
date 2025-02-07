@@ -34,6 +34,7 @@ public class RestauranteStep extends BaseUnitTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when().post(ENDPOINT);
+
         return response.then().extract().as(RestauranteDTO.class);
     }
 
