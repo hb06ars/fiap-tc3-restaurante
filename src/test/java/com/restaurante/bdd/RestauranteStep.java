@@ -106,7 +106,7 @@ public class RestauranteStep extends BaseUnitTest {
     public void o_restaurante_é_exibido_com_sucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
-                .body(matchesJsonSchemaInClasspath("./schemas/restaurante.json"));
+                .body(matchesJsonSchemaInClasspath("./schemas/restaurante-list.json"));
     }
 
     private RestauranteRequest gerarNovoRestaurante() {

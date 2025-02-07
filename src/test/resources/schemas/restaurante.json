@@ -1,33 +1,30 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "title": "Lista de Mesas Response",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "additionalProperties": false,
-    "properties": {
-      "id": {
-        "type": "integer"
-      },
-      "nome": {
-        "type": "string"
-      },
-      "tipoCozinha": {
-        "type": "string"
-      },
-      "capacidade": {
-        "type": "integer"
-      },
-      "localizacao": {
-        "type": "string"
-      }
+  "title": "Restaurante Response",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "integer"
     },
-    "required": [
-      "id",
-      "nome",
-      "localizacao",
-      "tipoCozinha",
-      "capacidade"
-    ]
-  }
+    "nome": {
+      "type": "string"
+    },
+    "tipoCozinha": {
+      "type": "string"
+    },
+    "capacidade": {
+      "type": "integer"
+    },
+    "localizacao": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "nome",
+    "localizacao",
+    "tipoCozinha",
+    "capacidade"
+  ]
 }
