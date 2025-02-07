@@ -70,8 +70,8 @@ public class UsuarioService {
 
     public UsuarioDTO findByEmailOrCelular(String email, String celular) {
         var usuarioEncontrado = repository.findByEmailOrCelular(
-                email != null ? email.trim() : null,
-                celular != null ? AjustesString.removerTracosCpf(celular.trim()) : null);
+                email != null && !email.isBlank() ? email.trim() : null,
+                celular != null && !celular.isBlank() ? AjustesString.removerCaracteresCel(celular.trim()) : null);
 
         if (usuarioEncontrado == null)
             throw new RuntimeException("Usuário não encontrado.");

@@ -1,6 +1,7 @@
 package com.restaurante.bdd;
 
 import com.restaurante.app.rest.request.FuncionamentoRequest;
+import com.restaurante.app.rest.request.MesaRequest;
 import com.restaurante.utils.BaseUnitTest;
 import io.cucumber.java.it.Quando;
 import io.cucumber.java.pt.Dado;
@@ -11,7 +12,7 @@ public class MesaStep extends BaseUnitTest {
 
     private Response response;
 
-    private FuncionamentoRequest request;
+    private MesaRequest request;
 
     private final String ENDPOINT = "http://localhost:8080/mesa";
 

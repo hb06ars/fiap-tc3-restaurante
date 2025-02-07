@@ -1,6 +1,7 @@
 package com.restaurante.bdd;
 
 import com.restaurante.app.rest.request.FuncionamentoRequest;
+import com.restaurante.app.rest.request.RestauranteRequest;
 import com.restaurante.utils.BaseUnitTest;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
@@ -11,7 +12,7 @@ public class RestauranteStep extends BaseUnitTest {
 
     private Response response;
 
-    private FuncionamentoRequest request;
+    private RestauranteRequest request;
 
     private final String ENDPOINT = "http://localhost:8080/restaurante";
 
