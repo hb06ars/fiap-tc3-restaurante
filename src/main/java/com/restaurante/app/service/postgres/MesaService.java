@@ -75,9 +75,9 @@ public class MesaService {
         repository.deleteById(id);
     }
 
-    public List<MesaDisponivelDTO> buscarMesas(Long id) {
+    public List<MesaDisponivelDTO> buscarMesas(Long restauranteId) {
         return MesaDisponivelMapper.convert(repository
-                .buscarMesasDisponiveis(id, DataFormat.truncate(LocalDateTime.now())));
+                .buscarMesasDisponiveis(restauranteId, DataFormat.truncate(LocalDateTime.now())));
     }
 
     public List<MesaDTO> salvarTodasMesas(List<MesaEntity> novasMesasAdicionadas) {

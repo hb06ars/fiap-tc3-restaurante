@@ -31,15 +31,6 @@ public class MesaController {
         this.service = service;
     }
 
-    @Operation(summary = "Cadastrar Mesa",
-            description = "Salvar a Mesa do Restaurante.")
-    @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
-    @PostMapping("/cadastrar")
-    public ResponseEntity<MesaDTO> cadastro(@Valid @RequestBody MesaRequest request) {
-        log.info("requisição para cadastrar mesa foi efetuada");
-        return ResponseEntity.ok(service.save(new MesaDTO(request)));
-    }
-
     @Operation(summary = "Atualizar Mesa",
             description = "Atualizar a Mesa do Restaurante.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Cadastro realizado com sucesso.")
@@ -54,7 +45,8 @@ public class MesaController {
             description = "Buscar a Mesa.")
     @ApiResponse(responseCode = HttpStatusCodes.OK, description = "Busca realizada com sucesso.")
     @GetMapping(("/{id}"))
-    public ResponseEntity<List<MesaDisponivelDTO>> buscarMesas(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<List<MesaDisponivelDTO>> buscarMesasDisponiveisPeloRestaurante(
+            @PathVariable(name = "id") Long id) {
         log.info("requisição para buscar mesa foi efetuada");
         return ResponseEntity.ok(service.buscarMesas(id));
     }
