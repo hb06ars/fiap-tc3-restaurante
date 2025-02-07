@@ -306,6 +306,8 @@
                             <excludes combine.self="override">
                             </excludes>
                             <properties>
+                                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                                <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
                                 <configurationParameters>
                                     cucumber.junit-platform.naming-strategy=long
                                 </configurationParameters>

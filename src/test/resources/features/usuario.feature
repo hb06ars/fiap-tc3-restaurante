@@ -1,4 +1,6 @@
 # language: pt
+# encoding: UTF-8
+
 Funcionalidade: API - Usuário
 
   Cenário: Cadastrar um Usuário

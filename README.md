@@ -7,10 +7,13 @@
 
 ### TESTES
 - Testes unitários:
-    mvn test
+  > mvn test
 
 - Testes integrados:
-  mvn test -P integration-test
+  > mvn test -P integration-test -Dspring.profiles.active=test
+
+- Testes de Sistema:
+  > mvn test -P system-test -Dspring.profiles.active=test
 
 ### REGRAS
 - Definindo regras de negócio aqui
