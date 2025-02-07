@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Mesa Response",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "mesaId": {
+      "type": "number"
+    },
+    "mesaNome": {
+      "type": "string"
+    },
+    "statusMesa": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "mesaId",
+    "mesaNome",
+    "statusMesa"
+  ]
+}

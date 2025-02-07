@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Reserva Response",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "number"
+    },
+    "usuarioId": {
+      "type": "number"
+    },
+    "mesaId": {
+      "type": "number"
+    },
+    "restauranteId": {
+      "type": "number"
+    },
+    "dataDaReserva": {
+      "type": "string"
+    },
+    "dataFimReserva": {
+      "type": "string"
+    },
+    "valorReserva": {
+      "type": "number"
+    },
+    "statusPagamento": {
+      "type": "string"
+    },
+    "statusReserva": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "usuarioId",
+    "mesaId",
+    "restauranteId",
+    "dataDaReserva",
+    "dataFimReserva",
+    "valorReserva",
+    "statusPagamento",
+    "statusReserva"
+  ]
+}

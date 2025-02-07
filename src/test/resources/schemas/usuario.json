@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Usuário Response",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "number"
+    },
+    "nome": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "celular": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "nome",
+    "email",
+    "celular"
+  ]
+}
