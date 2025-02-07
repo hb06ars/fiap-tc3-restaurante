@@ -7,11 +7,6 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.restassured.response.Response;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-
-import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 public class FuncionamentoStep extends BaseUnitTest {
 
@@ -24,19 +19,14 @@ public class FuncionamentoStep extends BaseUnitTest {
 
     @Quando("submeter um novo Horário de Funcionamento")
     public FuncionamentoDTO submeter_um_novo_horário_de_funcionamento() {
-        request = getRandom(FuncionamentoRequest.class);
-        response = given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(request)
-                .when().post(ENDPOIND);
-        return response.then().extract().as(FuncionamentoDTO.class);
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
     }
 
     @Então("o Horário de Funcionamento é salvo com sucesso")
     public void o_horário_de_funcionamento_é_salvo_com_sucesso() {
-        response.then()
-                .statusCode(HttpStatus.CREATED.value())
-                .body(matchesJsonSchemaInClasspath("schemas/avaliacao.json"));
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
     }
 
 
