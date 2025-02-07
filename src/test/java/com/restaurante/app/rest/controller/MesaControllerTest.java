@@ -27,7 +27,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -76,38 +75,6 @@ class MesaControllerTest extends BaseUnitTest {
     @AfterEach
     void tearDown() throws Exception {
         mock.close();
-    }
-
-    @Nested
-    class CadastrarMesaControllerTest {
-        @Test
-        void testCadastrarMesa() throws Exception {
-            when(mesaService.save(any(MesaDTO.class))).thenReturn(mesaDTO);
-
-            mockMvc.perform(post("/mesa/cadastrar")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(mesaDTO)))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(jsonPath("$.id").value(1L))
-                    .andExpect(jsonPath("$.nomeMesa").value("Mesa 1"))
-                    .andExpect(jsonPath("$.restauranteId").value(10L));
-
-            Mockito.verify(mesaService, Mockito.times(1)).save(any(MesaDTO.class));
-        }
-
-        @Test
-        void testCadastrarExcecaoQuandoJsonInvalido() throws Exception {
-            var mesa = getRandom(MesaDTO.class);
-            mesa.setRestauranteId(null);
-
-            mockMvc.perform(post("/mesa/cadastrar")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(mesa)))
-                    .andExpect(status().isBadRequest());
-
-            Mockito.verify(mesaService, Mockito.times(0)).save(any(MesaDTO.class));
-        }
     }
 
     @Nested

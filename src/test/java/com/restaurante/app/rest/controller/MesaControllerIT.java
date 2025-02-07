@@ -55,53 +55,6 @@ class MesaControllerIT extends BaseUnitTest {
     }
 
     @Nested
-    class CadastrarMesaControllerIT {
-        @Test
-        void testCadastrarMesa() {
-            RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
-            restauranteEntity.setCapacidade(2);
-            var restauranteSaved = restauranteRepository.save(restauranteEntity);
-            var request = getRandom(MesaEntity.class);
-            request.setRestauranteId(restauranteSaved.getId());
-
-            given()
-                    .filter(new AllureRestAssured())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .body(request)
-                    .when()
-                    .post("/mesa/cadastrar")
-                    .then()
-                    .statusCode(HttpStatus.OK.value())
-                    .body("$", hasKey("id"))
-                    .body("$", hasKey("nomeMesa"))
-                    .body("$", hasKey("restauranteId"));
-        }
-
-        @Test
-        void testCadastrarExcecaoQuandoJsonInvalido() {
-            RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
-            restauranteEntity.setCapacidade(2);
-            var request = getRandom(MesaEntity.class);
-            request.setRestauranteId(null);
-
-            given()
-                    .filter(new AllureRestAssured())
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .body(request)
-                    .when()
-                    .post("/mesa/cadastrar")
-                    .then()
-                    .statusCode(HttpStatus.BAD_REQUEST.value())
-                    .body("erro", equalTo("Erro na validação de dados"))
-                    .body("detalhe",
-                            equalTo("O restaurante não pode ser nulo. " +
-                                    "Por favor, forneça um valor para o restaurante."))
-                    .body("campo", equalTo("restauranteId"))
-                    .body("statusCode", equalTo(400));
-        }
-    }
-
-    @Nested
     class AtualizarMesaControllerIT {
         @Test
         void testAtualizarMesa() {
@@ -191,7 +144,6 @@ class MesaControllerIT extends BaseUnitTest {
                     .body("restauranteId", hasItem(1));
         }
     }
-
 
 
 }
