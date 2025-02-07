@@ -4,6 +4,7 @@
 Funcionalidade: API - Funcionamento
 
   Cenário: Cadastrar um Horário de Funcionamento
+    Dado submeter um novo Restaurante
     Quando submeter um novo Horário de Funcionamento
     Então o Horário de Funcionamento é salvo com sucesso
 

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "title": "Funcionamento Response",
+  "type": "array",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "number"
+    },
+    "diaEnum": {
+      "type": "string"
+    },
+    "abertura": {
+      "type": "string"
+    },
+    "fechamento": {
+      "type": "string"
+    },
+    "restauranteId": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "id",
+    "diaEnum",
+    "abertura",
+    "fechamento",
+    "restauranteId"
+  ]
+}
