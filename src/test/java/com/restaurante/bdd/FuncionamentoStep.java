@@ -18,70 +18,70 @@ public class FuncionamentoStep extends BaseUnitTest {
 
 
     @Quando("submeter um novo Horário de Funcionamento")
-    public FuncionamentoDTO submeter_um_novo_horário_de_funcionamento() {
+    public FuncionamentoDTO submeterUmNovoHorarioDeFuncionamento() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("o Horário de Funcionamento é salvo com sucesso")
-    public void o_horário_de_funcionamento_é_salvo_com_sucesso() {
+    public void oHorarioDeFuncionamentoSalvoComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
 
     @Dado("que um Horário de Funcionamento já exista no sistema")
-    public void que_um_horário_de_funcionamento_já_exista_no_sistema() {
+    public void queUmHorarioDefuncionamentoJaExistaNosistema() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Quando("requisitar a alteração do Horário de Funcionamento")
-    public void requisitar_a_alteração_do_horário_de_funcionamento() {
+    public void requisitarAlteracaoDoHorarioDefuncionamento() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("o Horário de Funcionamento é atualizado com sucesso")
-    public void o_horário_de_funcionamento_é_atualizado_com_sucesso() {
+    public void oHorarioDefuncionamentoAtualizadoComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
 
     @Dado("que um Horário de Funcionamento já foi salvo")
-    public void que_um_horário_de_funcionamento_já_foi_salvo() {
+    public void queUmHorarioDefuncionamentoJafoiSalvo() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Quando("requisitar a exclusão do Horário de Funcionamento")
-    public void requisitar_a_exclusão_do_horário_de_funcionamento() {
+    public void requisitarexclusaoDohorarioDefuncionamento() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("o Horário de Funcionamento é removido com sucesso")
-    public void o_horário_de_funcionamento_é_removido_com_sucesso() {
+    public void oHorarioDefuncionamentoremovidoComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
 
     @Dado("que um Horário de Funcionamento já exista")
-    public void que_um_horário_de_funcionamento_já_exista() {
+    public void queUmHorarioDefuncionamentoJaexista() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Quando("requisitar a busca do Horário de Funcionamento")
-    public void requisitar_a_busca_do_horário_de_funcionamento() {
+    public void requisitarbuscaDohorarioDefuncionamento() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("o Horário de Funcionamento é exibido com sucesso")
-    public void o_horário_de_funcionamento_é_exibido_com_sucesso() {
+    public void oHorarioDefuncionamentoexibidoComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }

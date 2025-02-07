@@ -22,7 +22,8 @@ public class RestauranteService {
 
     @Autowired
     public RestauranteService(RestauranteRepository repository,
-                              InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase, FuncionamentoRepository funcionamentoRepository) {
+                              InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase,
+                              FuncionamentoRepository funcionamentoRepository) {
         this.repository = repository;
         this.funcionamentoRepository = funcionamentoRepository;
     }
@@ -65,7 +66,8 @@ public class RestauranteService {
         if (repository.findById(id).isPresent()) {
             var listFuncionamento = funcionamentoRepository.findAllByRestauranteId(id);
             if (!listFuncionamento.isEmpty())
-                funcionamentoRepository.deleteAllById(listFuncionamento.stream().map(FuncionamentoEntity::getId).toList());
+                funcionamentoRepository.deleteAllById(listFuncionamento.stream()
+                        .map(FuncionamentoEntity::getId).toList());
             repository.deleteById(id);
         } else {
             throw new RuntimeException("Restaurante com ID: " + id + ", não encontrado.");

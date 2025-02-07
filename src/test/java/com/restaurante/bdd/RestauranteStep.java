@@ -28,7 +28,7 @@ public class RestauranteStep extends BaseUnitTest {
 
     // Salvar
     @Quando("submeter um novo Restaurante")
-    public RestauranteDTO submeter_um_novo_restaurante() {
+    public RestauranteDTO submeterUmNovoRestaurante() {
         request = gerarNovoRestaurante();
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -38,7 +38,7 @@ public class RestauranteStep extends BaseUnitTest {
     }
 
     @Então("o Restaurante é salvo com sucesso")
-    public void o_restaurante_é_salvo_com_sucesso() {
+    public void oRestauranteSalvoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/restaurante.json"));
@@ -46,12 +46,12 @@ public class RestauranteStep extends BaseUnitTest {
 
     // Atualizar
     @Dado("que um Restaurante já exista no sistema")
-    public void que_um_restaurante_já_exista_no_sistema() {
-        dto = submeter_um_novo_restaurante();
+    public void queUmRestauranteJaExistaNoSistema() {
+        dto = submeterUmNovoRestaurante();
     }
 
     @Quando("requisitar a alteração do Restaurante")
-    public void requisitar_a_alteração_do_restaurante() {
+    public void requisitaralteracaoDoRestaurante() {
         dto.setNome("Restaurante Novo");
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +61,7 @@ public class RestauranteStep extends BaseUnitTest {
     }
 
     @Então("o Restaurante é atualizado com sucesso")
-    public void o_restaurante_é_atualizado_com_sucesso() {
+    public void oRestauranteAtualizadoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/restaurante.json"));
@@ -69,12 +69,12 @@ public class RestauranteStep extends BaseUnitTest {
 
     // Deletar
     @Dado("que um Restaurante já foi salvo")
-    public void que_um_restaurante_já_foi_salvo() {
-        dto = submeter_um_novo_restaurante();
+    public void queUmRestauranteJafoiSalvo() {
+        dto = submeterUmNovoRestaurante();
     }
 
     @Quando("requisitar a exclusão do Restaurante")
-    public void requisitar_a_exclusão_do_restaurante() {
+    public void requisitarexclusaoDoRestaurante() {
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
@@ -82,7 +82,7 @@ public class RestauranteStep extends BaseUnitTest {
     }
 
     @Então("o Restaurante é removido com sucesso")
-    public void o_restaurante_é_removido_com_sucesso() {
+    public void oRestauranteRemovidoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(equalTo("{\"mensagem\":\"Registro deletado com sucesso.\"}"));
@@ -90,12 +90,12 @@ public class RestauranteStep extends BaseUnitTest {
 
     // Buscar
     @Dado("que um Restaurante já exista")
-    public void que_um_restaurante_já_exista() {
-        dto = submeter_um_novo_restaurante();
+    public void queUmRestauranteJaexista() {
+        dto = submeterUmNovoRestaurante();
     }
 
     @Quando("requisitar a busca do Restaurante")
-    public void requisitar_a_busca_do_restaurante() {
+    public void requisitarBuscaDoRestaurante() {
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
@@ -103,7 +103,7 @@ public class RestauranteStep extends BaseUnitTest {
     }
 
     @Então("o Restaurante é exibido com sucesso")
-    public void o_restaurante_é_exibido_com_sucesso() {
+    public void oRestaurantExibidoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/restaurante-list.json"));

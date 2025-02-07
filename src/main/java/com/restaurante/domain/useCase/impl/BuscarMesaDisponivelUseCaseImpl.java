@@ -24,7 +24,8 @@ public class BuscarMesaDisponivelUseCaseImpl implements BuscarMesaDisponivelUseC
 
     @Override
     public MesaDisponivelDTO execute(Long restauranteId, LocalDateTime dataReserva) {
-        List<Object[]> mesasDisponiveis = mesaRepository.buscarMesasDisponiveis(restauranteId, DataFormat.truncate(dataReserva));
+        List<Object[]> mesasDisponiveis = mesaRepository
+                .buscarMesasDisponiveis(restauranteId, DataFormat.truncate(dataReserva));
         List<MesaDisponivelDTO> mesasDisponivelDTO = MesaDisponivelMapper.convert(mesasDisponiveis);
         if (!mesasDisponivelDTO.isEmpty()) {
             return mesasDisponivelDTO.get(0);

@@ -14,8 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.UUID;
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
@@ -26,15 +24,14 @@ public class UsuarioStep extends BaseUnitTest {
 
     private Response response;
 
-    private UsuarioRequest request;
     private UsuarioDTO dto;
 
     private final String ENDPOINT = "http://localhost:8080/usuario";
 
     // Cadastrar
     @Quando("submeter um novo Usuário")
-    public UsuarioDTO submeter_um_novo_usuário() {
-        request = gerarNovoUsuario();
+    public UsuarioDTO submeterUmNovoUsuario() {
+        UsuarioRequest request = gerarNovoUsuario();
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
@@ -51,7 +48,7 @@ public class UsuarioStep extends BaseUnitTest {
     }
 
     @Então("o Usuário é salvo com sucesso")
-    public void o_usuário_é_salvo_com_sucesso() {
+    public void oUsuarioSalvoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/usuario.json"));
@@ -59,12 +56,12 @@ public class UsuarioStep extends BaseUnitTest {
 
     // Atualizar
     @Dado("que um Usuário já exista no sistema")
-    public void que_um_usuário_já_exista_no_sistema() {
-        dto = submeter_um_novo_usuário();
+    public void queUmUsuarioJaExistaNoSistema() {
+        dto = submeterUmNovoUsuario();
     }
 
     @Quando("requisitar a alteração do Usuário")
-    public void requisitar_a_alteração_do_usuário() {
+    public void requisitarAlteracaoDoUsuario() {
         dto.setNome("Teste");
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +71,7 @@ public class UsuarioStep extends BaseUnitTest {
     }
 
     @Então("o Usuário é atualizado com sucesso")
-    public void o_usuário_é_atualizado_com_sucesso() {
+    public void oUsuarioAtualizadoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/usuario.json"));
@@ -82,12 +79,12 @@ public class UsuarioStep extends BaseUnitTest {
 
     // Buscar
     @Dado("que um Usuário já exista")
-    public void que_um_usuário_já_exista() {
-        dto = submeter_um_novo_usuário();
+    public void queUmUsuarioJaExista() {
+        dto = submeterUmNovoUsuario();
     }
 
     @Quando("requisitar a busca do Usuário")
-    public void requisitar_a_busca_do_usuário() {
+    public void requisitarBuscaDouUsuario() {
         response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
@@ -95,7 +92,7 @@ public class UsuarioStep extends BaseUnitTest {
     }
 
     @Então("o Usuário é exibido com sucesso")
-    public void o_usuário_é_exibido_com_sucesso() {
+    public void oUsuarioExibidoComSucesso() {
         response.then()
                 .statusCode(HttpStatus.OK.value())
                 .body(matchesJsonSchemaInClasspath("./schemas/usuario.json"));

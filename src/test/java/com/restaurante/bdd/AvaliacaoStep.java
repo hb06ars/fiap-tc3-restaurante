@@ -18,13 +18,13 @@ public class AvaliacaoStep extends BaseUnitTest {
     private final String ENDPOIND = "http://localhost:8080/avaliacao";
 
     @Quando("submeter uma nova mensagem")
-    public AvaliacaoDTO submeter_uma_nova_mensagem() {
+    public AvaliacaoDTO submeterUmaNovaMensagem() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("a mensagem é registrada com sucesso")
-    public void a_mensagem_é_registrada_com_sucesso() {
+    public void aMensagemRegistradaComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
@@ -37,7 +37,7 @@ public class AvaliacaoStep extends BaseUnitTest {
     }
 
     @Então("as avaliações sao exibidas com sucesso")
-    public void as_avaliações_sao_exibidas_com_sucesso() {
+    public void asAvaliacoesSaoExibidasComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }

@@ -1,6 +1,5 @@
 package com.restaurante.bdd;
 
-import com.restaurante.app.rest.request.FuncionamentoRequest;
 import com.restaurante.app.rest.request.MesaRequest;
 import com.restaurante.utils.BaseUnitTest;
 import io.cucumber.java.it.Quando;
@@ -17,79 +16,70 @@ public class MesaStep extends BaseUnitTest {
     private final String ENDPOINT = "http://localhost:8080/mesa";
 
     @Quando("submeter uma nova Mesa")
-    public void submeter_uma_nova_mesa() {
+    public void submeterUmaNovaMesa() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
-    @Então("ao Mesa é salva com sucesso")
-    public void ao_mesa_é_salva_com_sucesso() {
+    @Então("a Mesa é salva com sucesso")
+    public void aMesaSalvaComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
-
-
 
 
     @Dado("que um Mesa já exista no sistema")
-    public void que_um_mesa_já_exista_no_sistema() {
+    public void queUmMesaJaExistaNoSistema() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Quando("requisitar a alteração da Mesa")
-    public void requisitar_a_alteração_da_mesa() {
+    public void requisitarAlteracaoDaMesa() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("a Mesa é atualizada com sucesso")
-    public void a_mesa_é_atualizada_com_sucesso() {
+    public void aMesaAtualizadaComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
 
-
-
-
     @Dado("que um Mesa já exista")
-    public void que_um_mesa_já_exista() {
+    public void queUmaMesaJaExista() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Quando("requisitar a busca da Mesa")
-    public void requisitar_a_busca_da_mesa() {
+    public void requisitarBuscaDaMesa() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("a Mesa é exibida com sucesso")
-    public void a_mesa_é_exibida_com_sucesso() {
+    public void aMesaExibidaComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
 
-
-
-
-
     @Dado("que um Mesa já exista para o restaurante")
-    public void que_um_mesa_já_exista_para_o_restaurante() {
+    public void queUmaMesaJaExistaParaRestaurante() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Quando("requisitar a busca da Mesa pelo Id do Restaurante")
-    public void requisitar_a_busca_da_mesa_pelo_id_do_restaurante() {
+    public void requisitarAbuscaDaMesaPeloIdDoEestaurante() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }
 
     @Então("as Mesas são exibidas com sucesso")
-    public void as_mesas_sao_exibidas_com_sucesso() {
+    public void asMesasSaoExibidasComSucesso() {
         // Write code here that turns the phrase above into concrete actions
         throw new io.cucumber.java.PendingException();
     }

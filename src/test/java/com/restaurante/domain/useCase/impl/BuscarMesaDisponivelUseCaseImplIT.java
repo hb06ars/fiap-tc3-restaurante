@@ -12,13 +12,11 @@ import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import com.restaurante.infra.repository.postgres.UsuarioRepository;
 import com.restaurante.utils.BaseUnitTest;
 import io.restassured.RestAssured;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -67,7 +65,7 @@ class BuscarMesaDisponivelUseCaseImplIT extends BaseUnitTest {
     }
 
     @Nested
-    class ExevutarBuscarMesasDisponiveisUseCaseIT{
+    class ExevutarBuscarMesasDisponiveisUseCaseIT {
         @Test
         void executeDeveRetornarMesaDisponivelDTO() {
             var usuarioSaved = usuarioRepository.save(getRandom(UsuarioEntity.class));

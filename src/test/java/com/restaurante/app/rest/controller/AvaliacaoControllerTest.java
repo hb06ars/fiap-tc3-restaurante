@@ -142,7 +142,8 @@ class AvaliacaoControllerTest extends BaseUnitTest {
 
             verify(avaliacaoService, times(1)).listarPorRestaurante(10L);
             assertThat(logTracker.size()).isEqualTo(1);
-            assertThat(logTracker.contains("requisição para buscar avaliação pelo idRestaurante foi efetuada")).isTrue();
+            assertThat(logTracker.contains("requisição para buscar avaliação pelo idRestaurante foi efetuada"))
+                    .isTrue();
         }
 
         @Test

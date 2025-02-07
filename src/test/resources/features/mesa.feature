@@ -5,7 +5,7 @@ Funcionalidade: API - Mesa
 
   Cenário: Cadastrar um Mesa
     Quando submeter uma nova Mesa
-    Então ao Mesa é salva com sucesso
+    Então a Mesa é salva com sucesso
 
   Cenário: Atualizar Mesa
     Dado que um Mesa já exista no sistema

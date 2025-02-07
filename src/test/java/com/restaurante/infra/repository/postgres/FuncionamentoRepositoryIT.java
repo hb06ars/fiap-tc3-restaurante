@@ -5,13 +5,11 @@ import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.DiaEnum;
 import io.restassured.RestAssured;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -68,7 +66,7 @@ class FuncionamentoRepositoryIT {
 
 
     @Nested
-    class ValidarFuncionamentoRepositoryOT{
+    class ValidarFuncionamentoRepositoryOT {
         @Test
         void testValidarDatawhenDataIsValid() {
             var diaAtual = LocalDate.now().getDayOfWeek().getValue();
@@ -136,7 +134,7 @@ class FuncionamentoRepositoryIT {
 
 
     @Nested
-    class SalvarFuncionamentoRepositoryIT{
+    class SalvarFuncionamentoRepositoryIT {
         @Test
         void testSalvarFuncionamento() {
             var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
@@ -151,7 +149,7 @@ class FuncionamentoRepositoryIT {
     }
 
     @Nested
-    class BuscarFuncionamentoRepositoryIT{
+    class BuscarFuncionamentoRepositoryIT {
         @Test
         void testBuscarPorId() {
             var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));
@@ -168,7 +166,7 @@ class FuncionamentoRepositoryIT {
 
 
     @Nested
-    class AtualizarFuncionamentoRepositoryIT{
+    class AtualizarFuncionamentoRepositoryIT {
         @Test
         void testAtualizarFuncionamento() {
             var diaSeguinte = LocalDate.now().plusDays(1).getDayOfWeek().getValue();
@@ -191,7 +189,7 @@ class FuncionamentoRepositoryIT {
     }
 
     @Nested
-    class DeletarFuncionamentoRepositoryIT{
+    class DeletarFuncionamentoRepositoryIT {
         @Test
         void testDeletarFuncionamento() {
             var restauranteEntity = restauranteRepository.save(getRandom(RestauranteEntity.class));

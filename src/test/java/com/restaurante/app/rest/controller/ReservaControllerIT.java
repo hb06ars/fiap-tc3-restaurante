@@ -97,7 +97,7 @@ class ReservaControllerIT extends BaseUnitTest {
 
 
     @Nested
-    class atualizarReservaControllerIT {
+    class AtualizarReservaControllerIT {
         @Test
         void testAtualizarReserva() {
             var reservaEntity = getReservaEntity();
@@ -139,7 +139,7 @@ class ReservaControllerIT extends BaseUnitTest {
     }
 
     @Nested
-    class BuscarReservaControllerIT{
+    class BuscarReservaControllerIT {
         @Test
         void testBuscarReservas() {
             var reservaEntity = getReservaEntity();
@@ -168,7 +168,6 @@ class ReservaControllerIT extends BaseUnitTest {
                     .body("[0]", hasKey("statusReserva"));
         }
     }
-
 
 
     private ReservaEntity getReservaEntity() {

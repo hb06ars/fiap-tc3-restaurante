@@ -5,13 +5,11 @@ import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.infra.exceptions.CapacidadeException;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import io.restassured.RestAssured;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -53,7 +51,7 @@ class InsercaoRemocaoDasMesasUseCaseImplIT {
     }
 
     @Nested
-    class ExecutarInsercaoRemocaoDasMesasUseCaseIT{
+    class ExecutarInsercaoRemocaoDasMesasUseCaseIT {
         @Test
         void testExecuteCapacidadeDiferente() {
             int capacidadeOriginal = 5;
