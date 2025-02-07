@@ -1,34 +1,30 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "title": "Avaliações Response",
+  "title": "Funcionamento Response",
   "type": "object",
   "additionalProperties": false,
   "properties": {
     "id": {
       "type": "number"
     },
-    "nota": {
-      "type": "integer"
-    },
-    "comentario": {
+    "diaEnum": {
       "type": "string"
     },
-    "usuarioId": {
-      "type": "number"
+    "abertura": {
+      "type": "string"
+    },
+    "fechamento": {
+      "type": "string"
     },
     "restauranteId": {
       "type": "number"
-    },
-    "datapost": {
-      "type": "integer"
     }
   },
   "required": [
     "id",
-    "nota",
-    "comentario",
-    "usuarioId",
-    "restauranteId",
-    "datapost"
+    "diaEnum",
+    "abertura",
+    "fechamento",
+    "restauranteId"
   ]
 }
