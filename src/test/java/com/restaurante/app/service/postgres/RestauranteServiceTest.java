@@ -4,6 +4,7 @@ import com.restaurante.domain.dto.RestauranteDTO;
 import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.enums.TipoCozinhaEnum;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
+import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,8 @@ class RestauranteServiceTest {
 
     @Mock
     private RestauranteRepository restauranteRepository;
+    @Mock
+    private FuncionamentoRepository funcionamentoRepository;
 
     @InjectMocks
     private RestauranteService restauranteService;

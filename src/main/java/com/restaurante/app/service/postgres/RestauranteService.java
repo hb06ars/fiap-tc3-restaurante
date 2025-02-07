@@ -1,9 +1,11 @@
 package com.restaurante.app.service.postgres;
 
 import com.restaurante.domain.dto.RestauranteDTO;
+import com.restaurante.domain.entity.FuncionamentoEntity;
 import com.restaurante.domain.entity.RestauranteEntity;
 import com.restaurante.domain.useCase.InserirRemoverMesasUseCase;
 import com.restaurante.infra.exceptions.ObjectNotFoundException;
+import com.restaurante.infra.repository.postgres.FuncionamentoRepository;
 import com.restaurante.infra.repository.postgres.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,13 @@ import java.util.Optional;
 public class RestauranteService {
 
     private final RestauranteRepository repository;
+    private final FuncionamentoRepository funcionamentoRepository;
 
     @Autowired
     public RestauranteService(RestauranteRepository repository,
-                              InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase) {
+                              InserirRemoverMesasUseCase insercaoRemocaoDasMesasUseCase, FuncionamentoRepository funcionamentoRepository) {
         this.repository = repository;
+        this.funcionamentoRepository = funcionamentoRepository;
     }
 
     @Transactional
@@ -59,6 +63,9 @@ public class RestauranteService {
     @Transactional
     public void delete(Long id) {
         if (repository.findById(id).isPresent()) {
+            var listFuncionamento = funcionamentoRepository.findAllByRestauranteId(id);
+            if (!listFuncionamento.isEmpty())
+                funcionamentoRepository.deleteAllById(listFuncionamento.stream().map(FuncionamentoEntity::getId).toList());
             repository.deleteById(id);
         } else {
             throw new RuntimeException("Restaurante com ID: " + id + ", não encontrado.");

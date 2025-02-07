@@ -162,9 +162,9 @@ class FuncionamentoServiceIT extends BaseUnitTest {
             RestauranteEntity restauranteEntity = getRandom(RestauranteEntity.class);
             var restauranteSaved = restauranteRepository.save(restauranteEntity);
             FuncionamentoDTO dto = getRandom(FuncionamentoDTO.class);
-            dto.setAbertura(LocalTime.now());
+            dto.setAbertura(LocalTime.now().minusHours(2));
             dto.setDiaEnum(DiaEnum.SEGUNDA);
-            dto.setFechamento(LocalTime.now().plusHours(2));
+            dto.setFechamento(LocalTime.now().plusHours(1));
             dto.setRestauranteId(restauranteSaved.getId());
             FuncionamentoDTO result = funcionamentoService.save(dto);
 
