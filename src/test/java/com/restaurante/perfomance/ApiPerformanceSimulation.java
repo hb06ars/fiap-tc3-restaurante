@@ -4,6 +4,7 @@ import io.gatling.javaapi.core.ActionBuilder;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
+import io.gatling.javaapi.http.HttpRequestActionBuilder;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -20,49 +21,15 @@ import static io.gatling.javaapi.http.HttpDsl.status;
 public class ApiPerformanceSimulation extends Simulation {
     private final String ENDPOINT = "http://localhost:8080/usuario";
     private final HttpProtocolBuilder httpProtocol = http
-            .baseUrl(ENDPOINT)
-            .header("Content-Type", "application/json");
+            .baseUrl(ENDPOINT).header("Content-Type", "application/json");
 
     // Builder ----------------------------------------------------------------------
-    // Adicionar
-    ActionBuilder adicionarRequest = http("Adicionar usuário")
-            .post("/cadastrar")
-            .body(StringBody(session -> {
-                String email = "fulano" + UUID.randomUUID() + "@mail.com";
-                String celular = "119" + (int) (Math.random() * 100000000);
-
-                return "{\n" +
-                        "    \"nome\": \"Fulano de Tal\",\n" +
-                        "    \"email\": \"" + email + "\",\n" +
-                        "    \"celular\": \"" + celular + "\"\n" +
-                        "}";
-            })).asJson()
-            .check(status().is(200))
-            .check(jsonPath("$.celular").saveAs("celular"))
-            .check(jsonPath("$.id").saveAs("id"));
-
-    // Atualizar
-    ActionBuilder atualizarRequest = http("Atualizar usuário")
-            .post("/atualizar/#{id}")
-            .body(StringBody(session -> {
-                String email = "fulanoNovo" + UUID.randomUUID() + "@mail.com";
-                String celular = "119" + (int) (Math.random() * 100000000);
-
-                return "{\n" +
-                        "    \"nome\": \"Fulano de Tal Novo\",\n" +
-                        "    \"email\": \"" + email + "\",\n" +
-                        "    \"celular\": \"" + celular + "\"\n" +
-                        "}";
-            })).asJson()
-            .check(status().is(200))
-            .check(jsonPath("$.id").exists());
-
-    // Buscar
-    ActionBuilder buscarRequest = http("buscar usuário")
-            .get("/usuario?celular=#{celular}")
-            .check(status().is(200));
+    ActionBuilder adicionarRequest = adicionarRequest();
+    ActionBuilder atualizarRequest = atualizarRequest();
+    ActionBuilder buscarRequest = buscarRequest();
 
 
+    
     // Cenários ----------------------------------------------------------------------
     ScenarioBuilder cenarioAdicionar = scenario("Adicionar usuário").exec(adicionarRequest);
 
@@ -72,8 +39,8 @@ public class ApiPerformanceSimulation extends Simulation {
             .exec(adicionarRequest).exec(buscarRequest);
 
 
+    // Setup ----------------------------------------------------------------------
     {
-        // Setup ----------------------------------------------------------------------
         setUp(
                 cenarioAdicionar.injectOpen(
                         rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
@@ -97,4 +64,47 @@ public class ApiPerformanceSimulation extends Simulation {
                         global().failedRequests().count().is(0L)
                 );
     }
+
+
+    private static HttpRequestActionBuilder adicionarRequest() {
+        return http("Adicionar usuário")
+                .post("/cadastrar")
+                .body(StringBody(session -> {
+                    String email = "fulano" + UUID.randomUUID() + "@mail.com";
+                    String celular = "119" + (int) (Math.random() * 100000000);
+
+                    return "{\n" +
+                            "    \"nome\": \"Fulano de Tal\",\n" +
+                            "    \"email\": \"" + email + "\",\n" +
+                            "    \"celular\": \"" + celular + "\"\n" +
+                            "}";
+                })).asJson()
+                .check(status().is(200))
+                .check(jsonPath("$.celular").saveAs("celular"))
+                .check(jsonPath("$.id").saveAs("id"));
+    }
+
+    private static HttpRequestActionBuilder atualizarRequest() {
+        return http("Atualizar usuário")
+                .post("/atualizar/#{id}")
+                .body(StringBody(session -> {
+                    String email = "fulanoNovo" + UUID.randomUUID() + "@mail.com";
+                    String celular = "119" + (int) (Math.random() * 100000000);
+
+                    return "{\n" +
+                            "    \"nome\": \"Fulano de Tal Novo\",\n" +
+                            "    \"email\": \"" + email + "\",\n" +
+                            "    \"celular\": \"" + celular + "\"\n" +
+                            "}";
+                })).asJson()
+                .check(status().is(200))
+                .check(jsonPath("$.id").exists());
+    }
+
+    private static HttpRequestActionBuilder buscarRequest() {
+        return http("buscar usuário")
+                .get("/usuario?celular=#{celular}")
+                .check(status().is(200));
+    }
+
 }
