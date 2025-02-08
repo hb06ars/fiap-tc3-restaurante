@@ -9,8 +9,7 @@ import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.UUID;
+import java.time.format.DateTimeFormatter;
 
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.core.CoreDsl.constantUsersPerSec;
@@ -22,6 +21,7 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class ApiPerformanceSimulationReserva extends Simulation {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     private final String ENDPOINT = "http://localhost:8080/reserva";
     private final HttpProtocolBuilder httpProtocol = http
             .baseUrl(ENDPOINT).header("Content-Type", "application/json");
@@ -32,7 +32,6 @@ public class ApiPerformanceSimulationReserva extends Simulation {
     ActionBuilder buscarRequest = buscarRequest();
 
 
-    
     // Cenários ----------------------------------------------------------------------
     ScenarioBuilder cenarioAdicionar = scenario("Adicionar reserva").exec(adicionarRequest);
 
@@ -74,15 +73,15 @@ public class ApiPerformanceSimulationReserva extends Simulation {
         return http("Adicionar reserva")
                 .post("")
                 .body(StringBody(session -> {
-                    String dataInicioReserva = LocalDate.now().atTime(10,0).toString();
-                    String dataFimReserva = LocalDate.now().atTime(11,0).toString();
+                    String dataInicioReserva = LocalDateTime.now().format(formatter);
+                    String dataFimReserva = LocalDateTime.now().plusHours(1).format(formatter);
 
                     return "{\n" +
                             "    \"usuarioId\": 1,\n" +
                             "    \"mesaId\": 1,\n" +
                             "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": "+dataInicioReserva+",\n" +
-                            "    \"dataFimReserva\": "+dataFimReserva+",\n" +
+                            "    \"dataDaReserva\": " + dataInicioReserva + ",\n" +
+                            "    \"dataFimReserva\": " + dataFimReserva + ",\n" +
                             "    \"valorReserva\": 100.00,\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
@@ -96,15 +95,15 @@ public class ApiPerformanceSimulationReserva extends Simulation {
         return http("Atualizar reserva")
                 .put("/1")
                 .body(StringBody(session -> {
-                    String dataInicioReserva = LocalDate.now().atTime(10,0).toString();
-                    String dataFimReserva = LocalDate.now().atTime(11,0).toString();
+                    String dataInicioReserva = LocalDate.now().atTime(10, 0).toString();
+                    String dataFimReserva = LocalDate.now().atTime(11, 0).toString();
 
                     return "{\n" +
                             "    \"usuarioId\": 1,\n" +
                             "    \"mesaId\": 1,\n" +
                             "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": "+dataInicioReserva+",\n" +
-                            "    \"dataFimReserva\": "+dataFimReserva+",\n" +
+                            "    \"dataDaReserva\": " + dataInicioReserva + ",\n" +
+                            "    \"dataFimReserva\": " + dataFimReserva + ",\n" +
                             "    \"valorReserva\": 100.00,\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
