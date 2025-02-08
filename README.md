@@ -11,7 +11,12 @@
 - Em seguida, apontar o Enviroments Variables para o arquivo: /env/variaveis-test.env
 - Por fim, aguarde iniciar a aplicação.
 
-### TESTES
+## TESTES
+- No arquivo Makefile temos diversos testes:
+- Ele executará todos os testes necessários e também gerar os resultados utilizando o comando:
+  > make test
+
+### TESTES ESPECÍFICOS
 - Testes unitários:
   > mvn test
 
@@ -78,6 +83,3 @@
     mvn clean verify sonar:sonar -Dsonar.projectKey=restaurante -Dsonar.projectName="restaurante" -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_691089050af08e36f15bcc69185c78248f6edca7 -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml 
     Exeutando o comando, será gerado a url para verificar a cobertura do Sonar.
 
-### JMETER: <br>
-    Na pasta: /src/test/jmeter há um arquivo padrão para realizar testes de stress em algumas requisições.
-    Baixe o jmeter no site: https://jmeter.apache.org/download_jmeter.cgi e siga as instruções no jMeter.txt
