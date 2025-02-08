@@ -324,6 +324,21 @@
                 <spring-boot.run.profiles>test</spring-boot.run.profiles>
             </properties>
         </profile>
+        <profile>
+            <id>performance-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.gatling</groupId>
+                        <artifactId>gatling-maven-plugin</artifactId>
+                        <version>4.13.0</version>
+                        <configuration>
+                            <simulationClass>com.restaurante.performance.ApiPerformanceSimulation</simulationClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
 </project>
