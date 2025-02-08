@@ -27,7 +27,7 @@
   > **mvn test -P system-test -Dspring.profiles.active=test**
 
 - Testes de perfomance:
-  > **mvn gatling:test -Pperformance-test**
+  > **mvn spring-boot:start gatling:test -Pperformance-test**
 
 - Cucumber:
   > Abra o arquivo: **<seu-diretorio>\fiap-tc3-restaurante\target\cucumber-reports\cucumber.html**
