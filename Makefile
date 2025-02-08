@@ -31,6 +31,7 @@ performance-test-all:
 	@echo ::::::: Executando todos testes de perfomance ::::::::::::::::::::::::::::::::::::::::::::
 	mvn gatling:test -Pperformance-test-restaurante
 	mvn gatling:test -Pperformance-test-usuario
+	mvn gatling:test -Pperformance-test-mesa
 
 performance-test-restaurante:
 	@echo.

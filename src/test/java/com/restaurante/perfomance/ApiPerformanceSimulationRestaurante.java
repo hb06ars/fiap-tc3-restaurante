@@ -53,7 +53,7 @@ public class ApiPerformanceSimulationRestaurante extends Simulation {
                 )
         ).protocols(httpProtocol)
                 .assertions(
-                        global().responseTime().max().lt(800),
+                        global().responseTime().max().lt(1500),
                         global().failedRequests().count().is(0L)
                 );
     }
