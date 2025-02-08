@@ -23,31 +23,43 @@ public class ApiPerformanceSimulation extends Simulation {
             .baseUrl("http://localhost:8080")
             .header("Content-Type", "application/json");
 
-    ActionBuilder adicionarMensagemRequest = http("Adicionar usuário")
+    ActionBuilder adicionarRequest = http("Adicionar usuário")
             .post("/usuario/cadastrar")
             .body(StringBody(session -> {
-                String email = "fulano" + UUID.randomUUID() + "@mail.com"; // E-mail único
-                String celular = "119" + (int) (Math.random() * 100000000); // Número aleatório
+                String email = "fulano" + UUID.randomUUID() + "@mail.com";
+                String celular = "119" + (int) (Math.random() * 100000000);
 
                 return "{\n" +
-                        "    \"nome\": \"Fulano de Tald\",\n" +
+                        "    \"nome\": \"Fulano de Tal\",\n" +
                         "    \"email\": \"" + email + "\",\n" +
                         "    \"celular\": \"" + celular + "\"\n" +
                         "}";
             })).asJson()
             .check(status().is(200))
-            .check(jsonPath("$.id").exists());
+            .check(jsonPath("$.celular").saveAs("celular"));
 
-    ScenarioBuilder cenarioAdicionarMensagem = scenario("Adicionar usuário")
-            .exec(adicionarMensagemRequest);
+    ActionBuilder buscarRequest = http("buscar usuário")
+            .get("/usuario?celular=#{celular}")
+            .check(status().is(200));
+
+    ScenarioBuilder cenarioAdicionar = scenario("Adicionar usuário").exec(adicionarRequest);
+
+    ScenarioBuilder cenarioAdicionarBuscar = scenario("Adicionar e Buscar usuário")
+            .exec(adicionarRequest).exec(buscarRequest);
+
 
     {
         setUp(
-                cenarioAdicionarMensagem.injectOpen(
+                cenarioAdicionar.injectOpen(
                         rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
                         constantUsersPerSec(10).during(Duration.ofSeconds(60)),
                         rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
-                )
+                ),
+                cenarioAdicionarBuscar.injectOpen(
+                        rampUsersPerSec(1).to(30).during(Duration.ofSeconds(10)),
+                        constantUsersPerSec(30).during(Duration.ofSeconds(60)),
+                        rampUsersPerSec(30).to(1).during(Duration.ofSeconds(10)))
+
         ).protocols(httpProtocol)
                 .assertions(
                         global().responseTime().max().lt(800),
