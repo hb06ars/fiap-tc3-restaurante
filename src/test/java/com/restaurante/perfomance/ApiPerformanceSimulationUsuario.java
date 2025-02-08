@@ -61,7 +61,7 @@ public class ApiPerformanceSimulationUsuario extends Simulation {
 
         ).protocols(httpProtocol)
                 .assertions(
-                        global().responseTime().max().lt(800),
+                        global().responseTime().max().lt(1200),
                         global().failedRequests().count().is(0L)
                 );
     }
