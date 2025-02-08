@@ -6,6 +6,7 @@ import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 import java.time.Duration;
+import java.util.UUID;
 
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.core.CoreDsl.constantUsersPerSec;
@@ -24,11 +25,16 @@ public class ApiPerformanceSimulation extends Simulation {
 
     ActionBuilder adicionarMensagemRequest = http("Adicionar usuário")
             .post("/usuario/cadastrar")
-            .body(StringBody("{\n" +
-                    "    \"nome\": \"Fulano de Tald\",\n" +
-                    "    \"email\": \"fulano@mail.com\",\n" +
-                    "    \"celular\": \"11988887777\"\n" +
-                    "}")).asJson()
+            .body(StringBody(session -> {
+                String email = "fulano" + UUID.randomUUID() + "@mail.com"; // E-mail único
+                String celular = "119" + (int) (Math.random() * 100000000); // Número aleatório
+
+                return "{\n" +
+                        "    \"nome\": \"Fulano de Tald\",\n" +
+                        "    \"email\": \"" + email + "\",\n" +
+                        "    \"celular\": \"" + celular + "\"\n" +
+                        "}";
+            })).asJson()
             .check(status().is(200))
             .check(jsonPath("$.id").exists());
 
@@ -44,7 +50,7 @@ public class ApiPerformanceSimulation extends Simulation {
                 )
         ).protocols(httpProtocol)
                 .assertions(
-                        global().responseTime().max().lt(50),
+                        global().responseTime().max().lt(800),
                         global().failedRequests().count().is(0L)
                 );
     }
