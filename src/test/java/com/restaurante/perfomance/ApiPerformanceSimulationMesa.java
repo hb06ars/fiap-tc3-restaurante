@@ -25,11 +25,13 @@ public class ApiPerformanceSimulationMesa extends Simulation {
 
     // Builder ----------------------------------------------------------------------
     ActionBuilder gerenciarRequest = gerenciarMesaRequest();
+    ActionBuilder gerenciarDisponiveisRequest = gerenciarDisponiveisMesaRequest();
 
 
     
     // Cenários ----------------------------------------------------------------------
-    ScenarioBuilder gerenciarMesa = scenario("Gerenciar mesa").exec(gerenciarRequest);
+    ScenarioBuilder gerenciarMesa = scenario("Encontrar todas as mesas").exec(gerenciarRequest);
+    ScenarioBuilder gerenciarMesaDisponivel = scenario("Encontrar mesas disponiveis").exec(gerenciarDisponiveisRequest);
 
 
 
@@ -37,6 +39,11 @@ public class ApiPerformanceSimulationMesa extends Simulation {
     {
         setUp(
                 gerenciarMesa.injectOpen(
+                        rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
+                        constantUsersPerSec(10).during(Duration.ofSeconds(60)),
+                        rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
+                ),
+                gerenciarMesaDisponivel.injectOpen(
                         rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
                         constantUsersPerSec(10).during(Duration.ofSeconds(60)),
                         rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
@@ -50,8 +57,14 @@ public class ApiPerformanceSimulationMesa extends Simulation {
     }
 
     private static HttpRequestActionBuilder gerenciarMesaRequest() {
-        return http("Buscar mesa")
+        return http("Buscar todas as mesas pelo restaurante")
                 .get("/1")
+                .check(status().is(200));
+    }
+
+    private static HttpRequestActionBuilder gerenciarDisponiveisMesaRequest() {
+        return http("Buscar apenas as mesas disponiveis pelo restaurante")
+                .get("/listaporrestaurante/1")
                 .check(status().is(200));
     }
 
