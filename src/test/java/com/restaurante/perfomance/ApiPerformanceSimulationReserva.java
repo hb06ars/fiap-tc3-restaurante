@@ -80,8 +80,8 @@ public class ApiPerformanceSimulationReserva extends Simulation {
                             "    \"usuarioId\": 1,\n" +
                             "    \"mesaId\": 1,\n" +
                             "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": " + dataInicioReserva + ",\n" +
-                            "    \"dataFimReserva\": " + dataFimReserva + ",\n" +
+                            "    \"dataDaReserva\": \"" + dataInicioReserva + "\",\n" +
+                            "    \"dataFimReserva\": \"" + dataFimReserva + "\",\n" +
                             "    \"valorReserva\": 100.00,\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
