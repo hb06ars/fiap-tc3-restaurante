@@ -1,0 +1,106 @@
+package com.restaurante.perfomance;
+
+import com.restaurante.domain.enums.TipoCozinhaEnum;
+import io.gatling.javaapi.core.*;
+import io.gatling.javaapi.http.*;
+
+import java.time.Duration;
+import java.util.UUID;
+
+import static io.gatling.javaapi.core.CoreDsl.*;
+import static io.gatling.javaapi.http.HttpDsl.*;
+
+public class ApiPerformanceSimulationRestaurante extends Simulation {
+    private final String ENDPOINT = "http://localhost:8080/restaurante";
+    private final HttpProtocolBuilder httpProtocol = http
+            .baseUrl(ENDPOINT)
+            .header("Content-Type", "application/json");
+
+    // Criando as requisições ----------------------------------------------
+    ActionBuilder adicionarRequest = adicionarRequest();
+    ActionBuilder atualizarRequest = atualizarRequest();
+    ActionBuilder buscarRequest = buscarRequest();
+
+    // Criando cenários ----------------------------------------------
+    ScenarioBuilder cenarioAdicionar = scenario("Adicionar restaurante")
+            .exec(adicionarRequest);
+
+    ScenarioBuilder cenarioAtualizar = scenario("Adicionar e Atualizar restaurante")
+            .exec(adicionarRequest)
+            .pause(1)                   // Dá um tempo (1 segundo) para salvar a resposta
+            .exec(atualizarRequest);      // Só então atualiza
+
+    ScenarioBuilder cenarioAdicionarBuscar = scenario("Adicionar e Buscar restaurante")
+            .exec(adicionarRequest)
+            .pause(1)                   // Garante que a variável `nome` foi salva na sessão
+            .exec(buscarRequest);
+
+    // Setup ----------------------------------------------
+    {
+        setUp(
+                cenarioAdicionar.injectOpen(
+                        rampUsersPerSec(1).to(1).during(Duration.ofSeconds(10)),
+                        constantUsersPerSec(1).during(Duration.ofSeconds(60)),
+                        rampUsersPerSec(1).to(1).during(Duration.ofSeconds(10))
+                ),
+                cenarioAtualizar.injectOpen(
+                        rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
+                        constantUsersPerSec(10).during(Duration.ofSeconds(60)),
+                        rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
+                ),
+                cenarioAdicionarBuscar.injectOpen(
+                        rampUsersPerSec(1).to(30).during(Duration.ofSeconds(10)),
+                        constantUsersPerSec(30).during(Duration.ofSeconds(60)),
+                        rampUsersPerSec(30).to(1).during(Duration.ofSeconds(10))
+                )
+        ).protocols(httpProtocol)
+                .assertions(
+                        global().responseTime().max().lt(800),
+                        global().failedRequests().count().is(0L)
+                );
+    }
+
+    private static HttpRequestActionBuilder adicionarRequest() {
+        return http("Adicionar restaurante")
+                .post("")
+                .body(StringBody(session -> {
+                    String localizacao = "Av. " + UUID.randomUUID();
+                    String tipoCozinha = TipoCozinhaEnum.BRASILEIRA.name();
+                    String nomeRestaurante = "Restaurante_" + UUID.randomUUID();
+
+                    return "{\n" +
+                            "    \"nome\": \"" + nomeRestaurante + "\",\n" +
+                            "    \"tipoCozinha\": \"" + tipoCozinha + "\",\n" +
+                            "    \"localizacao\": \"" + localizacao + "\",\n" +
+                            "    \"capacidade\": 50\n" +
+                            "}";
+                })).asJson()
+                .check(status().is(200))
+                .check(jsonPath("$.id").saveAs("id"))
+                .check(jsonPath("$.nome").saveAs("nome"));
+    }
+
+    private static HttpRequestActionBuilder atualizarRequest() {
+        return http("Atualizar restaurante")
+                .put("/#{id}")
+                .body(StringBody(session -> {
+                    String localizacao = "Av. " + UUID.randomUUID();
+                    String tipoCozinha = TipoCozinhaEnum.BRASILEIRA.name();
+
+                    return "{\n" +
+                            "    \"nome\": \"Restaurante Atualizado\",\n" +
+                            "    \"tipoCozinha\": \"" + tipoCozinha + "\",\n" +
+                            "    \"localizacao\": \"" + localizacao + "\",\n" +
+                            "    \"capacidade\": 60\n" +
+                            "}";
+                })).asJson()
+                .check(status().is(200))
+                .check(jsonPath("$.id").exists());
+    }
+
+    private static HttpRequestActionBuilder buscarRequest() {
+        return http("Buscar restaurante")
+                .get("?nome=#{nome}")
+                .check(status().is(200));
+    }
+}

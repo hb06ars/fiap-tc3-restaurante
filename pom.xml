@@ -333,7 +333,8 @@
                         <artifactId>gatling-maven-plugin</artifactId>
                         <version>4.13.0</version>
                         <configuration>
-                            <simulationClass>com.restaurante.perfomance.ApiPerformanceSimulation</simulationClass>
+                            <simulationClass>com.restaurante.perfomance.ApiPerformanceSimulationUsuario</simulationClass>
+                            <simulationClass>com.restaurante.perfomance.ApiPerformanceSimulationRestaurante</simulationClass>
                         </configuration>
                     </plugin>
                 </plugins>

@@ -18,7 +18,7 @@ import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
-public class ApiPerformanceSimulation extends Simulation {
+public class ApiPerformanceSimulationUsuario extends Simulation {
     private final String ENDPOINT = "http://localhost:8080/usuario";
     private final HttpProtocolBuilder httpProtocol = http
             .baseUrl(ENDPOINT).header("Content-Type", "application/json");
