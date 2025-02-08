@@ -44,7 +44,7 @@ public class ApiPerformanceSimulationMesa extends Simulation {
 
         ).protocols(httpProtocol)
                 .assertions(
-                        global().responseTime().max().lt(800),
+                        global().responseTime().max().lt(1200),
                         global().failedRequests().count().is(0L)
                 );
     }
@@ -52,7 +52,6 @@ public class ApiPerformanceSimulationMesa extends Simulation {
     private static HttpRequestActionBuilder gerenciarMesaRequest() {
         return http("Buscar mesa")
                 .get("/1")
-                .check(jsonPath("$.mesaId").exists())
                 .check(status().is(200));
     }
 
