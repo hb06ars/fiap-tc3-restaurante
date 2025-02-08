@@ -33,7 +33,8 @@ public class ApiPerformanceSimulationUsuario extends Simulation {
     // Cenários ----------------------------------------------------------------------
     ScenarioBuilder cenarioAdicionar = scenario("Adicionar usuário").exec(adicionarRequest);
 
-    ScenarioBuilder cenarioAtualizar = scenario("Atualizar usuário").exec(atualizarRequest);
+    ScenarioBuilder cenarioAtualizar = scenario("Adicionar e Atualizar usuário")
+            .exec(adicionarRequest).exec(atualizarRequest);
 
     ScenarioBuilder cenarioAdicionarBuscar = scenario("Adicionar e Buscar usuário")
             .exec(adicionarRequest).exec(buscarRequest);
@@ -80,13 +81,15 @@ public class ApiPerformanceSimulationUsuario extends Simulation {
                             "}";
                 })).asJson()
                 .check(status().is(200))
-                .check(jsonPath("$.celular").saveAs("celular"))
-                .check(jsonPath("$.id").saveAs("id"));
+                .check(jsonPath("$.id").exists())
+                .check(jsonPath("$.celular").exists())
+                .check(jsonPath("$.id").saveAs("id"))
+                .check(jsonPath("$.celular").saveAs("celular"));
     }
 
     private static HttpRequestActionBuilder atualizarRequest() {
         return http("Atualizar usuário")
-                .post("/atualizar/#{id}")
+                .put("/atualizar/#{id}")
                 .body(StringBody(session -> {
                     String email = "fulanoNovo" + UUID.randomUUID() + "@mail.com";
                     String celular = "119" + (int) (Math.random() * 100000000);
@@ -98,13 +101,17 @@ public class ApiPerformanceSimulationUsuario extends Simulation {
                             "}";
                 })).asJson()
                 .check(status().is(200))
-                .check(jsonPath("$.id").exists());
+                .check(jsonPath("$.id").exists())
+                .check(jsonPath("$.celular").exists())
+                .check(jsonPath("$.id").saveAs("id"))
+                .check(jsonPath("$.celular").saveAs("celular"));
     }
 
     private static HttpRequestActionBuilder buscarRequest() {
-        return http("buscar usuário")
-                .get("/usuario?celular=#{celular}")
+        return http("Buscar usuário")
+                .get("?celular=#{celular}")
                 .check(status().is(200));
     }
+
 
 }

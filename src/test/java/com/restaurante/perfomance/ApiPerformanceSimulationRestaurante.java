@@ -37,9 +37,9 @@ public class ApiPerformanceSimulationRestaurante extends Simulation {
     {
         setUp(
                 cenarioAdicionar.injectOpen(
-                        rampUsersPerSec(1).to(1).during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(1).during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(1).to(1).during(Duration.ofSeconds(10))
+                        rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
+                        constantUsersPerSec(10).during(Duration.ofSeconds(60)),
+                        rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
                 ),
                 cenarioAtualizar.injectOpen(
                         rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
