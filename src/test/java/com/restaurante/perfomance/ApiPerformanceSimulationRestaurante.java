@@ -27,12 +27,10 @@ public class ApiPerformanceSimulationRestaurante extends Simulation {
 
     ScenarioBuilder cenarioAtualizar = scenario("Adicionar e Atualizar restaurante")
             .exec(adicionarRequest)
-            .pause(1)                   // Dá um tempo (1 segundo) para salvar a resposta
-            .exec(atualizarRequest);      // Só então atualiza
+            .exec(atualizarRequest);
 
     ScenarioBuilder cenarioAdicionarBuscar = scenario("Adicionar e Buscar restaurante")
             .exec(adicionarRequest)
-            .pause(1)                   // Garante que a variável `nome` foi salva na sessão
             .exec(buscarRequest);
 
     // Setup ----------------------------------------------
