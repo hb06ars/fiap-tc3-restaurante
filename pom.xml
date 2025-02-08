@@ -325,7 +325,22 @@
             </properties>
         </profile>
         <profile>
-            <id>performance-test</id>
+            <id>performance-test-restaurante</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.gatling</groupId>
+                        <artifactId>gatling-maven-plugin</artifactId>
+                        <version>4.13.0</version>
+                        <configuration>
+                            <simulationClass>com.restaurante.perfomance.ApiPerformanceSimulationRestaurante</simulationClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>performance-test-usuario</id>
             <build>
                 <plugins>
                     <plugin>
@@ -334,7 +349,6 @@
                         <version>4.13.0</version>
                         <configuration>
                             <simulationClass>com.restaurante.perfomance.ApiPerformanceSimulationUsuario</simulationClass>
-                            <simulationClass>com.restaurante.perfomance.ApiPerformanceSimulationRestaurante</simulationClass>
                         </configuration>
                     </plugin>
                 </plugins>
