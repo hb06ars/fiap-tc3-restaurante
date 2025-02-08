@@ -34,6 +34,7 @@ performance-test-all:
 	mvn gatling:test -Pperformance-test-mesa
 	mvn gatling:test -Pperformance-test-funcionamento
 	mvn gatling:test -Pperformance-test-avaliacao
+	mvn gatling:test -Pperformance-test-reserva
 
 performance-test-restaurante:
 	@echo.
@@ -64,6 +65,12 @@ performance-test-avaliacao:
 	@echo.
 	@echo ::::::: Executando testes de perfomance avaliacao ::::::::::::::::::::::::::::::::::::::::::::
 	mvn gatling:test -Pperformance-test-avaliacao
+
+performance-test-reserva:
+	@echo.
+	@echo.
+	@echo ::::::: Executando testes de perfomance reserva ::::::::::::::::::::::::::::::::::::::::::::
+	mvn gatling:test -Pperformance-test-reserva
 
 start-app:
 	@echo.
