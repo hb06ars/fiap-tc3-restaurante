@@ -33,6 +33,7 @@ performance-test-all:
 	mvn gatling:test -Pperformance-test-usuario
 	mvn gatling:test -Pperformance-test-mesa
 	mvn gatling:test -Pperformance-test-funcionamento
+	mvn gatling:test -Pperformance-test-avaliacao
 
 performance-test-restaurante:
 	@echo.
@@ -57,6 +58,12 @@ performance-test-funcionamento:
 	@echo.
 	@echo ::::::: Executando testes de perfomance funcionamento ::::::::::::::::::::::::::::::::::::::::::::
 	mvn gatling:test -Pperformance-test-funcionamento
+
+performance-test-avaliacao:
+	@echo.
+	@echo.
+	@echo ::::::: Executando testes de perfomance avaliacao ::::::::::::::::::::::::::::::::::::::::::::
+	mvn gatling:test -Pperformance-test-avaliacao
 
 start-app:
 	@echo.
