@@ -1,24 +1,21 @@
-## Test
+build:
+	@echo ::::::: Compilando a aplicacao :::::::::::::::::::::::::::::::::::::::::::::::::
+	mvn compile
 
 unit-test:
+	@echo ::::::: Executando testes unitarios ::::::::::::::::::::::::::::::::::::::::::::
 	mvn test
 
 integration-test:
+	@echo ::::::: Executando testes integrados ::::::::::::::::::::::::::::::::::::::::::::
 	mvn test -P integration-test
 
-system-test:
-	mvn test -Psystem-test
-	@echo $(TIMESTAMP) [INFO] cucumber HTML report generate in: target/cucumber-reports/cucumber.html
-
-performance-test:
-	mvn gatling:test -Pperformance-test
+system-test: start-app
+	@echo ::::::: Executando testes de sistema ::::::::::::::::::::::::::::::::::::::::::::
+	mvn test -P system-test
 
 test: unit-test integration-test
 
-
-report-maven:
-	mvn surefire-report:report
-	@echo $(TIMESTAMP) [INFO] maven report generate in: $(MVN_REPORT)
-
-report-allure:
-	allure serve .\target\allure-results\
+start-app:
+	@echo ::::::: Iniciando a aplicacao ::::::::::::::::::::::::::::::::::::::::::::
+	mvn spring-boot:start
