@@ -15,7 +15,7 @@
 - Por fim, aguarde iniciar a aplicação.
 
 ## TESTES
-- antes de tudo, verifique se o application.yml está apontando para o profile  "test".
+- Antes de tudo, verifique se o application.yml está apontando para o profile  "test".
 - No arquivo Makefile temos diversos testes:
 - Ele executará todos os testes necessários e também gerar os resultados utilizando o comando:
   > **make test**
