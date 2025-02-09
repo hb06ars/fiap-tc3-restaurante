@@ -2,7 +2,7 @@ server:
   port: ${PORT:8080}
 spring:
   datasource:
-    url: ${POSTGRES_URL:jdbc:postgresql:eycZwABZRWDKxDopBDGAEasxxAPwDHyj@monorail.proxy.rlwy.net:43312/railway}
+    url: ${POSTGRES_URL:jdbc:postgresql://monorail.proxy.rlwy.net:43312/railway}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASS:eycZwABZRWDKxDopBDGAEasxxAPwDHyj}
     driver-class-name: org.postgresql.Driver
