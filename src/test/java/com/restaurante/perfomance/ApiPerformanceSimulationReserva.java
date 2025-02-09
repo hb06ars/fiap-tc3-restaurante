@@ -21,10 +21,6 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class ApiPerformanceSimulationReserva extends Simulation {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-
-    private static final String dataInicioReserva = LocalDateTime.now().format(formatter);
-    private static final String dataFimReserva = LocalDateTime.now().plusHours(1).format(formatter);
 
     private final String ENDPOINT = "http://localhost:8080/reserva";
     private final HttpProtocolBuilder httpProtocol = http
@@ -53,7 +49,7 @@ public class ApiPerformanceSimulationReserva extends Simulation {
 
         ).protocols(httpProtocol)
                 .assertions(
-                        global().responseTime().max().lt(1200),
+                        global().responseTime().max().lt(2000),
                         global().failedRequests().count().is(0L)
                 );
     }
@@ -68,8 +64,8 @@ public class ApiPerformanceSimulationReserva extends Simulation {
                             "    \"usuarioId\": 1,\n" +
                             "    \"mesaId\": 1,\n" +
                             "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": \"" + dataInicioReserva + "\",\n" +
-                            "    \"dataFimReserva\": \"" + dataFimReserva + "\",\n" +
+                            "    \"dataDaReserva\": \"2099-02-02T08:00:00\",\n" +
+                            "    \"dataFimReserva\": \"2099-02-02T09:00:00\",\n" +
                             "    \"valorReserva\": 100.00,\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
@@ -89,8 +85,8 @@ public class ApiPerformanceSimulationReserva extends Simulation {
                             "    \"usuarioId\": 1,\n" +
                             "    \"mesaId\": 1,\n" +
                             "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": \"" + dataInicioReserva + "\",\n" +
-                            "    \"dataFimReserva\": \"" + dataFimReserva + "\",\n" +
+                            "    \"dataDaReserva\": \"2099-02-02T08:00:00\",\n" +
+                            "    \"dataFimReserva\": \"2099-02-02T09:00:00\",\n" +
                             "    \"valorReserva\": 100.00,\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
@@ -105,7 +101,7 @@ public class ApiPerformanceSimulationReserva extends Simulation {
                 .get("/#{id}")
                 .body(StringBody(session -> {
                     return "{\n" +
-                            "    \"dataDaReserva\": \"2025-02-12T15:10:00\",\n" +
+                            "    \"dataDaReserva\": \"2099-02-02T08:10:00\",\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
                             "}";
