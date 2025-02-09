@@ -1,6 +1,7 @@
 
 package com.restaurante.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.restaurante.app.rest.request.ReservaFilter;
 import com.restaurante.app.rest.request.ReservaRequest;
 import com.restaurante.domain.entity.ReservaEntity;
@@ -27,7 +28,9 @@ public class ReservaDTO implements Serializable {
     private Long usuarioId;
     private Long mesaId;
     private Long restauranteId;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataDaReserva;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataFimReserva;
     private BigDecimal valorReserva;
     private StatusPagamentoEnum statusPagamento;

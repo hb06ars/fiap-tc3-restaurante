@@ -41,6 +41,7 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
             service.delete(id);
             validacoes(reservaAtualizada);
         }
+        reservaOriginal.setId(id);
         reservaOriginal.setDataDaReserva(reservaAtualizada.getDataDaReserva());
         reservaOriginal.setDataFimReserva(reservaAtualizada.getDataFimReserva());
         reservaOriginal.setValorReserva(reservaAtualizada.getValorReserva());
