@@ -1,7 +1,7 @@
 # RESTAURANTE
 
 ### APLICAÇÃO RAILWAY
-- fiap-tc3-restaurante-production.up.railway.app/usuario?celular=1188887777
+- https://fiap-tc3-restaurante-production.up.railway.app/usuario?celular=1188887777
 
 ### APLICAÇÃO AZURE
 - https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/restaurante/usuario?celular=1188887777
