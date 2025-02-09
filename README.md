@@ -1,24 +1,17 @@
 # RESTAURANTE
 
-### SUBIR APLICAÇÃO LOCALMENTE COM DOCKERFILE
-- docker build -t fiap-tc3-restaurante .
-- docker run -p 8080:8080 fiap-tc3-restaurante
+### APLICAÇÃO RAILWAY
+- fiap-tc3-restaurante-production.up.railway.app/usuario?celular=1188887777
 
-### SUBIR APLICAÇÃO AWS COM DOCKERFILE
-- A imagem do projeto foi enviada para o ECR com o nome restaurante.
-- O serviço está sendo executado no cluster ECS cluster-fiap-curso na região us-east-1
+### APLICAÇÃO AZURE
+- https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/restaurante/usuario?celular=1188887777
 
 
-
-### SUBIR APLICAÇÃO EM DEV (POSTGRES)
-- No arquivo src/resources/application.yml altere o profile para dev
-- Deve ser executado o arquivo na raíz: /docker-compose.yaml
-- Em seguida, apontar o Enviroments Variables para o arquivo: /env/variaveis.env
-- Por fim, aguarde subir a imagem e assim iniciar a aplicação.
-
-### SUBIR APLICAÇÃO EM DEV (H2)
+### SUBIR APLICAÇÃO LOCAL (H2)
 - No arquivo src/main/resources/application.yml altere o profile para test
 - Em seguida, apontar o Enviroments Variables para o arquivo: /env/variaveis-test.env
+- docker build -t fiap-tc3-restaurante .
+- docker run -p 8080:8080 fiap-tc3-restaurante
 - Por fim, aguarde iniciar a aplicação.
 
 ## TESTES
