@@ -21,6 +21,11 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class ApiPerformanceSimulationReserva extends Simulation {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+    private static final String dataInicioReserva = LocalDateTime.now().format(formatter);
+    private static final String dataFimReserva = LocalDateTime.now().plusHours(1).format(formatter);
+
     private final String ENDPOINT = "http://localhost:8080/reserva";
     private final HttpProtocolBuilder httpProtocol = http
             .baseUrl(ENDPOINT).header("Content-Type", "application/json");
@@ -63,8 +68,8 @@ public class ApiPerformanceSimulationReserva extends Simulation {
                             "    \"usuarioId\": 1,\n" +
                             "    \"mesaId\": 1,\n" +
                             "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": \"2025-02-12T14:00:00\",\n" +
-                            "    \"dataFimReserva\": \"2025-02-12T15:00:00\",\n" +
+                            "    \"dataDaReserva\": \"" + dataInicioReserva + "\",\n" +
+                            "    \"dataFimReserva\": \"" + dataFimReserva + "\",\n" +
                             "    \"valorReserva\": 100.00,\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
@@ -84,8 +89,8 @@ public class ApiPerformanceSimulationReserva extends Simulation {
                             "    \"usuarioId\": 1,\n" +
                             "    \"mesaId\": 1,\n" +
                             "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": \"2025-02-12T14:00:00\",\n" +
-                            "    \"dataFimReserva\": \"2025-02-12T15:00:00\",\n" +
+                            "    \"dataDaReserva\": \"" + dataInicioReserva + "\",\n" +
+                            "    \"dataFimReserva\": \"" + dataFimReserva + "\",\n" +
                             "    \"valorReserva\": 100.00,\n" +
                             "    \"statusPagamento\": \"PENDENTE\",\n" +
                             "    \"statusReserva\": \"RESERVADO\"\n" +
