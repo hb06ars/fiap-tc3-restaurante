@@ -1,5 +1,15 @@
 # RESTAURANTE
 
+### SUBIR APLICAÇÃO LOCALMENTE COM DOCKERFILE
+- docker build -t fiap-tc3-restaurante .
+- docker run -p 8080:8080 fiap-tc3-restaurante
+
+### SUBIR APLICAÇÃO AWS COM DOCKERFILE
+- A imagem do projeto foi enviada para o ECR com o nome restaurante.
+- O serviço está sendo executado no cluster ECS cluster-fiap-curso na região us-east-1
+
+
+
 ### SUBIR APLICAÇÃO EM DEV (POSTGRES)
 - No arquivo src/resources/application.yml altere o profile para dev
 - Deve ser executado o arquivo na raíz: /docker-compose.yaml
@@ -71,7 +81,7 @@
 - Deve ser executado na raíz: **/docker-compose.yaml**
 - Em seguida, apontar o Enviroments Variables para o arquivo: **/env/variaveis.env**
 
-### DOCKER COMPOSE
+### SUBIR COM DOCKER COMPOSE
 - Para subir a imagem basta executar o **docker-compose.yaml**
 
 ### SWAGGER
