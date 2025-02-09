@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e68d2689-2412-475d-b411-010d8b30127d",
+		"_postman_id": "ba740540-e144-4f0d-8313-fbb7c3347ee4",
 		"name": "Restaurante",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7970060"
@@ -24,12 +24,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/usuario/cadastrar",
-							"protocol": "http",
+							"raw": "{{host}}/usuario/cadastrar",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"usuario",
 								"cadastrar"
@@ -53,12 +51,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/usuario/atualizar/1",
-							"protocol": "http",
+							"raw": "{{host}}/usuario/atualizar/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"usuario",
 								"atualizar",
@@ -86,12 +82,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/usuario?celular=11988887777",
-							"protocol": "http",
+							"raw": "{{host}}/usuario?celular=11988887777",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"usuario"
 							],
@@ -125,12 +119,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/restaurante",
-							"protocol": "http",
+							"raw": "{{host}}/restaurante",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"restaurante"
 							]
@@ -153,12 +145,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/restaurante/1",
-							"protocol": "http",
+							"raw": "{{host}}/restaurante/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"restaurante",
 								"1"
@@ -185,12 +175,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/restaurante?nome=Fogo de Chão&localizacao=Av. Pacaembú, 123&tipoCozinha=BRASILEIRA",
-							"protocol": "http",
+							"raw": "{{host}}/restaurante?nome=Fogo de Chão&localizacao=Av. Pacaembú, 123&tipoCozinha=BRASILEIRA",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"restaurante"
 							],
@@ -232,12 +220,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/reserva",
-							"protocol": "http",
+							"raw": "{{host}}/reserva",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"reserva"
 							]
@@ -260,12 +246,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/reserva/1",
-							"protocol": "http",
+							"raw": "{{host}}/reserva/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"reserva",
 								"1"
@@ -292,12 +276,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/reserva/1",
-							"protocol": "http",
+							"raw": "{{host}}/reserva/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"reserva",
 								"1"
@@ -326,12 +308,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/funcionamento/cadastrar",
-							"protocol": "http",
+							"raw": "{{host}}/funcionamento/cadastrar",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"funcionamento",
 								"cadastrar"
@@ -355,12 +335,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/funcionamento/atualizar/1",
-							"protocol": "http",
+							"raw": "{{host}}/funcionamento/atualizar/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"funcionamento",
 								"atualizar",
@@ -388,12 +366,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/funcionamento/1",
-							"protocol": "http",
+							"raw": "{{host}}/funcionamento/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"funcionamento",
 								"1"
@@ -425,12 +401,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/mesa/1",
-							"protocol": "http",
+							"raw": "{{host}}/mesa/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"mesa",
 								"1"
@@ -457,12 +431,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/mesa/listaporrestaurante/1",
-							"protocol": "http",
+							"raw": "{{host}}/mesa/listaporrestaurante/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"mesa",
 								"listaporrestaurante",
@@ -492,12 +464,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/avaliacao",
-							"protocol": "http",
+							"raw": "{{host}}/avaliacao",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"avaliacao"
 							]
@@ -523,12 +493,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/avaliacao/1",
-							"protocol": "http",
+							"raw": "{{host}}/avaliacao/1",
 							"host": [
-								"localhost"
+								"{{host}}"
 							],
-							"port": "8080",
 							"path": [
 								"avaliacao",
 								"1"
