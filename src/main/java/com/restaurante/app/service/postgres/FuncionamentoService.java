@@ -70,7 +70,7 @@ public class FuncionamentoService {
 
     public List<FuncionamentoDTO> validarDataFuncionamento(Long restauranteId,
                                                            LocalDateTime dataReserva, DiaEnum diaenum) {
-        return repository.validarData(restauranteId, dataReserva, diaenum.name())
+        return repository.validarData(restauranteId, dataReserva.toLocalTime(), diaenum.name())
                 .stream()
                 .map(FuncionamentoDTO::new).toList();
     }

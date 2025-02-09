@@ -78,7 +78,7 @@ class FuncionamentoRepositoryIT {
             funcionamentoEntity.setFechamento(LocalTime.of(18, 0));
             var funcionamentoSaved = repository.save(funcionamentoEntity);
 
-            var dataReserva = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0, 1));
+            var dataReserva = LocalTime.of(8, 0, 1);
 
             var dataValidada = repository.validarData(funcionamentoSaved.getRestauranteId(), dataReserva,
                     funcionamentoSaved.getDiaEnum().name());
@@ -96,7 +96,7 @@ class FuncionamentoRepositoryIT {
             var funcionamentoSaved = repository.save(funcionamentoEntity);
 
             var dataReserva = LocalDateTime.of(LocalDate.now(),
-                    funcionamentoSaved.getFechamento().plusHours(1));
+                    funcionamentoSaved.getFechamento().plusHours(1)).toLocalTime();
 
             var dataValidada = repository.validarData(funcionamentoSaved.getId(),
                     dataReserva, funcionamentoSaved.getDiaEnum().name());

@@ -77,7 +77,8 @@ class FuncionamentoRepositoryTest {
 
         @Test
         void testValidarData() {
-            LocalDateTime dataReserva = LocalDateTime.of(2025, 2, 1, 12, 0);
+
+            LocalTime dataReserva = LocalTime.of(12, 0, 1);
             List<FuncionamentoEntity> funcionamentoList = List.of(funcionamento);
 
             when(funcionamentoRepository.validarData(1L, dataReserva, DiaEnum.SEGUNDA.name()))
