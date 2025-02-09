@@ -2,9 +2,9 @@ server:
   port: ${PORT:8080}
 spring:
   datasource:
-    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/restaurante}
-    username: ${POSTGRES_USER:restauranteusr}
-    password: ${POSTGRES_PASS:Restaurante2025@sistema}
+    url: ${POSTGRES_URL:jdbc:postgresql:eycZwABZRWDKxDopBDGAEasxxAPwDHyj@monorail.proxy.rlwy.net:43312/railway}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASS:eycZwABZRWDKxDopBDGAEasxxAPwDHyj}
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
   sql:
