@@ -6,10 +6,13 @@
 ### APLICAÇÃO AZURE
 - https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/restaurante/usuario?celular=1188887777
 
+### APLICAÇÃO AWS
+- http://54.144.144.11:8080/usuario?celular=1188887777
 
 ### SUBIR APLICAÇÃO LOCAL (H2)
 - No arquivo src/main/resources/application.yml altere o profile para test
 - Em seguida, apontar o Enviroments Variables para o arquivo: /env/variaveis-test.env
+- mvn clean install package -DskipTests
 - docker build -t fiap-tc3-restaurante .
 - docker run -p 8080:8080 fiap-tc3-restaurante
 - Por fim, aguarde iniciar a aplicação.
