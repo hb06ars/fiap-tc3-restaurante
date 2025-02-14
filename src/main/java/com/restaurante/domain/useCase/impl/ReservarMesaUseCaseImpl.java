@@ -38,7 +38,6 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     public ReservaDTO atualizar(Long id, ReservaDTO reservaAtualizada) {
         ReservaDTO reservaOriginal = service.findById(id);
         if (reservaOriginal.getDataDaReserva() != reservaAtualizada.getDataDaReserva()) {
-            service.delete(id);
             validacoes(reservaAtualizada);
         }
         reservaOriginal.setId(id);
@@ -47,7 +46,7 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
         reservaOriginal.setValorReserva(reservaAtualizada.getValorReserva());
         reservaOriginal.setStatusPagamento(reservaAtualizada.getStatusPagamento());
         reservaOriginal.setStatusReserva(reservaAtualizada.getStatusReserva());
-        return service.save(reservaOriginal);
+       return service.save(reservaOriginal);
     }
 
     private void validacoes(ReservaDTO dto) {

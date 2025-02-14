@@ -46,6 +46,7 @@ public class ReservaService {
     public ReservaDTO update(Long id, ReservaDTO reservaSalvar) {
         Optional<ReservaEntity> reservaExistente = repository.findById(id);
         if (reservaExistente.isPresent()) {
+            reservaExistente.get().setId(reservaSalvar.getId());
             reservaExistente.get().setValorReserva(reservaSalvar.getValorReserva());
             reservaExistente.get().setStatusReserva(reservaSalvar.getStatusReserva());
             reservaExistente.get().setDataDaReserva(reservaSalvar.getDataDaReserva());
