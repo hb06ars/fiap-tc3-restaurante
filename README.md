@@ -44,13 +44,13 @@
 
 
 ### APLICAÇÃO RAILWAY
-- https://fiap-tc3-restaurante-production.up.railway.app/usuario?celular=1188887777
+- https://fiap-tc3-restaurante-production.up.railway.app/usuario?celular=11988887777
 
 ### APLICAÇÃO AZURE
-- https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/restaurante/usuario?celular=1188887777
+- https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/usuario?celular=11988887777
 
 ### APLICAÇÃO AWS
-- http://54.144.144.11:8080/usuario?celular=1188887777
+- http://54.144.144.11:8080/usuario?celular=11988887777
 
 ### DEPLOY LOCAL
 - mvn clean install package -DskipTests
