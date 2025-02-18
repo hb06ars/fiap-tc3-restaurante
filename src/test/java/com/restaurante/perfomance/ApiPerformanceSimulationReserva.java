@@ -6,10 +6,13 @@ import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 
+import java.time.Duration;
+
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.core.CoreDsl.constantUsersPerSec;
 import static io.gatling.javaapi.core.CoreDsl.global;
 import static io.gatling.javaapi.core.CoreDsl.jsonPath;
+import static io.gatling.javaapi.core.CoreDsl.rampUsersPerSec;
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
@@ -37,7 +40,9 @@ public class ApiPerformanceSimulationReserva extends Simulation {
     {
         setUp(
                 cenario.injectOpen(
-                        constantUsersPerSec(1).during(5)
+                        rampUsersPerSec(1).to(5).during(Duration.ofSeconds(3)),
+                        constantUsersPerSec(5).during(Duration.ofSeconds(4)),
+                        rampUsersPerSec(5).to(1).during(Duration.ofSeconds(3))
                 )
 
 
@@ -54,16 +59,17 @@ public class ApiPerformanceSimulationReserva extends Simulation {
                 .post("")
                 .body(StringBody(session -> {
 
-                    return "{\n" +
-                            "    \"usuarioId\": 1,\n" +
-                            "    \"mesaId\": 1,\n" +
-                            "    \"restauranteId\": 1,\n" +
-                            "    \"dataDaReserva\": \"2099-02-02T08:00:00\",\n" +
-                            "    \"dataFimReserva\": \"2099-02-02T09:00:00\",\n" +
-                            "    \"valorReserva\": 100.00,\n" +
-                            "    \"statusPagamento\": \"PENDENTE\",\n" +
-                            "    \"statusReserva\": \"RESERVADO\"\n" +
-                            "}";
+                    return """
+                            {
+                                "usuarioId": 1,
+                                "mesaId": 1,
+                                "restauranteId": 1,
+                                "dataDaReserva": "2099-02-02T08:00:00",
+                                "dataFimReserva": "2099-02-02T09:00:00",
+                                "valorReserva": 100.00,
+                                "statusPagamento": "PENDENTE",
+                                "statusReserva": "RESERVADO"
+                            }""";
                 })).asJson()
                 .check(status().is(200))
                 .check(jsonPath("$.id").exists())
