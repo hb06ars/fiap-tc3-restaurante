@@ -1,5 +1,11 @@
 # RESTAURANTE
 
+### ARQUITETURA
+- Linguagem: **Java 17**
+- Framework: **Spring Boot**
+- Banco de dados: **Postgres**
+- Testes e Perfomance: **Gatling**
+
 ### APONTAMENTO PARA H2
 - Antes de tudo, mantenha o application.yml apontando para o profile  "test".
 - No arquivo Makefile temos diversos testes:
@@ -71,12 +77,6 @@
 - Essa variável serve para definir um tempo padrão para um cliente ficar na mesa, por exemplo:
 - Reservei uma mesa para as 14hs, então a data de saída padrão será às 16hs.
 - É necessário isso, para impedir que um novo cliente tente reservar a mesa às 14hs01min por exemplo.
-
-### ARQUITETURA
-- Linguagem: **Java 17**
-- Framework: **Spring Boot**
-- Banco de dados: **Postgres**
-- Testes e Perfomance: **Gatling**
 
 ### FLUXO
 - Abra o postman 
