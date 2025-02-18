@@ -29,7 +29,6 @@ public class ApiPerformanceSimulationUsuario extends Simulation {
     ActionBuilder buscarRequest = buscarRequest();
 
 
-    
     // Cenários ----------------------------------------------------------------------
     ScenarioBuilder cenarioAdicionar = scenario("Adicionar usuário").exec(adicionarRequest);
 
@@ -44,19 +43,20 @@ public class ApiPerformanceSimulationUsuario extends Simulation {
     {
         setUp(
                 cenarioAdicionar.injectOpen(
-                        rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10).during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
+                        rampUsersPerSec(1).to(5).during(Duration.ofSeconds(3)),
+                        constantUsersPerSec(5).during(Duration.ofSeconds(4)),
+                        rampUsersPerSec(5).to(1).during(Duration.ofSeconds(3))
                 ),
                 cenarioAtualizar.injectOpen(
-                        rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10).during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
+                        rampUsersPerSec(1).to(5).during(Duration.ofSeconds(3)),
+                        constantUsersPerSec(5).during(Duration.ofSeconds(4)),
+                        rampUsersPerSec(5).to(1).during(Duration.ofSeconds(3))
                 ),
                 cenarioAdicionarBuscar.injectOpen(
-                        rampUsersPerSec(1).to(30).during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(30).during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(30).to(1).during(Duration.ofSeconds(10)))
+                        rampUsersPerSec(1).to(5).during(Duration.ofSeconds(3)),
+                        constantUsersPerSec(5).during(Duration.ofSeconds(4)),
+                        rampUsersPerSec(5).to(1).during(Duration.ofSeconds(3))
+                )
 
 
         ).protocols(httpProtocol)

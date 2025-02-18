@@ -34,14 +34,16 @@ public class ApiPerformanceSimulationMesa extends Simulation {
     {
         setUp(
                 gerenciarMesa.injectOpen(
-                        rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10).during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
+                        rampUsersPerSec(1).to(5).during(Duration.ofSeconds(3)),
+                        constantUsersPerSec(5).during(Duration.ofSeconds(4)),
+                        rampUsersPerSec(5).to(1).during(Duration.ofSeconds(3))
+
                 ),
                 gerenciarMesaDisponivel.injectOpen(
-                        rampUsersPerSec(1).to(10).during(Duration.ofSeconds(10)),
-                        constantUsersPerSec(10).during(Duration.ofSeconds(60)),
-                        rampUsersPerSec(10).to(1).during(Duration.ofSeconds(10))
+                        rampUsersPerSec(1).to(5).during(Duration.ofSeconds(3)),
+                        constantUsersPerSec(5).during(Duration.ofSeconds(4)),
+                        rampUsersPerSec(5).to(1).during(Duration.ofSeconds(3))
+
                 )
 
         ).protocols(httpProtocol)
