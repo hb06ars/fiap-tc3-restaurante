@@ -37,7 +37,7 @@ public class ReservarMesaUseCaseImpl implements ReservarMesaUseCase {
     @Override
     public ReservaDTO atualizar(Long id, ReservaDTO reservaAtualizada) {
         ReservaDTO reservaOriginal = service.findById(id);
-        if (reservaOriginal.getDataDaReserva() != reservaAtualizada.getDataDaReserva()) {
+        if (!reservaOriginal.getDataDaReserva().equals(reservaAtualizada.getDataDaReserva())) {
             validacoes(reservaAtualizada);
         }
         reservaOriginal.setId(id);
