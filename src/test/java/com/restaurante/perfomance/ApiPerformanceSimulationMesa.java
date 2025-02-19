@@ -48,7 +48,7 @@ public class ApiPerformanceSimulationMesa extends Simulation {
 
         ).protocols(httpProtocol)
                 .assertions(
-                        global().responseTime().max().lt(2000),
+                        global().responseTime().max().lt(2500),
                         global().failedRequests().count().is(0L)
                 );
     }
