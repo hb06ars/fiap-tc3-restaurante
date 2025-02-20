@@ -35,10 +35,10 @@
   > Execute o comando na raiz do projeto: <br>
   > **allure serve .\target\allure-results\\** <br>
 
-- CHECKSTYLE:
+- **CHECKSTYLE**:
   > Baixe o Plugin **CheckStyle-IDEA** e aponte para o arquivo checkstyle.xml na raíz do projeto
 
-- COVERAGE:
+- **COVERAGE**:
   > Vi a necessidade de ignorar alguns packages de cobertura desnecessários<br>
   > Nisso a cbertura de teste foi feita para: <br>
   > - **Controllers** 
@@ -47,16 +47,29 @@
   > - **Repository**
   > 
   > No final da documentação (em Dicas) temos uma orientação para rodar no sonar, caso desejar.
-
-
-### APLICAÇÃO RAILWAY
-- https://fiap-tc3-restaurante-production.up.railway.app/usuario?celular=11988887777
-
+  
 ### APLICAÇÃO AZURE
-- https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/usuario?celular=11988887777
+
+> - **Cadastrar usuário Azure**:<br><br>
+> curl --location 'https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/usuario/cadastrar' \
+> --header 'Content-Type: application/json' \
+> --data-raw '{
+> "nome": "Cicrano",
+> "email": "cicrano@mail.com",
+> "celular": "11988883333"
+> }'
+> <br>&nbsp;
+
+> - **Buscar usuário Azure**:<br><br>
+> https://fiap-tc3-restaurante-bpfhccg4d2gxdmhj.eastus-01.azurewebsites.net/usuario?celular=11988883333
 
 ### APLICAÇÃO AWS
-- http://54.144.144.11:8080/usuario?celular=11988887777
+> - **Buscar usuário AWS**:<br><br>
+> http://54.144.144.11:8080/usuario?celular=11988887777
+
+### APLICAÇÃO RAILWAY
+> - **Buscar usuário RailWay**:<br><br>
+    https://fiap-tc3-restaurante-production.up.railway.app/usuario?celular=11988887777
 
 ### DEPLOY LOCAL
 - mvn clean install package -DskipTests
