@@ -65,7 +65,7 @@
 
 ### APLICAÇÃO AWS
 > - **Buscar usuário AWS**:<br><br>
-> http://54.144.144.11:8080/usuario?celular=11988887777
+> http://54.83.169.148:8080/usuario?celular=11988887777
 
 ### APLICAÇÃO RAILWAY
 > - **Buscar usuário RailWay**:<br><br>
